@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<body>
+
+<div><h3>PHP Script Test Page</h3></div>
+
+<form action=""> 
+Test Script: <input type="text" id="TestScript">
+Variables: <input type="text" id="Vars">
+
+</form>
+
+
+<br></br>
+<button type="button" onclick="loadDoc()">Run Script</button>
+
+<br></br>
+Output:
+<div id="Output">......</div>
+
+
+
+<script>
+function loadDoc() {
+  
+  var xhttp = new XMLHttpRequest();
+  xhttp.onreadystatechange = function() {
+    if (xhttp.readyState == 4 && xhttp.status == 200) {
+      document.getElementById("Output").innerHTML = xhttp.responseText;
+    }
+  }
+  xhttp.open("POST", TestScript.value, true);
+  xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+  xhttp.send(Vars.value);
+}
+</script>
+
+</body>
+</html>

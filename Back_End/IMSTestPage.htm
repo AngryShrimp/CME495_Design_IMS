@@ -1,39 +1,71 @@
 <!DOCTYPE html>
 <html>
 <body>
+	<title>IMSTestPage</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" href="http://www.w3schools.com/lib/w3.css">
+	<div class="w3-container w3-blue">
+		<h3>PHP Script Test Page</h3>
+	</div>
 
-<div><h3>PHP Script Test Page</h3></div>
+	<form class="w3-container">
 
-<form action=""> 
-Test Script: <input type="text" id="TestScript">
-Variables: <input type="text" id="Vars">
+		<p>
+		<label>Test Script:</label>
+		<input class="w3-input" type="text" id="TestScript"></p>
 
-</form>
+		<p>
+		<label>Repeats:</label>
+		<input class="w3-input" type="text" id="Reps" value="1"></p>
+		<p>
+		<label>Options:</label>
+		<input class="w3-input" type="text" id="Vars"></p>
+
+		<p>
+		<button type="button" onclick="loadDoc()">Run Script</button>
+		<button type="button" onclick="clearLog()">Clear</button>
+		</p>
+
+	</form>
 
 
-<br></br>
-<button type="button" onclick="loadDoc()">Run Script</button>
 
-<br></br>
-Output:
-<div id="Output">......</div>
+	<div class="w3-container">
+		<div class="textareacontainer">
+			<div class="textarea">
+			  <div style="overflow:auto;">
+				<div class="headerText">Output:</div>
+			  </div>
+			  <div class="textareawrapper">
+				<textarea autocomplete="off" class="code_input" id="textareaCode" wrap="logical" spellcheck="false" style="width:100%" rows="25"></textarea>
+			   </div>
+			</div>
+		</div>
+
+	</div>
 
 
+	<script>
+	function loadDoc() {
+	  
+		for( i=0; i<Number(Reps.value); i++)
+		{
 
-<script>
-function loadDoc() {
-  
-  var xhttp = new XMLHttpRequest();
-  xhttp.onreadystatechange = function() {
-    if (xhttp.readyState == 4 && xhttp.status == 200) {
-      document.getElementById("Output").innerHTML = xhttp.responseText;
-    }
-  }
-  xhttp.open("POST", TestScript.value, true);
-  xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-  xhttp.send(Vars.value);
-}
-</script>
+			var xhttp = new XMLHttpRequest();
+			xhttp.open("POST", TestScript.value, false);
+			xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+			xhttp.send(Vars.value);
+			document.getElementById("textareaCode").innerHTML += xhttp.responseText;
+		}
+	}
+	</script>
+	
+	<script>
+	function clearLog() {
+		document.getElementById("textareaCode").innerHTML = "";
+
+	}
+	</script>
 
 </body>
 </html>

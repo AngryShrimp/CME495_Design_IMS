@@ -1,5 +1,13 @@
 <?php
-
+/***********************************************************************
+ * 	Class: IMSBase
+ * 	Description: Class that contains all the base functions for use in
+ *	IMS Back end scripts.
+ *
+ *	Author: Craig Irvine (cri646@mail.usask.ca)
+ *	Date: 08 January 2016
+ *
+ ***********************************************************************/
 
 class IMSBase
 {

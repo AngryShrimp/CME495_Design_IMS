@@ -1,5 +1,12 @@
 <?php
-
+/***********************************************************************
+ * 	Class: IMSTest
+ * 	Description: Class used to test php scripts used in the IMS system.
+ *
+ *	Author: Craig Irvine (cri646@mail.usask.ca)
+ *	Date: 08 January 2016
+ *
+ ***********************************************************************/
 
 class IMSTest
 {

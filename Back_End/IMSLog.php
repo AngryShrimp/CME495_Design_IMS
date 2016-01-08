@@ -1,5 +1,13 @@
 <?php
-
+/***********************************************************************
+ * 	Class: IMSLog
+ * 	Description: Class used to create and modify log files for the IMS
+ * 	system.
+ *
+ *	Author: Craig Irvine (cri646@mail.usask.ca)
+ *	Date: 08 January 2016
+ *
+ ***********************************************************************/
 
 $log = new IMSLog();
 
@@ -21,7 +29,7 @@ class IMSLog
 	{
 		if(!($input_loc == ""))
 		{
-			$this->$log_file_loc = $input_loc;
+			$this->log_file_loc = $input_loc;
 		}
 		else
 		{

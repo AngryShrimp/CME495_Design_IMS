@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html>
+<title>IMS</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="http://www.w3schools.com/lib/w3.css">
+<style type="text/css">
+.button {
+   border: 1px solid #0a3c59;
+   background: #156bad;
+   background: -webkit-gradient(linear, left top, left bottom, from(#2195f3), to(#156bad));
+   background: -webkit-linear-gradient(top, #2195f3, #156bad);
+   background: -moz-linear-gradient(top, #2195f3, #156bad);
+   background: -ms-linear-gradient(top, #2195f3, #156bad);
+   background: -o-linear-gradient(top, #2195f3, #156bad);
+   background-image: -ms-linear-gradient(top, #2195f3 0%, #156bad 100%);
+   padding: 10.5px 21px;
+   -webkit-border-radius: 6px;
+   -moz-border-radius: 6px;
+   border-radius: 6px;
+   -webkit-box-shadow: rgba(255,255,255,0.4) 0 1px 0, inset rgba(255,255,255,0.4) 0 1px 0;
+   -moz-box-shadow: rgba(255,255,255,0.4) 0 1px 0, inset rgba(255,255,255,0.4) 0 1px 0;
+   box-shadow: rgba(255,255,255,0.4) 0 1px 0, inset rgba(255,255,255,0.4) 0 1px 0;
+   text-shadow: #7ea4bd 0 1px 0;
+   color: #ffffff;
+   font-size: 14px;
+   font-family: helvetica, serif;
+   text-decoration: none;
+   vertical-align: middle;
+   }
+.button:hover {
+   border: 1px solid #0a3c59;
+   text-shadow: #1e4158 0 1px 0;
+   background: #156bad;
+   background: -webkit-gradient(linear, left top, left bottom, from(#2195f3), to(#156bad));
+   background: -webkit-linear-gradient(top, #2195f3, #156bad);
+   background: -moz-linear-gradient(top, #2195f3, #156bad);
+   background: -ms-linear-gradient(top, #2195f3, #156bad);
+   background: -o-linear-gradient(top, #2195f3, #156bad);
+   background-image: -ms-linear-gradient(top, #2195f3 0%, #156bad 100%);
+   color: #000000;
+   }
+.button:active {
+   text-shadow: #1e4158 0 1px 0;
+   border: 1px solid #0a3c59;
+   background: #2195f3;
+   background: -webkit-gradient(linear, left top, left bottom, from(#156bad), to(#156bad));
+   background: -webkit-linear-gradient(top, #156bad, #2195f3);
+   background: -moz-linear-gradient(top, #156bad, #2195f3);
+   background: -ms-linear-gradient(top, #156bad, #2195f3);
+   background: -o-linear-gradient(top, #156bad, #2195f3);
+   background-image: -ms-linear-gradient(top, #156bad 0%, #2195f3 100%);
+   color: #000000;
+   }
+   #searchbar
+   {
+      width:500px;
+      height:40px;
+      color:black;
+   }
+</style>
+<body>
+
+<nav class="w3-sidenav w3-blue" style="width:15%">
+  <header class="w3-container">
+  </header>
+  <a href="SampleMainPage.html">Home</a>
+  <a href="SampleSettings.html">Settings</a>   
+  <a href="SampleActivityLog.html">Alerts</a> 
+  <a href="SampleClassModification.html">Class List</a> 
+  <a href="SampleShoppingList.html">Shopping List</a>      
+</nav>
+
+<div class="w3-container w3-blue" style="margin-left:15%">
+<form class="w3-form">
+  <div class="w3-group">
+    <form action="action_page.php">
+    <font size="3">Search:</font><br>
+    <input type="text" id="searchbar" name="search">
+    <a href='#' class='button'>Search</a>
+    <a href='SampleAdvancedSearch.html' class='button'>Advanced Search</a>
+    </form>
+  </div>
+</form>
+</div>
+
+<div class="w3-container" style="margin-left:15%">
+
+<form action="action_page.php">
+Search:
+<span style="padding-left:13px"></span>
+<input type="text" name="search">
+<br>
+Range:
+<span style="padding-left:18px"></span>
+<input type="text" name="rangeStart">
+To
+<input type="text" name="rangeEnd">
+<br>
+Quantity:
+<input type="text" name="quantity">
+<br><br>
+<a href='#' class='button'>Submit</a>
+</form>
+
+<table class="w3-table w3-striped w3-bordered">
+<h2>Browse</h2>
+<tr>
+  <th>Part Number</th>
+  <th>Manufactures Part Number</th>
+  <th>Description</th>
+  <th>Quantity</th>
+  <th>Threshold</th>
+  <th>Usage</th>
+  <th>Location</th>
+  <th>Flags</th>
+</tr>
+<tr>
+  <td>123456</td>
+  <td>PN2341</td>
+  <td>Item Description</td>
+  <td>50</td>
+  <td>10</td>
+  <td>EE230</td>
+  <td>Eng 2C94</td>
+  <td>Consumable</td>
+</tr>
+<tr>
+  <td>123456</td>
+  <td>PN2341</td>
+  <td>Item Description</td>
+  <td>50</td>
+  <td>10</td>
+  <td>EE230</td>
+  <td>Eng 2C94</td>
+  <td>Consumable</td>
+</tr>
+<tr>
+  <td>123456</td>
+  <td>PN2341</td>
+  <td>Item Description</td>
+  <td>50</td>
+  <td>10</td>
+  <td>EE230</td>
+  <td>Eng 2C94</td>
+  <td>Consumable</td>
+</tr>
+<tr>
+  <td>123456</td>
+  <td>PN2341</td>
+  <td>Item Description</td>
+  <td>50</td>
+  <td>10</td>
+  <td>EE230</td>
+  <td>Eng 2C94</td>
+  <td>Consumable</td>
+</tr>
+<tr>
+  <td>123456</td>
+  <td>PN2341</td>
+  <td>Item Description</td>
+  <td>50</td>
+  <td>10</td>
+  <td>EE230</td>
+  <td>Eng 2C94</td>
+  <td>Consumable</td>
+</tr>
+<tr>
+  <td>123456</td>
+  <td>PN2341</td>
+  <td>Item Description</td>
+  <td>50</td>
+  <td>10</td>
+  <td>EE230</td>
+  <td>Eng 2C94</td>
+  <td>Consumable</td>
+</tr>
+<tr>
+  <td>123456</td>
+  <td>PN2341</td>
+  <td>Item Description</td>
+  <td>50</td>
+  <td>10</td>
+  <td>EE230</td>
+  <td>Eng 2C94</td>
+  <td>Consumable</td>
+</tr>
+<tr>
+  <td>123456</td>
+  <td>PN2341</td>
+  <td>Item Description</td>
+  <td>50</td>
+  <td>10</td>
+  <td>EE230</td>
+  <td>Eng 2C94</td>
+  <td>Consumable</td>
+</tr>
+<tr>
+  <td>123456</td>
+  <td>PN2341</td>
+  <td>Item Description</td>
+  <td>50</td>
+  <td>10</td>
+  <td>EE230</td>
+  <td>Eng 2C94</td>
+  <td>Consumable</td>
+</tr>
+<tr>
+  <td>123456</td>
+  <td>PN2341</td>
+  <td>Item Description</td>
+  <td>50</td>
+  <td>10</td>
+  <td>EE230</td>
+  <td>Eng 2C94</td>
+  <td>Consumable</td>
+</tr>
+<tr>
+  <td>123456</td>
+  <td>PN2341</td>
+  <td>Item Description</td>
+  <td>50</td>
+  <td>10</td>
+  <td>EE230</td>
+  <td>Eng 2C94</td>
+  <td>Consumable</td>
+</tr>
+<tr>
+  <td>123456</td>
+  <td>PN2341</td>
+  <td>Item Description</td>
+  <td>50</td>
+  <td>10</td>
+  <td>EE230</td>
+  <td>Eng 2C94</td>
+  <td>Consumable</td>
+</tr>
+<tr>
+  <td>123456</td>
+  <td>PN2341</td>
+  <td>Item Description</td>
+  <td>50</td>
+  <td>10</td>
+  <td>EE230</td>
+  <td>Eng 2C94</td>
+  <td>Consumable</td>
+</tr>
+<tr>
+  <td>123456</td>
+  <td>PN2341</td>
+  <td>Item Description</td>
+  <td>50</td>
+  <td>10</td>
+  <td>EE230</td>
+  <td>Eng 2C94</td>
+  <td>Consumable</td>
+</tr>
+<tr>
+  <td>123456</td>
+  <td>PN2341</td>
+  <td>Item Description</td>
+  <td>50</td>
+  <td>10</td>
+  <td>EE230</td>
+  <td>Eng 2C94</td>
+  <td>Consumable</td>
+</tr>
+<tr>
+  <td>123456</td>
+  <td>PN2341</td>
+  <td>Item Description</td>
+  <td>50</td>
+  <td>10</td>
+  <td>EE230</td>
+  <td>Eng 2C94</td>
+  <td>Consumable</td>
+</tr>
+</table>
+</div>
+
+
+           
+</body>
+</html>

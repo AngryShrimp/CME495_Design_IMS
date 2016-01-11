@@ -12,7 +12,7 @@
 class IMSBase
 {
 
-	public function VerifyData($data,$RegEx)
+	public function verifyData($data,$RegEx)
 	{
 		
 		$invalid_char_array = array( "<",
@@ -24,12 +24,12 @@ class IMSBase
 
 		foreach(str_split($data) as $char)
 			if(in_array($char,$invalid_char_array))
-				return FALSE;
+				throw new Exception('Invalid character in data');
 				
 		if(preg_match($RegEx,$data) == TRUE)
-			return TRUE;
+			return;
 		
-		return FALSE;
+		throw new Exception('Data did not match regEx');
 	}
 
 

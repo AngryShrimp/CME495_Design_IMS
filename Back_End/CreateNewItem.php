@@ -17,14 +17,48 @@ include "IMSSql.php";
 
 $IMSBase = new IMSBase();
 $log = new IMSLog();
-$sql = new IMSSql();
+$sql = new IMSSql("localhost","user","password");
 
+$sessionID = "";
+$partNumber = "";
 
+$statusMessage = "";
+$errorMessage = "";
+
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+	$sessionID = $_POST["SID"];
+	$partNumber = $_POST["PartNumber"];  
+}
+
+try
+{
+/*	$IMSBase->verifyData($partNumber,"^.?&");
+
+	$sql->connect();
 	
+	$sql->command('INSERT INTO itemTable (PartNumber) VALUES (\''.$partNumber.'\');');
 	
+	$statusMessage = "Item creation successful. (".$partNumber.")";*/
 	
-echo Done;
+	echo $partNumber.'\n';
+	
+}
+catch(PDOException $e)
+{
+	$statusMessage = 'Failed';
+	$errorMessage = e->getMessage();
 
+}
+catch(Exception $e)
+{
+	$statusMessage = 'Failed';
+	$errorMessage = e->getMessage();
 
+}	
+finally
+{
+	$IMSBase->GenerateXMLResponse($sessionID,$status_array);
+}	
+	
 
 ?>

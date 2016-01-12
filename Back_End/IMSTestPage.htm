@@ -54,10 +54,6 @@
 			var xhttp = new XMLHttpRequest();
 			xhttp.open("POST", TestScript.value, false);
 			xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-			xhttp.send(Vars.value);
-			testPhpCommand = xhttp.responseText;
-			xhttp.open("POST", TestScript.value, false);
-			xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
 			xhttp.send(Vars.value);		
 			
 			document.getElementById("textareaCode").innerHTML += xhttp.responseText;

@@ -15,10 +15,6 @@ include "IMSLog.php";
 include "IMSSql.php";
 
 
-$IMSBase = new IMSBase();
-$log = new IMSLog();
-$sql = new IMSSql("localhost","user","password");
-
 $sessionID = "";
 $partNumber = "";
 
@@ -32,33 +28,38 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
 try
 {
-/*	$IMSBase->verifyData($partNumber,"^.?&");
+	$IMSBase = new IMSBase();
+	$log = new IMSLog();
+	$sql = new IMSSql("(local)\SQLEXPRESS","","");
 
-	$sql->connect();
+	//$IMSBase->verifyData($partNumber,"^.*$");
+
 	
-	$sql->command('INSERT INTO itemTable (PartNumber) VALUES (\''.$partNumber.'\');');
+	$sql->command('INSERT INTO dbo.Inventory (Name) VALUES (\''.$partNumber.'\');');
 	
-	$statusMessage = "Item creation successful. (".$partNumber.")";*/
-	
-	echo $partNumber.'\n';
+	$statusMessage = "Item creation successful. (".$partNumber.")";
+
 	
 }
 catch(PDOException $e)
 {
+	echo 'PDOError '.$e->getMessage();
 	$statusMessage = 'Failed';
-	$errorMessage = e->getMessage();
+	$errorMessage = $e->getMessage();
 
 }
 catch(Exception $e)
 {
+	echo 'Error '.$e->getMessage();
+
 	$statusMessage = 'Failed';
-	$errorMessage = e->getMessage();
+	$errorMessage = $e->getMessage();
 
 }	
-finally
-{
-	$IMSBase->GenerateXMLResponse($sessionID,$status_array);
-}	
-	
-
+//finally()  PHP 5.5+, currently using 5.3.
+//{
+	//$IMSBase->GenerateXMLResponse($sessionID,$status_array);
+//}	
+echo $statusMessage."\n";
+echo 'Done';
 ?>

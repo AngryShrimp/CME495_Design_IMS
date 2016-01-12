@@ -23,7 +23,7 @@ class IMSSql {
 		$this->l_servername = $server;
 		$this->l_username = $user;
 		$this->l_password = $pass;
-		
+
 		$this->connect();
 		
 	}
@@ -32,11 +32,11 @@ class IMSSql {
 	private function connect() {
 
 		try {
-			$this->conn = new PDO("mssql:host=$servername;dbname=myDB", $username, $password);
+			$this->conn = new PDO("sqlsrv:server=$this->l_servername;Database=IMS","$this->l_username","$this->l_password");
 			// set the PDO error mode to exception
+			
 			$this->conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 			
-			echo "Connected successfully"; 
 		}
 		catch(PDOException $e)
 		{
@@ -49,9 +49,8 @@ class IMSSql {
 	public function command($sql_command)
 	{
 		try {
-			//$sql = "CREATE DATABASE myDBPDO";
 			// use exec() because no results are returned
-			$conn->exec($sql_command);
+			$this->conn->exec($sql_command);
 		}
 		catch(PDOException $e)
 		{

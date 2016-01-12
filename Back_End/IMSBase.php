@@ -25,9 +25,12 @@ class IMSBase
 		foreach(str_split($data) as $char)
 			if(in_array($char,$invalid_char_array))
 				throw new Exception('Invalid character in data');
-				
-		if(preg_match($RegEx,$data) == TRUE)
+		
+		
+		if(preg_match($RegEx,$data) == 1)
+		{
 			return;
+		}
 		
 		throw new Exception('Data did not match regEx');
 	}

@@ -29,15 +29,15 @@ class IMSTest
 
 
 		//Manufacture Part Number
-		$man_part_number = randomString(0,30);
+		$man_part_number = $this->randomString(0,30);
 		
 		//Manufactures Name
-		$man_name = randomString(0,30);
+		$man_name = $this->randomString(0,30);
 
 
 
 		//Item Description
-		$item_description = randomString(0,100);
+		$item_description = $this->randomString(0,100);
 
 		//Quantity
 		$item_quantity = rand(0,9999);
@@ -63,7 +63,7 @@ class IMSTest
 		//Http link
 		//in URL format www.url.com
 
-		$item_url = "www.".randomString(0,20).".com";
+		$item_url = "www.".$this->randomString(0,20).".com";
 
 
 		$manual_request_value = 0;

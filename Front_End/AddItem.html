@@ -71,21 +71,52 @@
   <a href="ShoppingList.html">Shopping List</a>      
 </nav>
 
-<div class="w3-container" style="margin-left:15%">
-
-<h2>Database Settings</h2>
-
-<a href='#' class='button'>Link to Database</a>
-<a href='#' class='button'>Backup Database</a>
-<a href='#' class='button'>Import Backup Data</a>
-
+<div class="w3-container w3-blue" style="margin-left:15%">
+<form class="w3-form">
+  <div class="w3-group">
+    <form action="action_page.php">
+    <font size="3">Search:</font><br>
+    <input type="text" id="searchbar" name="search">
+    <a href='#' class='button'>Search</a>
+    <a href='AdvancedSearch.html' class='button'>Advanced Search</a>
+    </form>
+  </div>
+</form>
 </div>
 
+<div class="w3-container" style="margin-left:15%">
 
-           
+<form action="action_page.php">
+Name:
+<span style="padding-left:20px"></span>
+<input type="text" name="name">
+<br>
+Type:
+<span style="padding-left:28px"></span>
+<select>
+  <option value="resistor">Resistor</option>
+  <option value="capacitor">Capacitor</option>
+  <option value="transistor">Transistor</option>
+  <option value="other">Other</option>
+</select>
+<span style="padding-left:18px"></span>
+Other:
+<input type="text" name="other">
+<br>
+Quantity:
+<input type="text" name="quantity">
+<br><br>
+<a href='#' class='button'>Add Item to Database</a>
+</form>
+
+</div>
+      
 <div class="w3-tab" style="margin-left:15%">
+<br>
+
 
 <div id="link1" class="w3-container">
+
   
 </div>
 <div id="link2" class="w3-container">

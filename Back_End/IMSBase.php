@@ -14,7 +14,6 @@ class IMSBase
 
 	public function verifyData($data,$RegEx)
 	{
-		
 		$invalid_char_array = array( "<",
 									 ">",
 									 "(",
@@ -24,15 +23,15 @@ class IMSBase
 
 		foreach(str_split($data) as $char)
 			if(in_array($char,$invalid_char_array))
-				throw new Exception('Invalid character in data');
+				throw new Exception('Invalid character string ('.$data.')');
 		
 		
-		if(preg_match($RegEx,$data) == 1)
+		if(preg_match($RegEx,$data) == TRUE)
 		{
 			return;
 		}
 		
-		throw new Exception('Data did not match regEx');
+		throw new Exception('String ('.$data.') did not match RegEx ('.$RegEx.')');
 	}
 
 
@@ -56,10 +55,10 @@ class IMSBase
 			$xml->endElement();
 			
 			$xml->startElement("STATUS");
-				$xml->startElement("ERROR_CODE");
+				$xml->startElement("STATUS_CODE");
 					$xml->text($status_array[0]);
 				$xml->endElement();
-				$xml->startElement("STATUS_CODE");
+				$xml->startElement("STATUS_MESSAGE");
 					$xml->text($status_array[1]);		
 				$xml->endElement();
 			$xml->endElement();	

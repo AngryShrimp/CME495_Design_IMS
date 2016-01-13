@@ -28,6 +28,7 @@ class IMSSql {
 		
 	}
 
+	//TODO: Add connection checks in all functions.
 
 	private function connect() {
 
@@ -56,10 +57,32 @@ class IMSSql {
 		{
 			//rethrow the exception
 			throw $e;
+		}	
+	}
+	
+	
+	public function exists($partNumber)
+	{
+		try{
+			$stmt = $this->conn->prepare("SELECT * FROM dbo.Inventory WHERE Name='$partNumber'");
+			$stmt->execute();
+			
+			$result = $stmt->setFetchMode(PDO::FETCH_ASSOC);
+			
+			if($stmt->rowCount() == 0)
+				return FALSE;
+				
+			return TRUE;
+			
+		}
+		catch(PDOException $e)
+		{
+			//rethrow the exception
+			throw $e;
 		}
 	
-	
 	}
+	
 }
 
 

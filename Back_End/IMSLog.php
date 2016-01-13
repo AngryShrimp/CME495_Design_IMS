@@ -9,19 +9,10 @@
  *
  ***********************************************************************/
 
-$log = new IMSLog();
-
-
-$log->add_log("QQQQ","WARN","HELLO NURSE");
-$log->add_log("QQQQ","ERROR","HELLO BOB");
-
-
-
-
 
 class IMSLog
 {
-
+	//TODO: Add Error Checking for file access.
 	private $log_file_loc;
 
 	
@@ -46,6 +37,7 @@ class IMSLog
 	{
 
 		//block while logfile is locked.
+		//TODO: Add timeout for loop to prevent lockups.
 		while($this->is_log_locked());
 			
 		$lock_file = fopen($this->log_file_loc.".lock",'w+');	

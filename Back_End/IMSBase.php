@@ -79,7 +79,7 @@ class IMSBase
 			{
 				$xml->startElement("QACCESS");
 					$xml->startElement("ITEMID");
-						$xml->writeAttribute("ITEMID",$q_access_array["ItemID"]);
+						$xml->text($q_access_array["Name"]);
 					$xml->endElement();
 					$xml->startElement("QUANITY");
 						$xml->text($q_access_array["Quantity"]);

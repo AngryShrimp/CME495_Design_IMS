@@ -17,20 +17,34 @@ $rand_item = $test->randomItem();
  
 $ch = curl_init();
  
-echo "Creating Part Number: ".$rand_item['PART_NUMBER']."\n";
- 
-//$run_php = "CreateNewItem.php?SID=ID&PartNumber=".$rand_item['PART_NUMBER'];
-	
-curl_setopt($ch, CURLOPT_URL, "http://localhost/CreateNewItem.php");
+echo "Creating Part Number: ".$rand_item['Name']."\n";
+ 	
 curl_setopt($ch, CURLOPT_HEADER, 0);
 curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 curl_setopt($ch, CURLOPT_POST, true);
-curl_setopt($ch, CURLOPT_POSTFIELDS, "SID=ID&PartNumber=".$rand_item['PART_NUMBER']);
 
+$PN = $rand_item["Name"];
 
+foreach($rand_item as $k => $v)
+{
+	
+	if($k == 'Name')	
+	{
+		curl_setopt($ch, CURLOPT_URL, "http://localhost/CreateNewItem.php");
+		curl_setopt($ch, CURLOPT_POSTFIELDS, "SID=ID&PartNumber=$PN");
+	}
+	else
+	{
+		curl_setopt($ch, CURLOPT_URL, "http://localhost/ModifyItem.php");
+		curl_setopt($ch, CURLOPT_POSTFIELDS, "SID=ID&PartNumber=$PN&Field=$k&Value=$v");
+	}
 
-$output = curl_exec($ch);
-echo $output;
+	if($k != 'Supplier Name' && $k != 'Flags' && $k != 'Link' && $k != 'MANUAL_REQ_VAL' && $k != 'MANUAL_REQ_DATE')
+	{
+		$output = curl_exec($ch);
+		//echo $output."\n";
+	}		
+}
 
  
 ?>

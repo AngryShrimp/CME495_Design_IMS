@@ -72,17 +72,17 @@ class IMSTest
 		
 		
 		//gather data in an array
-		$item_data_array = array( "PART_NUMBER" => $part_number,
-								 "MAN_PART_NUMBER" => $man_part_number,
-								 "MAN_NAME" => $man_name,
-								 "ITEM_DESCRIPTION" => $item_description,
-								 "QUANTITY" => $item_quantity,
-								 "OTHRESHOLD" => $ordering_threshold,
-								 "LOCATION" => $item_location,
-								 "FLAGS" => $item_flags,
-								 "LINK" => $item_url,
-								 "PART_TYPE" => $part_type_array[$part_type],
-								 "PART_VALUE" => $part_value,
+		$item_data_array = array( "Name" => $part_number,
+								 "Supplier Part Number" => $man_part_number,
+								 "Supplier Name" => $man_name,
+								 "Description" => $item_description,
+								 "Quantity" => $item_quantity,
+								 "Ordering Threshold" => $ordering_threshold,
+								 "Location" => $item_location,
+								 "Flags" => $item_flags,
+								 "Link" => $item_url,
+								 "Type" => $part_type_array[$part_type],
+								 "Value" => $part_value,
 								 "MANUAL_REQ_VAL" => $manual_request_value,
 								 "MANUAL_REQ_DATE" => $manual_request_date );
 								 

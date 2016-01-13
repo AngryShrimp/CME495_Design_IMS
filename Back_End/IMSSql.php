@@ -83,6 +83,19 @@ class IMSSql {
 	
 	}
 	
+	public function prepare($SQLStatement)
+	{
+		try{
+			return $this->conn->prepare($SQLStatement);		
+		}
+		catch(PDOException $e)
+		{
+			//rethrow the exception
+			throw $e;
+		}	
+	}
+	
+	
 }
 
 

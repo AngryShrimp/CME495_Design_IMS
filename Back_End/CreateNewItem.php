@@ -8,6 +8,8 @@
  *
  *	Inputs: SID: The session ID of the client
  *			PartNumber: The part number to create.
+ *
+ *	Usage: CreateNewItem.php?SID=<session ID>&PartNumber=<part number>
  ***********************************************************************/
   
 include "IMSBase.php";

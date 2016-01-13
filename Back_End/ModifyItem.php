@@ -11,6 +11,9 @@
  *			PartNumber: The part number to modify.
  *  		Field: The data field to modify.
  *  		Value: The modification value.
+ *
+ *	Usage: CreateNewItem.php?SID=<session ID>&PartNumber=<part number>&
+			Field=<Field to Modify>&Value=<modification value>
  ***********************************************************************/
   
 include "IMSBase.php";
@@ -56,7 +59,7 @@ try
 	}
 	else	
 	{
-		$sql->command("UPDATE dbo.Inventory SET $field='$value' WHERE Name='$partNumber';");
+		$sql->command("UPDATE dbo.Inventory SET \"$field\"='$value' WHERE Name='$partNumber';");
 		
 		$statusCode = '0';
 		$statusMessage = "Item($partNumber) $field was updated with $value";

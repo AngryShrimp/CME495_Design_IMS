@@ -112,7 +112,7 @@ class IMSBase
 			}
 			
 			
-			if(!($$log_array == NULL))
+			if(!($log_array == NULL))
 			{
 				$xml->startElement("LOG");
 					foreach($log_array as $log_entry)

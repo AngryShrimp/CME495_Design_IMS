@@ -41,8 +41,9 @@ try
 	
 	$logArray = $log->read_log($logLevel);
 	
-        $statusCode = '0';
-	$statusMessage = 'RetrieveLog, successfully retrived log data.';
+	
+	$statusCode = '0';
+	$statusMessage = 'RetrieveLog, successfully retrieved log data.';
 	$log->add_log($sessionID,'Debug',$statusMessage);
         
 }
@@ -64,7 +65,6 @@ catch(Exception $e)
 //{
 	$statusArray[0] = $statusCode;
 	$statusArray[1] = $statusMessage;
-	//$dataArray will be null unless it was filled by $stmt->fetch()
 	$IMSBase->GenerateXMLResponse($sessionID,$statusArray,NULL,NULL,NULL,$logArray);
 //}	
 ?>

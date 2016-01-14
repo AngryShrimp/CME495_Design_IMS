@@ -55,6 +55,50 @@ class IMSLog
 		unlink($this->log_file_loc.".lock");		
 		
 	}
+	
+	
+	public function read_log($levelFilter)
+	{
+            $logData = array();
+	
+            //block while logfile is locked.
+            //TODO: Add timeout for loop to prevent lockups.
+            while($this->is_log_locked());
+                
+            $lock_file = fopen($this->log_file_loc.".lock",'w+');	
+            fwrite($lock_file,"Locked");
+            fclose($lock_file);
+
+            $log_file = fopen($this->log_file_loc,'r');
+
+
+            while(! feof($log_file))
+            {
+                $csvData = fgetcsv($log_file);
+                
+                if(($csvData[2] == $levelFilter) || ($levelFilter == "All"))
+                {            
+                    $logArray['Date'] = $csvData[0];
+                    $logArray['SID'] = $csvData[1];
+                    $logArray['Level'] = $csvData[2];
+                    $logArray['Description'] = $csvData[3];
+                    
+                
+                    $logData[] = $logArray;
+                }
+            }
+            
+            
+            
+            fclose($log_file);
+
+            unlink($this->log_file_loc.".lock");	
+            
+            return $logData;
+            
+            
+	}
+	
 
 	private function is_log_locked()
 	{

@@ -49,6 +49,7 @@ class IMSSql {
 	
 	public function command($sql_command)
 	{
+		echo $sql_command;
 		try {
 			// use exec() because no results are returned
 			$this->conn->exec($sql_command);
@@ -61,10 +62,10 @@ class IMSSql {
 	}
 	
 	
-	public function exists($partNumber)
+	public function exists($partNumber,$table)
 	{
 		try{
-			$stmt = $this->conn->prepare("SELECT * FROM dbo.Inventory WHERE Name='$partNumber'");
+			$stmt = $this->conn->prepare("SELECT * FROM $table WHERE Name='$partNumber'");
 			$stmt->execute();
 			
 			$result = $stmt->setFetchMode(PDO::FETCH_ASSOC);

@@ -40,7 +40,7 @@ try
 	$IMSBase->verifyData($partNumber,"/^.+$/");
 	$IMSBase->verifyData($sessionID,"/^.+$/");
 	
-	if($sql->exists($partNumber) == TRUE)
+	if($sql->exists($partNumber,'dbo.Inventory') == TRUE)
 	{
 		$statusCode = '1';
 		$statusMessage = "CreateNewItem Error: $partNumber already exits in database.";

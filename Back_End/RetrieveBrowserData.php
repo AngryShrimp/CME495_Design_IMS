@@ -52,6 +52,8 @@ try
 	$IMSBase->verifyData($filter,"/^.*$/");
 	
 	
+	$sqlQuery = "SELECT * FROM dbo.Inventory";
+	
 	//Bulid SQL Query	
 	if($filter != "")
 	{
@@ -66,7 +68,6 @@ try
 	$sqlQuery .= ";";
 	
 	
-	echo $sqlQuery."\n";
 	
 	
 	$stmt = $sql->prepare($sqlQuery);

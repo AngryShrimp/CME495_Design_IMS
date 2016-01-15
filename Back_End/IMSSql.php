@@ -68,9 +68,9 @@ class IMSSql {
 			$stmt = $this->conn->prepare("SELECT * FROM $table WHERE Name='$partNumber'");
 			$stmt->execute();
 			
-			$result = $stmt->setFetchMode(PDO::FETCH_ASSOC);
+			$result = $stmt->fetchAll(PDO::FETCH_ASSOC);
 			
-			if($stmt->rowCount() == 0)
+			if(count($result) == 0)
 				return FALSE;
 				
 			return TRUE;

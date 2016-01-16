@@ -58,6 +58,38 @@
       color:black;
    }
 </style>
+<head>
+<script>
+function addItem(str1, str2) 
+{
+    if (str1.length == 0) 
+    { 
+        document.getElementById("error").innerHTML = "Error: No name given: " + str1;
+        return;
+    }
+    if (str2.length == 0) 
+    { 
+        document.getElementById("error").innerHTML = "Error: No sessionID given: " + str2;
+        return;
+    }
+    else 
+    {
+        document.getElementById("error").innerHTML = "";
+        var xmlhttp = new XMLHttpRequest();
+        xmlhttp.onreadystatechange = function() 
+        {
+            if (xmlhttp.readyState == 4 && xmlhttp.status == 200) 
+            {
+                //document.getElementById("txtHint").innerHTML = xmlhttp.responseText;
+            }
+        };
+        xmlhttp.open("GET", "CreateNewItem.php?SID=" + str2 + "&PartNumber=" + str1, true);
+        xmlhttp.send();
+    }
+}
+</script>
+</head>
+
 <body>
 
 <nav class="w3-sidenav w3-blue" style="width:15%">
@@ -88,25 +120,15 @@
 
 <form action="action_page.php">
 Name:
-<span style="padding-left:20px"></span>
+<span style="padding-left:31px"></span>
 <input type="text" name="name">
 <br>
-Type:
-<span style="padding-left:28px"></span>
-<select>
-  <option value="resistor">Resistor</option>
-  <option value="capacitor">Capacitor</option>
-  <option value="transistor">Transistor</option>
-  <option value="other">Other</option>
-</select>
-<span style="padding-left:18px"></span>
-Other:
-<input type="text" name="other">
-<br>
-Quantity:
-<input type="text" name="quantity">
+SessionID:
+<input type="text" name="sessionID">
 <br><br>
-<a href='#' class='button'>Add Item to Database</a>
+<button type='button' class="button" onclick="addItem(name, sessionID)">Add New Item to Database</button>
+<br>
+<div id="error"></div>
 </form>
 
 </div>

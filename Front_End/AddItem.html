@@ -62,30 +62,17 @@
 <script>
 function addItem(str1, str2) 
 {
-    if (str1.length == 0) 
-    { 
-        document.getElementById("error").innerHTML = "Error: No name given: " + str1;
-        return;
-    }
-    if (str2.length == 0) 
-    { 
-        document.getElementById("error").innerHTML = "Error: No sessionID given: " + str2;
-        return;
-    }
-    else 
+  document.getElementById("error").innerHTML = "";
+  var xmlhttp = new XMLHttpRequest();
+  xmlhttp.onreadystatechange = function() 
+  {
+    if (xmlhttp.readyState == 4 && xmlhttp.status == 200) 
     {
-        document.getElementById("error").innerHTML = "";
-        var xmlhttp = new XMLHttpRequest();
-        xmlhttp.onreadystatechange = function() 
-        {
-            if (xmlhttp.readyState == 4 && xmlhttp.status == 200) 
-            {
-                //document.getElementById("txtHint").innerHTML = xmlhttp.responseText;
-            }
-        };
-        xmlhttp.open("GET", "CreateNewItem.php?SID=" + str2 + "&PartNumber=" + str1, true);
-        xmlhttp.send();
+      //for adding = xmlhttp.responseText;
     }
+  };
+  xmlhttp.open("GET", "CreateNewItem.php?SID=" + str2 + "&PartNumber=" + str1, true);
+  xmlhttp.send();
 }
 </script>
 </head>
@@ -109,7 +96,7 @@ function addItem(str1, str2)
     <form action="action_page.php">
     <font size="3">Search:</font><br>
     <input type="text" id="searchbar" name="search">
-    <a href='#' class='button'>Search</a>
+    <a class='button'>Search</a>
     <a href='AdvancedSearch.html' class='button'>Advanced Search</a>
     </form>
   </div>

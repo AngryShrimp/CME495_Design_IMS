@@ -11,18 +11,33 @@
 
 class IMSSql {
 
-	private $l_servername = "localhost";
-	private $l_username = "username";
-	private $l_password = "password";
+	private $l_servername = "";
+	private $l_username = "";
+	private $l_password = "";
 	private $conn;
+	private $php_options_file_loc = "IMS_Settings.ini";
+	private $sql_driver = "sqlsrv";
 
 
 
-	public function __construct($server,$user,$pass)
+	public function __construct($server="",$user="",$pass="")
 	{
-		$this->l_servername = $server;
-		$this->l_username = $user;
-		$this->l_password = $pass;
+		if(file_exists($this->php_options_file_loc))
+		{
+			$options_file = parse_ini_file($this->php_options_file_loc,TRUE);	
+			
+			$this->l_servername = $options_file["SQL_SERVER"]["SQL_LOCATION"];
+			$this->l_username = $options_file["SQL_SERVER"]["SQL_USER"];
+			$this->l_password = $options_file["SQL_SERVER"]["SQL_PASS"];
+			$this->sql_driver = $options_file["SQL_SERVER"]["SQL_DRIVER"];
+		}	
+	
+		if($server !="")
+			$this->l_servername = $server;
+		if($user != "")
+			$this->l_username = $user;
+		if($pass != "")
+			$this->l_password = $pass;
 
 		$this->connect();
 		
@@ -33,7 +48,7 @@ class IMSSql {
 	private function connect() {
 
 		try {
-			$this->conn = new PDO("sqlsrv:server=$this->l_servername;Database=IMS","$this->l_username","$this->l_password");
+			$this->conn = new PDO("$this->sql_driver:server=$this->l_servername;Database=IMS","$this->l_username","$this->l_password");
 			// set the PDO error mode to exception
 			
 			$this->conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);

@@ -43,7 +43,7 @@ try
 	
 	$IMSBase = new IMSBase();
 	$log = new IMSLog();
-	$sql = new IMSSql("(local)\SQLEXPRESS","","");
+	$sql = new IMSSql();
 	
 	$IMSBase->verifyData($sessionID,"/^.+$/");
 	$IMSBase->verifyData($sortColumn,"/^.*$/");
@@ -54,7 +54,7 @@ try
 	
 	$sqlQuery = "SELECT * FROM dbo.Inventory";
 	
-	//Bulid SQL Query	
+	//Build SQL Query	
 	if($filter != "")
 	{
             $sqlQuery = $sqlQuery." WHERE Name LIKE '%$filter%' or Description LIKE '%filter%'";

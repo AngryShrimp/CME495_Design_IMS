@@ -43,7 +43,7 @@ try
 
 	$IMSBase = new IMSBase();
 	$log = new IMSLog();
-	$sql = new IMSSql("(local)\SQLEXPRESS","","");
+	$sql = new IMSSql();
 
 	$IMSBase->verifyData($partNumber,"/^.+$/");
 	$IMSBase->verifyData($sessionID,"/^.+$/");

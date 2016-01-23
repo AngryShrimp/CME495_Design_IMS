@@ -64,7 +64,6 @@ class IMSSql {
 	
 	public function command($sql_command)
 	{
-		echo $sql_command;
 		try {
 			// use exec() because no results are returned
 			$this->conn->exec($sql_command);

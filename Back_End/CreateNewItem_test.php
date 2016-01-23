@@ -27,7 +27,6 @@ $PN = $rand_item["Name"];
 
 foreach($rand_item as $k => $v)
 {
-	
 	if($k == 'Name')	
 	{
 		curl_setopt($ch, CURLOPT_URL, "http://localhost/CreateNewItem.php");
@@ -39,7 +38,7 @@ foreach($rand_item as $k => $v)
 		curl_setopt($ch, CURLOPT_POSTFIELDS, "SID=ID&PartNumber=$PN&Field=$k&Value=$v");
 	}
 
-	if($k != 'Supplier Name' && $k != 'Flags' && $k != 'Link' && $k != 'MANUAL_REQ_VAL' && $k != 'MANUAL_REQ_DATE')
+	if($k != 'Flags' && $k != 'MANUAL_REQ_VAL' && $k != 'MANUAL_REQ_DATE')
 	{
 		$output = curl_exec($ch);
 		//echo $output."\n";

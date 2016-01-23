@@ -77,14 +77,14 @@ try
 catch(PDOException $e)
 {
 	$statusCode = '1';
-	$statusMessage = 'RetrieveBroswerData SQLError: '.$e->getMessage();
+	$statusMessage = 'QueryQutocomplete SQLError: '.$e->getMessage();
 	$log->add_log($sessionID,'Error',$statusMessage);
 	
 }
 catch(Exception $e)
 {
 	$statusCode = '1';
-	$statusMessage = 'RetrieveBroswerData Error: '. $e->getMessage();
+	$statusMessage = 'QueryQutocomplete Error: '. $e->getMessage();
 	$log->add_log($sessionID,'Error',$statusMessage);
 
 }	

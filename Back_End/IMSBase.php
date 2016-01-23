@@ -100,7 +100,7 @@ class IMSBase
 					
 						foreach($browser_entry as $key => $data)
 						{
-							$xml->startElement($key);
+							$xml->startElement(str_replace(' ','',$key));
 								$xml->text($data);
 							$xml->endElement();					
 						}				
@@ -120,7 +120,7 @@ class IMSBase
 						$xml->startElement("LOG_ENTRY");
 							foreach($log_entry as $key => $data)
 							{
-								$xml->startElement($key);
+								$xml->startElement(str_replace(' ','',$key));
 									$xml->text($data);
 								$xml->endElement();					
 							}

@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<IMS_RESPONSE>
+	<SID>id</SID>
+	<STATUS>
+		<STATUS_CODE>0</STATUS_CODE>
+			<STATUS_MESSAGE>RetrieveBroswerData: Browers data filtered by () and sorted by (, ) completed successfully.</STATUS_MESSAGE>
+	</STATUS>
+	<BROWSER>
+		<BROWSER_ENTRY>
+			<Id>129</Id>
+			<Name>C194-14</Name>
+			<SupplierPartNumber>fRkPgAe1DLwZ3E8hYI</SupplierPartNumber>
+			<Quantity>7628</Quantity>
+			<Description>4eKoiUwJzHZPGhgODhxZWDoJClQv2EUawkzGzC7MN</Description>
+			<Location>B08D04</Location>
+			<Type>Capacitor</Type>
+			<OrderingThreshold>8957</OrderingThreshold>
+			<Value>194</Value>
+			<SuppliersName>FxprzuNJxNpfKZpOi5fecVgVF7</SuppliersName>
+			<ItemLink>www.FJ.com</ItemLink>
+		</BROWSER_ENTRY>
+		<BROWSER_ENTRY>
+		<Id>112</Id>
+		<Name>C194-92</Name>
+		<SupplierPartNumber>ry97F</SupplierPartNumber>
+		<Quantity>2079</Quantity>
+		<Description>l7Ijciys</Description>
+		<Location>B49D71</Location>
+		<Type>Capacitor</Type>
+		<OrderingThreshold>3670</OrderingThreshold>
+		<Value>194</Value>
+		<SuppliersName>rLXBkjYeEEwP9hqZcMXCk</SuppliersName>
+		<ItemLink>www.x4.com</ItemLink>
+		</BROWSER_ENTRY>
+	</BROWSER>
+</IMS_RESPONSE>

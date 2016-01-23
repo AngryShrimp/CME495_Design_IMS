@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html>
 <title>IMS</title>
+<head>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="stylesheet" href="http://www.w3schools.com/lib/w3.css">
 <style type="text/css">
@@ -58,6 +59,17 @@
       color:black;
    }
 </style>
+<script>
+function loadDoc() {
+	var xhttp = new XMLHttpRequest();
+	xhttp.open("POST", "RetrieveBroswerData.php", false);
+	xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+	xhttp.send("SID=id");		
+			
+	document.getElementById("browser").innerHTML = xhttp.responseText;
+}
+</script>
+</head>
 <body>
 
 <nav class="w3-sidenav w3-blue" style="width:15%">
@@ -78,7 +90,7 @@
     <font size="3">Search:</font><br>
     <input type="text" id="searchbar" name="search">
     <a class='button'>Search</a>
-    <a href='SampleAdvancedSearch.html' class='button'>Advanced Search</a>
+    <a href='AdvancedSearch.html' class='button'>Advanced Search</a>
     </form>
   </div>
 </form>
@@ -91,192 +103,18 @@ Search:
 <span style="padding-left:13px"></span>
 <input type="text" name="search">
 <br>
-Range:
-<span style="padding-left:18px"></span>
-<input type="text" name="rangeStart">
-To
-<input type="text" name="rangeEnd">
-<br>
-Quantity:
-<input type="text" name="quantity">
-<br><br>
 <a class='button'>Submit</a>
 </form>
 
+
 <table class="w3-table w3-striped w3-bordered">
 <h2>Browse</h2>
-<tr>
-  <th>Part Number</th>
-  <th>Manufactures Part Number</th>
-  <th>Description</th>
-  <th>Quantity</th>
-  <th>Threshold</th>
-  <th>Usage</th>
-  <th>Location</th>
-  <th>Flags</th>
-</tr>
-<tr>
-  <td>123456</td>
-  <td>PN2341</td>
-  <td>Item Description</td>
-  <td>50</td>
-  <td>10</td>
-  <td>EE230</td>
-  <td>Eng 2C94</td>
-  <td>Consumable</td>
-</tr>
-<tr>
-  <td>123456</td>
-  <td>PN2341</td>
-  <td>Item Description</td>
-  <td>50</td>
-  <td>10</td>
-  <td>EE230</td>
-  <td>Eng 2C94</td>
-  <td>Consumable</td>
-</tr>
-<tr>
-  <td>123456</td>
-  <td>PN2341</td>
-  <td>Item Description</td>
-  <td>50</td>
-  <td>10</td>
-  <td>EE230</td>
-  <td>Eng 2C94</td>
-  <td>Consumable</td>
-</tr>
-<tr>
-  <td>123456</td>
-  <td>PN2341</td>
-  <td>Item Description</td>
-  <td>50</td>
-  <td>10</td>
-  <td>EE230</td>
-  <td>Eng 2C94</td>
-  <td>Consumable</td>
-</tr>
-<tr>
-  <td>123456</td>
-  <td>PN2341</td>
-  <td>Item Description</td>
-  <td>50</td>
-  <td>10</td>
-  <td>EE230</td>
-  <td>Eng 2C94</td>
-  <td>Consumable</td>
-</tr>
-<tr>
-  <td>123456</td>
-  <td>PN2341</td>
-  <td>Item Description</td>
-  <td>50</td>
-  <td>10</td>
-  <td>EE230</td>
-  <td>Eng 2C94</td>
-  <td>Consumable</td>
-</tr>
-<tr>
-  <td>123456</td>
-  <td>PN2341</td>
-  <td>Item Description</td>
-  <td>50</td>
-  <td>10</td>
-  <td>EE230</td>
-  <td>Eng 2C94</td>
-  <td>Consumable</td>
-</tr>
-<tr>
-  <td>123456</td>
-  <td>PN2341</td>
-  <td>Item Description</td>
-  <td>50</td>
-  <td>10</td>
-  <td>EE230</td>
-  <td>Eng 2C94</td>
-  <td>Consumable</td>
-</tr>
-<tr>
-  <td>123456</td>
-  <td>PN2341</td>
-  <td>Item Description</td>
-  <td>50</td>
-  <td>10</td>
-  <td>EE230</td>
-  <td>Eng 2C94</td>
-  <td>Consumable</td>
-</tr>
-<tr>
-  <td>123456</td>
-  <td>PN2341</td>
-  <td>Item Description</td>
-  <td>50</td>
-  <td>10</td>
-  <td>EE230</td>
-  <td>Eng 2C94</td>
-  <td>Consumable</td>
-</tr>
-<tr>
-  <td>123456</td>
-  <td>PN2341</td>
-  <td>Item Description</td>
-  <td>50</td>
-  <td>10</td>
-  <td>EE230</td>
-  <td>Eng 2C94</td>
-  <td>Consumable</td>
-</tr>
-<tr>
-  <td>123456</td>
-  <td>PN2341</td>
-  <td>Item Description</td>
-  <td>50</td>
-  <td>10</td>
-  <td>EE230</td>
-  <td>Eng 2C94</td>
-  <td>Consumable</td>
-</tr>
-<tr>
-  <td>123456</td>
-  <td>PN2341</td>
-  <td>Item Description</td>
-  <td>50</td>
-  <td>10</td>
-  <td>EE230</td>
-  <td>Eng 2C94</td>
-  <td>Consumable</td>
-</tr>
-<tr>
-  <td>123456</td>
-  <td>PN2341</td>
-  <td>Item Description</td>
-  <td>50</td>
-  <td>10</td>
-  <td>EE230</td>
-  <td>Eng 2C94</td>
-  <td>Consumable</td>
-</tr>
-<tr>
-  <td>123456</td>
-  <td>PN2341</td>
-  <td>Item Description</td>
-  <td>50</td>
-  <td>10</td>
-  <td>EE230</td>
-  <td>Eng 2C94</td>
-  <td>Consumable</td>
-</tr>
-<tr>
-  <td>123456</td>
-  <td>PN2341</td>
-  <td>Item Description</td>
-  <td>50</td>
-  <td>10</td>
-  <td>EE230</td>
-  <td>Eng 2C94</td>
-  <td>Consumable</td>
-</tr>
+<button type="button" onclick="loadDoc()">Refresh</button>
+<br><br>
+<div id="browser">Stuff here</div> 
 </table>
 </div>
+
 
 
            

@@ -50,7 +50,7 @@ try
 	$IMSBase->verifyData($field,"/^.+$/");
 	$IMSBase->verifyData($value,"/^.+$/");
 
-	if($sql->exists($partNumber) == FALSE)
+	if($sql->exists($partNumber,'dbo.Inventory') == FALSE)
 	{
 		$statusCode = '1';
 		$statusMessage = "ModifyItem Error: Part Number, $partNumber, does not exist.";
@@ -59,7 +59,7 @@ try
 	}
 	else	
 	{
-		$sql->command("UPDATE dbo.Inventory SET \"$field\"='$value' WHERE Name='$partNumber';");
+		$sql->command("UPDATE dbo.Inventory SET [$field]='$value' WHERE Name='$partNumber';");
 		
 		$statusCode = '0';
 		$statusMessage = "Item($partNumber) $field was updated with $value";

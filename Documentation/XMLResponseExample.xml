@@ -3,7 +3,7 @@
 	<SID>id</SID>
 	<STATUS>
 		<STATUS_CODE>0</STATUS_CODE>
-			<STATUS_MESSAGE>RetrieveBroswerData: Browers data filtered by () and sorted by (, ) completed successfully.</STATUS_MESSAGE>
+		<STATUS_MESSAGE>RetrieveBroswerData: Browers data filtered by () and sorted by (, ) completed successfully.</STATUS_MESSAGE>
 	</STATUS>
 	<BROWSER>
 		<BROWSER_ENTRY>
@@ -20,17 +20,17 @@
 			<ItemLink>www.FJ.com</ItemLink>
 		</BROWSER_ENTRY>
 		<BROWSER_ENTRY>
-		<Id>112</Id>
-		<Name>C194-92</Name>
-		<SupplierPartNumber>ry97F</SupplierPartNumber>
-		<Quantity>2079</Quantity>
-		<Description>l7Ijciys</Description>
-		<Location>B49D71</Location>
-		<Type>Capacitor</Type>
-		<OrderingThreshold>3670</OrderingThreshold>
-		<Value>194</Value>
-		<SuppliersName>rLXBkjYeEEwP9hqZcMXCk</SuppliersName>
-		<ItemLink>www.x4.com</ItemLink>
+			<Id>112</Id>
+			<Name>C194-92</Name>
+			<SupplierPartNumber>ry97F</SupplierPartNumber>
+			<Quantity>2079</Quantity>
+			<Description>l7Ijciys</Description>
+			<Location>B49D71</Location>
+			<Type>Capacitor</Type>
+			<OrderingThreshold>3670</OrderingThreshold>
+			<Value>194</Value>
+			<SuppliersName>rLXBkjYeEEwP9hqZcMXCk</SuppliersName>
+			<ItemLink>www.x4.com</ItemLink>
 		</BROWSER_ENTRY>
 	</BROWSER>
 </IMS_RESPONSE>

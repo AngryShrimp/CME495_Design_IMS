@@ -59,15 +59,67 @@
       color:black;
    }
 </style>
+
 <script>
 function loadDoc() {
 	var xhttp = new XMLHttpRequest();
-	xhttp.open("POST", "RetrieveBroswerData.php", false);
+	xhttp.onreadystatechange = function() {
+
+    if (xhttp.readyState == 4 && xhttp.status == 200) {
+
+
+      parseXMLResponse(xhttp);
+    }
+	};
+	xhttp.open("POST", "RetrieveBrowserData.php", true);
 	xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-	xhttp.send("SID=id");		
-			
-	document.getElementById("browser").innerHTML = xhttp.responseText;
+	xhttp.send("SID=id");	
+
+
 }
+function parseXMLResponse(xml)
+{
+
+	var i;
+	var xmlDoc = xml.responseXML;
+	var table = "<tr><th>Part Number</th><th>Description</th><tr>";
+
+	//error check for null XML response.
+	if(xmlDoc == null)
+	{
+		//do something
+	}		
+
+	//handle browser entries
+	var browser = xmlDoc.getElementsByTagName("BROWSER");
+
+	
+	if(browser.length > 0) //Browser section present
+	{	
+		document.getElementById("browser").innerHTML = "check";
+
+
+		var browser_entry = browser[0].getElementsByTagName("BROWSER_ENTRY");
+
+		//check for null data
+		if(browser_entry == null)
+		{
+			//do something
+		}
+		
+		document.getElementById("browser").innerHTML = browser_entry.length;
+
+		for( i = 0; i < browser_entry.length; i++)
+		{
+			table += "<tr><td>" + browser_entry[i].getElementsByTagName("Name")[0].childNodes[0].nodeValue +
+			"</td><td>" + browser_entry[i].getElementsByTagName("Description")[0].childNodes[0].nodeValue + "</td></tr>";
+		}	
+		
+		document.getElementById("browser").innerHTML = table;
+	}	
+}
+
+
 </script>
 </head>
 <body>
@@ -107,11 +159,10 @@ Search:
 </form>
 
 
-<table class="w3-table w3-striped w3-bordered">
+<table id="browser" class="w3-table w3-striped w3-bordered">
 <h2>Browse</h2>
 <button type="button" onclick="loadDoc()">Refresh</button>
 <br><br>
-<div id="browser">Stuff here</div> 
 </table>
 </div>
 

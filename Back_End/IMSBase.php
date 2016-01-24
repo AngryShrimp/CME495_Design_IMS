@@ -79,13 +79,13 @@ class IMSBase
 			{
 				$xml->startElement("QACCESS");
 					$xml->startElement("ITEMID");
-						$xml->text($q_access_array["Name"]);
+						$xml->text(trim($q_access_array["Name"]));
 					$xml->endElement();
 					$xml->startElement("QUANITY");
-						$xml->text($q_access_array["Quantity"]);
+						$xml->text(trim($q_access_array["Quantity"]));
 					$xml->endElement();
 					$xml->startElement();
-						$xml->text($q_access_array["Description"]);			
+						$xml->text(trim($q_access_array["Description"]));			
 					$xml->endElement();
 				$xml->endElement();
 			
@@ -101,7 +101,7 @@ class IMSBase
 						foreach($browser_entry as $key => $data)
 						{
 							$xml->startElement(str_replace(' ','',$key));
-								$xml->text($data);
+								$xml->text(trim($data));
 							$xml->endElement();					
 						}				
 		
@@ -135,6 +135,8 @@ class IMSBase
 		
 		$xml->endElement();
 		
+		header("Content-type: text/xml");
+
 		echo $xml->outputMemory(true);
 		
 }

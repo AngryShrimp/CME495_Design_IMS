@@ -18,12 +18,21 @@ class IMSLog
 	
 	public function __construct($input_loc = "")
 	{
+	
+	
 		if(!($input_loc == ""))
 		{
 			$this->log_file_loc = $input_loc;
 		}
 		else
 		{
+			//Check that log folder exits
+			if(!file_exists("log"))
+			{
+				mkdir("log");
+			}
+
+		
 			//default log location
 			$this->log_file_loc = "log\IMSLog.csv";
 		}

@@ -57,7 +57,9 @@ try
 	//Build SQL Query	
 	if($filter != "")
 	{
-            $sqlQuery = $sqlQuery." WHERE Name LIKE '%$filter%' or Description LIKE '%filter%'";
+            $sqlQuery = $sqlQuery." WHERE Name LIKE '%$filter%' or Description LIKE '%filter%'"
+						." or [Supplier Part Number] LIKE '%$filter%' or Type LIKE '%$filter%'"
+						." or Value LIKE '%$filter%'";
 	}
 	
 	if($sortColumn != "")

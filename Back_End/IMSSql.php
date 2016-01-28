@@ -98,6 +98,30 @@ class IMSSql {
 	
 	}
 	
+        
+        	public function IdExists($table)
+	{
+		try{
+			$stmt = $this->conn->prepare("SELECT * FROM $table WHERE Id LIKE '%'");
+			$stmt->execute();
+			
+			$result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+			
+			if(count($result) == 0)
+				return FALSE;
+				
+			return TRUE;
+			
+		}
+		catch(PDOException $e)
+		{
+			//rethrow the exception
+			throw $e;
+		}
+	
+	}
+        
+        
 	public function prepare($SQLStatement)
 	{
 		try{

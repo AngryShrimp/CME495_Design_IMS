@@ -12,30 +12,34 @@
 
 class IMSLog
 {
-	//TODO: Add Error Checking for file access.
 	private $log_file_loc;
-
 	
 	public function __construct($input_loc = "")
 	{
-	
 	
 		if(!($input_loc == ""))
 		{
 			$this->log_file_loc = $input_loc;
 		}
 		else
-		{
-			//Check that log folder exits
-			if(!file_exists("log"))
-			{
-				mkdir("log");
-			}
-
-		
+		{		
 			//default log location
 			$this->log_file_loc = "log\IMSLog.csv";
 		}
+		
+		//Check that log folder exists and check write permissions.
+		if(!file_exists("log"))
+		{
+			if(!mkdir(dirname($this->log_file_loc)))
+			{
+				throw new Exception("Could not make log directory. ($this->log_file_loc)");
+			}
+		}
+		
+		if(!is_writable(dirname($this->log_file_loc)))
+		{
+			throw new Exception("Log directory ($this->log_file_loc) is not writeable.");
+		}		
 
 	}
 	
@@ -45,9 +49,8 @@ class IMSLog
 	public function add_log($SID,$Level,$Message)
 	{
 
-		//block while logfile is locked.
-		//TODO: Add timeout for loop to prevent lockups.
-		while($this->is_log_locked());
+
+		$this->waitForLock();
 			
 		$lock_file = fopen($this->log_file_loc.".lock",'w+');	
 		fwrite($lock_file,"Locked");
@@ -70,9 +73,8 @@ class IMSLog
 	{
             $logData = array();
 	
-            //block while logfile is locked.
-            //TODO: Add timeout for loop to prevent lockups.
-            while($this->is_log_locked());
+            
+            waitForLock();
                 
             $lock_file = fopen($this->log_file_loc.".lock",'w+');	
             fwrite($lock_file,"Locked");
@@ -109,13 +111,20 @@ class IMSLog
 	}
 	
 
-	private function is_log_locked()
+	private function waitForLock()
 	{
-
-		if(file_exists($this->log_file_loc.".lock"))
-			return TRUE;
-			
-		return FALSE;
+		$wait_counter = 0;
+		
+		while(file_exists($this->log_file_loc.".lock"))
+		{
+			$wait_counter++;
+			if($wait_counter > 20) //two second time out.
+			{
+				throw new Exception("Logging time-out waiting for lock");
+			}
+			time_nanosleep(0, 100000000); //sleep for a 10th of a second.
+		}					
+		return;
 
 	}
 	

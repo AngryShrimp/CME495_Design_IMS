@@ -12,7 +12,7 @@
  *                           Data: the value of the option.
  *                  
  *
- *	Usage: CreateNewItem.php?SID=<session ID>&Option=<option name>
+ *	Usage: ModifyOption.php?SID=<session ID>&Option=<option name>
  *             &Data=<value>
  ***********************************************************************/
   

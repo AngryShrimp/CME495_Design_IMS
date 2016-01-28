@@ -52,7 +52,7 @@ class IMSSql {
 			// set the PDO error mode to exception
 			
 			$this->conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-			
+                        
 		}
 		catch(PDOException $e)
 		{
@@ -75,7 +75,46 @@ class IMSSql {
 		}	
 	}
 	
-	
+
+        /*
+         * @Function: retrieveOptions
+         * @Description: Retrieves the options row from the database
+         * @Output: Options in XML format
+         * @author: Justin Fraser
+         */
+        public function retrieveOptions()
+        {
+            
+                try {
+                    
+                                            
+                        $cmd = 'SELECT Remote_Server_Enabled, Backup_Frequency, Automated_Backups_Enabled, Thresholds_Enabled FROM dbo.Options';
+                        
+                        
+                        $XMLData = "<?xml version='1.0' encoding='UTF-8'?>\n";
+                        $XMLData .= "<Options>\n";
+                        
+                        foreach ($this->conn->query($cmd) as $row){                 
+                        
+
+                        $XMLData .= "<Remote_Server_Enabled>".$row['Remote_Server_Enabled']."</Remote_Server_Enabled>\n";                        
+                        $XMLData .= "<Backup_Frequency>".$row['Backup_Frequency']."</Backup_Frequency>\n";
+                        $XMLData .= "<Automated_Backups_Enabled>".$row['Automated_Backups_Enabled']."</Automated_Backups_Enabled>\n";
+                        $XMLData .= "<Thresholds_Enabled>".$row['Thresholds_Enabled']."</Thresholds_Enabled>\n";                       
+                        
+                        }
+                        $XMLData .= "</Options>";
+                        
+                        $xml=simplexml_load_string($XMLData) or die("Error: Cannot create object");
+                        print_r($xml);
+                        
+                        
+                } catch (Exception $e) {
+                        
+                        echo "Exception in Retrieve Options in IMSSql.php";
+                        throw $e;
+                }
+        }
 	public function exists($partNumber,$table)
 	{
 		try{
@@ -99,6 +138,13 @@ class IMSSql {
 	}
 	
         
+        /*
+         * @Function: IdExists
+         * @Description: Finds any existing values in a table that uses Id
+         * as a primary key.
+         * @output: true if rows exist in table, false otherwise
+         * @author: Justin Fraser
+         */
         	public function IdExists($table)
 	{
 		try{

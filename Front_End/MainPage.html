@@ -58,38 +58,41 @@
       height:40px;
       color:black;
    }
-table {
-  table-layout: fixed;
-}
-table td:nth-child(7) {
-  word-wrap: break-word;
-  width: 50%;
-  max-width: 1px;
-}
-#table-wrapper {
-  position:relative;
-}
-#table-scroll {
-  height:250px;
-  overflow:auto;  
-  margin-top:20px;
-}
-#table-wrapper table {
-  width:100%;
-
-}
-#table-wrapper table * {
-  background:gray;
-  color:black;
-}
-#table-wrapper table thead th .text {
-  position:absolute;   
-  top:-20px;
-  z-index:2;
-  height:20px;
-  width:35%;
-  border:1px solid red;
-}
+	table {
+  	table-layout: fixed;
+	}
+	table td:nth-child(7) {
+  	word-wrap: break-word;
+  	width: 50%;
+  	max-width: 1px;
+	}
+	#table-wrapper {
+  	position:relative;
+	}
+	#table-scroll {
+  	height:250px;
+  	overflow:auto;  
+  	margin-top:20px;
+	}
+	#table-wrapper table {
+  	width:100%;
+	}
+	#table-wrapper table * {
+  	background:gray;
+  	color:black;
+	}
+	#table-wrapper table thead th .text {
+  	position:absolute;   
+  	top:-20px;
+  	z-index:2;
+  	height:20px;
+  	width:35%;
+  	border:1px solid red;
+	}
+	.textbox
+  {
+  	color:black;
+  }
 </style>
 
 <script>
@@ -218,7 +221,13 @@ function parseXMLResponse(xml)
   <a href="Settings.html">Settings</a>   
   <a href="ActivityLog.html">Alerts</a> 
   <a href="ClassModification.html">Class List</a> 
-  <a href="ShoppingList.html">Shopping List</a>      
+  <a href="ShoppingList.html">Shopping List</a> 
+  <br> 
+  <div style="padding-left:5%">Quick Update:</div>
+  <span style="padding-left:5%"><input type="text" class="textbox" size="19" id="quickID" name="quickID" placeholder="PartID"></span>
+  <span style="padding-left:5%"><input type="text" class="textbox" size="19" id="quickDescription" name="quickDescription" placeholder="Description"></span> 
+  <span style="padding-left:5%"><input type="text" class="textbox" size="19" id="quickQuantity" name="quickQuantity" placeholder="Quantity"></span> 
+  <span style="padding-left:5%"><button class='button' type='button'>Update</button></span>
 </nav>
 
 <div class="w3-container w3-blue" style="margin-left:15%">

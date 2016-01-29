@@ -47,7 +47,7 @@ try
 	
 	$result = $stmt->setFetchMode(PDO::FETCH_ASSOC);
 	
-	if($stmt->rowCount() == 0)
+	if(count($result) == 0)
 	{
 
 		$statusCode = '1';
@@ -55,7 +55,7 @@ try
 		$log->add_log($sessionID,'Warning',$statusMessage);
 
 	}
-	else if($stmt->rowCount() > 1)
+	else if(count($result) > 1)
 	{
 
 		$statusCode = '1';
@@ -69,13 +69,11 @@ try
 		$dataArray = $stmt->fetch(PDO::FETCH_ASSOC);
 		$statusCode = '0';
 		$statusMessage = "RetriveItem: Part Number ,$partNumber, data has been retrieved.";
-		$log->add_log($sessionID,'Info',$statusMessage);
+		$log->add_log($sessionID,'Information',$statusMessage);
 		
 		echo $dataArray["Quantity"];
 		
-	}
-        
-    echo "b";
+	}        
 }
 catch(PDOException $e)
 {

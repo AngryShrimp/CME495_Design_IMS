@@ -1,6 +1,6 @@
 <?PHP
 /***********************************************************************
- * 	Script: QueryQutocomplete.php
+ * 	Script: QueryAutocomplete.php
  * 	Description: Script retrieving data for a single part number for
  *      the quick access form.
  *
@@ -10,7 +10,7 @@
  *	Inputs: SID: The session ID of the client
  * 			Filter: String to filter browser data on.
  *
- *	Usage: 	QueryQutocomplete?SID=<session id>&Filter=<filter string>
+ *	Usage: 	QueryAutocomplete?SID=<session id>&Filter=<filter string>
  ***********************************************************************/
   
 include "IMSBase.php";
@@ -69,7 +69,7 @@ try
         
         
 	$statusCode = '0';
-	$statusMessage = "QueryQutocomplete: $rowCount auto-complete suggestions supplied for ($filter).";
+	$statusMessage = "QueryAutocomplete: $rowCount auto-complete suggestions supplied for ($filter).";
 	$log->add_log($sessionID,'Debug',$statusMessage);
         
 	
@@ -77,14 +77,14 @@ try
 catch(PDOException $e)
 {
 	$statusCode = '1';
-	$statusMessage = 'QueryQutocomplete SQLError: '.$e->getMessage();
+	$statusMessage = 'QueryAutocomplete SQLError: '.$e->getMessage();
 	$log->add_log($sessionID,'Error',$statusMessage);
 	
 }
 catch(Exception $e)
 {
 	$statusCode = '1';
-	$statusMessage = 'QueryQutocomplete Error: '. $e->getMessage();
+	$statusMessage = 'QueryAutocomplete Error: '. $e->getMessage();
 	$log->add_log($sessionID,'Error',$statusMessage);
 
 }	

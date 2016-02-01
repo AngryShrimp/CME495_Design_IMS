@@ -201,11 +201,20 @@ function parseXMLResponse(xml)
   }   
 
   //handle xml entries
+  var status = xmlDoc.getElementsByTagName("STATUS");
   var browser = xmlDoc.getElementsByTagName("BROWSER");
   var log = xmlDoc.getElementsByTagName("LOG");
   var autoComplete = xmlDoc.getElementsByTagName("QUERY_SUGGEST");
   var quickAccess = xmlDoc.getElementsByTagName("QACCESS");
 
+  
+  if(status.length > 0)
+  {
+	document.getElementById("status_code").innerHTML = status[0].getElementsByTagName("STATUS_CODE")[0].childNodes[0].nodeValue;
+	document.getElementById("status_message").innerHTML = status[0].getElementsByTagName("STATUS_MESSAGE")[0].childNodes[0].nodeValue;
+  
+  }
+  
   
   if(autoComplete.length > 0)
   {
@@ -336,7 +345,7 @@ function parseXMLResponse(xml)
 	<input list="query_list" type="text" id="searchbar" name="search" oninput="showAutocomplete(this.value)">
 	<datalist id="query_list">
 	</datalist>
-	<a class='button'>Search</a>
+	<!-- <a class='button'>Search</a> -->
 	<a href='AdvancedSearch.html' class='button'>Advanced Search</a>
 	</form>
   </div>
@@ -377,6 +386,16 @@ function parseXMLResponse(xml)
 
 
 </div>
+
+<footer class="w3-container w3-blue w3-row" style="margin-left:15%">
+<div class="w3-container w3-third w3-red">
+<p id="status_code"></p>
+</div>
+<div class="w3-container w3-twothird w3-teal">
+<p id="status_message"></p>
+</div>
+</footer>
+
          
 </body>
 </html>

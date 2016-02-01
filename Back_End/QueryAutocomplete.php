@@ -42,8 +42,8 @@ try
 	$IMSBase->verifyData($filter,"/^.+$/");
 	
 	
-	$sqlQuery = "SELECT * FROM dbo.Inventory WHERE Name LIKE '%$filter%'"
-				."OR Description LIKE '%$filter%' OR \"Supplier Part Number\" LIKE '%$filter%'";
+	$sqlQuery = "SELECT * FROM dbo.Inventory WHERE Name LIKE '%$filter%'";
+				//."OR Description LIKE '%$filter%' OR \"Supplier Part Number\" LIKE '%$filter%'";
 	
 	
 	$stmt = $sql->prepare($sqlQuery);
@@ -62,8 +62,8 @@ try
 	{
 		foreach($dataArray as $rowData)
 		{
-			$suggestionArray[] = $rowData['Name']." - ".$rowData['Description']." - "
-								.$rowData['Supplier Part Number'];
+			$suggestionArray[] = $rowData['Name']; //." - ".$rowData['Description']." - "
+								//.$rowData['Supplier Part Number'];
 		}
 	}
         

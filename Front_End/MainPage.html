@@ -137,6 +137,21 @@ function loadLog()
   xhttp.send("SID=id&LogLevel=All"); 
 }
 
+function showAutocomplete(partialStr)
+{
+  var xhttp = new XMLHttpRequest();
+  xhttp.onreadystatechange = function() 
+  {
+    if (xhttp.readyState == 4 && xhttp.status == 200) 
+    {
+      parseXMLResponse(xhttp);
+    }
+  };
+  xhttp.open("POST", "QueryAutocomplete.php", true);
+  xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+  xhttp.send("SID=id&Filter="+ partialStr); 
+}
+
 
 function parseXMLResponse(xml)
 {
@@ -156,7 +171,34 @@ function parseXMLResponse(xml)
   //handle xml entries
   var browser = xmlDoc.getElementsByTagName("BROWSER");
   var log = xmlDoc.getElementsByTagName("LOG");
+  var autoComplete = xmlDoc.getElementsByTagName("QUERY_SUGGEST");
 
+  
+  if(autoComplete.length > 0)
+  {
+	var autoCompleteList = autoComplete[0].getElementsByTagName("SUGGESTION");	
+	var autoCompleteHtml;
+	
+	//check for null data
+    if(autoCompleteList == null)
+    {
+      //do something
+    }
+	
+	
+	
+    for( i = 0; i < autoCompleteList.length; i++)
+	{
+		autoCompleteHtml += "<option value=\""+autoCompleteList[i].childNodes[0].nodeValue 
+		+"\" style=\"color:black\">"
+		+ "Test Desc";
+	}
+	
+    document.getElementById("query_list").innerHTML = autoCompleteHtml;
+
+	
+  }
+  
   if(log.length > 0)
   {
     var log_entry = log[0].getElementsByTagName("LOG_ENTRY");
@@ -244,12 +286,14 @@ function parseXMLResponse(xml)
 <div class="w3-container w3-blue" style="margin-left:15%">
 <form class="w3-form">
   <div class="w3-group">
-    <form action="action_page.php">
-    <font size="3">Search:</font><br>
-    <input type="text" id="searchbar" name="search">
-    <a class='button'>Search</a>
-    <a href='AdvancedSearch.html' class='button'>Advanced Search</a>
-    </form>
+	<form>
+	<font size="3">Search:</font><br>
+	<input list="query_list" type="text" id="searchbar" name="search" oninput="showAutocomplete(this.value)">
+	<datalist id="query_list">
+	</datalist>
+	<a class='button'>Search</a>
+	<a href='AdvancedSearch.html' class='button'>Advanced Search</a>
+	</form>
   </div>
 </form>
 </div>

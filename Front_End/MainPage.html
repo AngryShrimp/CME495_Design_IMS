@@ -139,6 +139,21 @@ function loadLog()
 
 function showAutocomplete(partialStr)
 {
+  //Check for a selection	
+  var val = document.getElementById("searchbar").value;
+  var opts = document.getElementById('query_list').childNodes;
+  for (var i = 0; i < opts.length; i++) 
+  {
+	if (opts[i].value === val) 
+	{
+	// An item was selected from the list!
+	//close datalist and launch item load functions.
+	document.getElementById('query_list').style.display = 'none';
+	getQuickUpdateData(opts[i].value);
+	return;
+	}
+  }
+
   var xhttp = new XMLHttpRequest();
   xhttp.onreadystatechange = function() 
   {
@@ -151,6 +166,23 @@ function showAutocomplete(partialStr)
   xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
   xhttp.send("SID=id&Filter="+ partialStr); 
 }
+
+function getQuickUpdateData(partNumber)
+{
+  var xhttp = new XMLHttpRequest();
+  xhttp.onreadystatechange = function() 
+  {
+    if (xhttp.readyState == 4 && xhttp.status == 200) 
+    {
+      parseXMLResponse(xhttp);
+    }
+  };
+  xhttp.open("POST", "RetrieveItemData.php", true);
+  xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+  xhttp.send("SID=id&PartNumber="+ partNumber); 
+
+}
+
 
 
 function parseXMLResponse(xml)
@@ -172,6 +204,7 @@ function parseXMLResponse(xml)
   var browser = xmlDoc.getElementsByTagName("BROWSER");
   var log = xmlDoc.getElementsByTagName("LOG");
   var autoComplete = xmlDoc.getElementsByTagName("QUERY_SUGGEST");
+  var quickAccess = xmlDoc.getElementsByTagName("QACCESS");
 
   
   if(autoComplete.length > 0)
@@ -189,15 +222,27 @@ function parseXMLResponse(xml)
 	
     for( i = 0; i < autoCompleteList.length; i++)
 	{
-		autoCompleteHtml += "<option value=\""+autoCompleteList[i].childNodes[0].nodeValue 
+		autoCompleteHtml += "<option value=\""
+		+autoCompleteList[i].getElementsByTagName("Name")[0].childNodes[0].nodeValue 
 		+"\" style=\"color:black\">"
-		+ "Test Desc";
+		+autoCompleteList[i].getElementsByTagName("Type")[0].childNodes[0].nodeValue 
+		+" - "
+		+autoCompleteList[i].getElementsByTagName("Description")[0].childNodes[0].nodeValue
+		+"</option>";
 	}
 	
     document.getElementById("query_list").innerHTML = autoCompleteHtml;
 
 	
   }
+  
+  
+  if(quickAccess.length > 0)
+  {
+	document.getElementById("quickID").innerHTML = quickAccess[0].getElementsByTagName("Name")[0].childNodes[0].nodeValue;
+	document.getElementById("quickDescription").innerHTML = quickAccess[0].getElementsByTagName("Description")[0].childNodes[0].nodeValue;
+	document.getElementById("quickQuantity").innerHTML = quickAccess[0].getElementsByTagName("Quantity")[0].childNodes[0].nodeValue;
+  }  
   
   if(log.length > 0)
   {

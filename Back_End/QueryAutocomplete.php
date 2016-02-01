@@ -60,10 +60,12 @@ try
 	}
 	else
 	{
-		foreach($dataArray as $rowData)
+		foreach($dataArray as $rowData)		
 		{
-			$suggestionArray[] = $rowData['Name']; //." - ".$rowData['Description']." - "
-								//.$rowData['Supplier Part Number'];
+			
+			$suggestionArray[] = array('Name' => $rowData['Name'],
+									   'Description' => $rowData['Description'],
+									   'Type' => $rowData['Type']);			
 		}
 	}
         

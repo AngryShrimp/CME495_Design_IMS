@@ -55,7 +55,7 @@
   background-image: -ms-linear-gradient(top, #156bad 0%, #2195f3 100%);
   color: #000000;
 }
-#searchbar
+#id_search_bar
 {
   width:500px;
   height:40px;
@@ -140,15 +140,16 @@ function loadLog()
 function showAutocomplete(partialStr)
 {
   //Check for a selection	
-  var val = document.getElementById("searchbar").value;
-  var opts = document.getElementById('query_list').childNodes;
+  //from http://stackoverflow.com/questions/30022728/perform-action-when-clicking-html5-datalist-option
+  var val = document.getElementById("id_search_bar").value;
+  var opts = document.getElementById('id_search_queryList').childNodes;
   for (var i = 0; i < opts.length; i++) 
   {
 	if (opts[i].value === val) 
 	{
 	// An item was selected from the list!
 	//close datalist and launch item load functions.
-	document.getElementById('query_list').style.display = 'none';
+	document.getElementById('id_search_queryList').style.display = 'none';
 	getQuickUpdateData(opts[i].value);
 	return;
 	}
@@ -210,8 +211,18 @@ function parseXMLResponse(xml)
   
   if(status.length > 0)
   {
-	document.getElementById("status_code").innerHTML = status[0].getElementsByTagName("STATUS_CODE")[0].childNodes[0].nodeValue;
-	document.getElementById("status_message").innerHTML = status[0].getElementsByTagName("STATUS_MESSAGE")[0].childNodes[0].nodeValue;
+	var statusCode = status[0].getElementsByTagName("STATUS_CODE")[0].childNodes[0].nodeValue;
+	var statusMessage = status[0].getElementsByTagName("STATUS_MESSAGE")[0].childNodes[0].nodeValue;
+  
+	document.getElementById("status_code").innerHTML = statusCode;
+	document.getElementById("status_message").innerHTML = statusMessage;
+  
+	//check status code and throw and alert if a fail occured.
+	if(statusCode != "0")
+	{
+		alert("Server Error with message:" + statusMessage);
+	}
+	
   
   }
   
@@ -240,7 +251,7 @@ function parseXMLResponse(xml)
 		+"</option>";
 	}
 	
-    document.getElementById("query_list").innerHTML = autoCompleteHtml;
+    document.getElementById("id_search_queryList").innerHTML = autoCompleteHtml;
 
 	
   }
@@ -248,9 +259,24 @@ function parseXMLResponse(xml)
   
   if(quickAccess.length > 0)
   {
-	document.getElementById("quickID").innerHTML = quickAccess[0].getElementsByTagName("Name")[0].childNodes[0].nodeValue;
-	document.getElementById("quickDescription").innerHTML = quickAccess[0].getElementsByTagName("Description")[0].childNodes[0].nodeValue;
-	document.getElementById("quickQuantity").innerHTML = quickAccess[0].getElementsByTagName("Quantity")[0].childNodes[0].nodeValue;
+	//quick access form
+	document.getElementById("id_qa_ID").innerHTML = quickAccess[0].getElementsByTagName("Name")[0].childNodes[0].nodeValue;
+	document.getElementById("id_qa_Description").innerHTML = quickAccess[0].getElementsByTagName("Description")[0].childNodes[0].nodeValue;
+	document.getElementById("id_qa_Quantity").innerHTML = quickAccess[0].getElementsByTagName("Quantity")[0].childNodes[0].nodeValue;
+	
+	//add item modal dialog
+	document.getElementById("id_ivm_itemNumber").value = quickAccess[0].getElementsByTagName("Name")[0].childNodes[0].nodeValue;
+	document.getElementById("id_ivm_desc").value = quickAccess[0].getElementsByTagName("Description")[0].childNodes[0].nodeValue;
+	document.getElementById("id_ivm_supplierPN").value = quickAccess[0].getElementsByTagName("Supplier_Part_Number")[0].childNodes[0].nodeValue;
+	document.getElementById("id_ivm_qty").value = quickAccess[0].getElementsByTagName("Quantity")[0].childNodes[0].nodeValue;
+	document.getElementById("id_ivm_location").value = quickAccess[0].getElementsByTagName("Location")[0].childNodes[0].nodeValue;
+	document.getElementById("id_ivm_type").value = quickAccess[0].getElementsByTagName("Type")[0].childNodes[0].nodeValue;
+	document.getElementById("id_ivm_thresh").value = quickAccess[0].getElementsByTagName("Ordering_Threshold")[0].childNodes[0].nodeValue;
+	document.getElementById("id_ivm_value").value = quickAccess[0].getElementsByTagName("Value")[0].childNodes[0].nodeValue;
+	document.getElementById("id_ivm_supplierName").value = quickAccess[0].getElementsByTagName("Suppliers_Name")[0].childNodes[0].nodeValue;
+	document.getElementById("id_ivm_link").value = quickAccess[0].getElementsByTagName("Item_Link")[0].childNodes[0].nodeValue;
+
+	
   }  
   
   if(log.length > 0)
@@ -331,9 +357,9 @@ function parseXMLResponse(xml)
   <a href="ShoppingList.html">Shopping List</a> 
   <br> 
   <div style="padding-left:5%">Quick Update:</div>
-  <span style="padding-left:5%"><textarea type="text" rows="1" cols="19" maxlength="18" id="quickID" name="quickID" placeholder="PartID"></textarea></span>
-  <span style="padding-left:5%"><textarea type="text" rows="1" cols="19" maxlength="18" id="quickDescription" name="quickDescription" placeholder="Description"></textarea></span> 
-  <span style="padding-left:5%"><textarea type="text" rows="6" cols="19" maxlength="115" id="quickQuantity" name="quickQuantity" placeholder="Quantity"></textarea></span> 
+  <span style="padding-left:5%"><textarea type="text" rows="1" cols="19" maxlength="18" id="id_qa_ID" name="quickID" placeholder="PartID"></textarea></span>
+  <span style="padding-left:5%"><textarea type="text" rows="1" cols="19" maxlength="18" id="id_qa_Description" name="quickDescription" placeholder="Description"></textarea></span> 
+  <span style="padding-left:5%"><textarea type="text" rows="6" cols="19" maxlength="115" id="id_qa_Quantity" name="quickQuantity" placeholder="Quantity"></textarea></span> 
   <span style="padding-left:5%"><button class='button' type='button'>Update</button></span>
 </nav>
 
@@ -342,8 +368,8 @@ function parseXMLResponse(xml)
   <div class="w3-group">
 	<form>
 	<font size="3">Search:</font><br>
-	<input list="query_list" type="text" id="searchbar" name="search" oninput="showAutocomplete(this.value)">
-	<datalist id="query_list">
+	<input list="id_search_queryList" type="text" id="id_search_bar" name="search" oninput="showAutocomplete(this.value)">
+	<datalist id="id_search_queryList">
 	</datalist>
 	<!-- <a class='button'>Search</a> -->
 	<a href='AdvancedSearch.html' class='button'>Advanced Search</a>
@@ -356,7 +382,7 @@ function parseXMLResponse(xml)
 <div class="w3-container" style="margin-left:15%">
 <h2>Browser</h2>
 <span style="padding-left:2px"></span>
-<button class="button" type="button" href="AddItem.html">Add Item</button>
+<button class="button" type="button" onclick="document.getElementById('ItemViewModal').style.display='block'">Add Item</button>
 <button class="button" type="button" onclick="loadBrowser()">Refresh</button>
 <div id="table-wrapper">
   <div id="table-scroll">
@@ -395,6 +421,78 @@ function parseXMLResponse(xml)
 <p id="status_message"></p>
 </div>
 </footer>
+
+
+<!-- Modal Dialog box for Viewing Editing Single Item -->
+<div id="ItemViewModal" class="w3-modal">
+  <div class="w3-modal-content">
+    <div class="w3-container">
+	<header class="w3-container w3-blue">
+      <span onclick="document.getElementById('ItemViewModal').style.display='none'" 
+      class="w3-closebtn">&times;</span>
+	 </header>
+      <form class="w3-container">
+		<div class="w3-container w3-quarter">
+		  <input class="w3-input" type="text" id="id_ivm_itemNumber">
+		  <label>Item Number</label>
+		</div>
+
+		<div class="w3-container w3-quarter">
+		  <input class="w3-input" type="text" id="id_ivm_qty">
+		  <label>Quantity</label>
+		</div>
+		
+		<div class="w3-container w3-quarter">
+		  <input class="w3-input" type="text" id="id_ivm_thresh">
+		  <label>Threshold</label>
+		</div>
+		
+		<div class="w3-container w3-quarter">
+		  <input class="w3-input" type="text" id="id_ivm_location">
+		  <label>Location</label>
+		</div>
+		
+		<div class="w3-container">
+		  <input class="w3-input" type="text" id="id_ivm_desc">
+		  <label>Description</label>
+		</div>
+		
+		<div class="w3-container w3-half">
+		  <input class="w3-input" type="text" id="id_ivm_type">
+		  <label>Type</label>
+		</div>
+		
+		<div class="w3-container w3-half">
+		  <input class="w3-input" type="text" id="id_ivm_value">
+		  <label>Value</label>
+		</div>
+		
+		<div class="w3-container w3-half">
+		  <input class="w3-input" type="text" id="id_ivm_supplierName">
+		  <label>Supplier Name</label>
+		</div>
+		
+		<div class="w3-container w3-half">
+		  <input class="w3-input" type="text" id="id_ivm_supplierPN">
+		  <label>Supplier Part Number</label>
+		</div>
+		
+		<div class="w3-container">
+		  <input class="w3-input" type="text" id="id_ivm_link">
+		  <label>Document URL</label>
+		</div>
+		
+		<button class="button" type="button" onclick="">Create Item</button>
+
+		<footer class="w3-container w3-blue w3-row">
+		  <p></p>
+		</footer>
+		
+	  </form>
+    </div>
+  </div>
+</div>
+
 
          
 </body>

@@ -67,9 +67,14 @@ class IMSBase
 			{
 				$xml->startElement("QUERY_SUGGEST");
 					foreach($query_suggest_array as $suggestion)
-					{
+					{					
 						$xml->startElement("SUGGESTION");
-							$xml->text($suggestion);			
+							foreach($suggestion as $key => $value)
+							{
+								$xml->startElement($key);
+									$xml->text($value);	
+								$xml->endElement();								
+							}
 						$xml->endElement();
 					}
 				$xml->endElement();
@@ -78,15 +83,12 @@ class IMSBase
 			if(!($q_access_array == NULL))
 			{
 				$xml->startElement("QACCESS");
-					$xml->startElement("ITEMID");
-						$xml->text(trim($q_access_array["Name"]));
-					$xml->endElement();
-					$xml->startElement("QUANITY");
-						$xml->text(trim($q_access_array["Quantity"]));
-					$xml->endElement();
-					$xml->startElement();
-						$xml->text(trim($q_access_array["Description"]));			
-					$xml->endElement();
+					foreach($q_access_array as $key => $data)
+						{
+							$xml->startElement(str_replace(' ','',$key));
+								$xml->text(trim($data));
+							$xml->endElement();					
+						}				
 				$xml->endElement();
 			
 			}

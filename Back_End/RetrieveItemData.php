@@ -71,7 +71,6 @@ try
 		$statusMessage = "RetriveItem: Part Number ,$partNumber, data has been retrieved.";
 		$log->add_log($sessionID,'Information',$statusMessage);
 		
-		echo $dataArray["Quantity"];
 		
 	}        
 }

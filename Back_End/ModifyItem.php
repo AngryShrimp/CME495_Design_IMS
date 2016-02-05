@@ -45,10 +45,10 @@ try
 	$log = new IMSLog();
 	$sql = new IMSSql();
 
-	$IMSBase->verifyData($partNumber,"/^.+$/");
-	$IMSBase->verifyData($sessionID,"/^.+$/");
-	$IMSBase->verifyData($field,"/^.+$/");
-	$IMSBase->verifyData($value,"/^.+$/");
+	$IMSBase->verifyData($partNumber,"/^.+$/","PartNumber");
+	$IMSBase->verifyData($sessionID,"/^.+$/","SessionID");
+	$IMSBase->verifyData($field,"/^.+$/","field");
+	$IMSBase->verifyData($value,"/^.+$/","value");
 
 	if($sql->exists($partNumber,'dbo.Inventory') == FALSE)
 	{

@@ -185,6 +185,113 @@ function getQuickUpdateData(partNumber)
 }
 
 
+function createNewItem()
+{
+  //Input Verification code goes here.
+  var partNumber = document.getElementById("id_ivm_itemNumber").value;
+  var qty = document.getElementById("id_ivm_qty").value;
+  var threshold = document.getElementById("id_ivm_thresh").value;
+  var location = document.getElementById("id_ivm_location").value;
+  var description = document.getElementById("id_ivm_desc").value;
+  var type = document.getElementById("id_ivm_type").value;
+  var value = document.getElementById("id_ivm_value").value;
+  var supplierName = document.getElementById("id_ivm_supplierName").value;
+  var supplierPN = document.getElementById("id_ivm_supplierPN").value;
+  var link = document.getElementById("id_ivm_link").value;
+	
+  //Create new Item record
+  var xhttp = new XMLHttpRequest();
+  xhttp.onreadystatechange = function() 
+  {
+    if (xhttp.readyState == 4 && xhttp.status == 200) 
+    {
+      parseXMLResponse(xhttp);
+    }
+  };
+  
+  xhttp.open("POST", "CreateNewItem.php", false);
+  xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+  xhttp.send("SID=id&PartNumber="+partNumber); 
+  
+  var returnVal = parseXMLResponse(xhttp);
+  
+  if(returnVal == false)
+  {
+	alert("Part Number Creation Error");
+	return;
+  }
+	
+  
+
+  if(qty != "")
+  {  
+    xhttp.open("POST", "ModifyItem.php", false);
+    xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");  
+	xhttp.send("SID=id&PartNumber="+partNumber+"&Field=Quantity&Value="+qty);
+  }
+  
+  
+  
+  if(threshold != "")
+  {  
+    xhttp.open("POST", "ModifyItem.php", false);
+    xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+	xhttp.send("SID=id&PartNumber="+partNumber+"&Field=Ordering_Threshold&Value="+threshold);
+  }
+
+  
+  if(location != "")
+  {  
+    xhttp.open("POST", "ModifyItem.php", false);
+    xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+	xhttp.send("SID=id&PartNumber="+partNumber+"&Field=Location&Value="+location);
+  }
+  
+  if(description != "")
+  {  
+    xhttp.open("POST", "ModifyItem.php", false);
+    xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+	xhttp.send("SID=id&PartNumber="+partNumber+"&Field=Description&Value="+description);
+  }
+  
+  if(type != "")
+  {  
+    xhttp.open("POST", "ModifyItem.php", false);
+    xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+	xhttp.send("SID=id&PartNumber="+partNumber+"&Field=Type&Value="+type);
+  }
+  
+  if(value != "")
+  {  
+    xhttp.open("POST", "ModifyItem.php", false);
+    xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+	xhttp.send("SID=id&PartNumber="+partNumber+"&Field=Value&Value="+value);
+  }
+  
+  if(supplierName != "")
+  { 
+    xhttp.open("POST", "ModifyItem.php", false);
+    xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+	xhttp.send("SID=id&PartNumber="+partNumber+"&Field=Suppliers_Name&Value="+supplierName);
+  }
+  
+  if(supplierPN != "")
+  {  
+    xhttp.open("POST", "ModifyItem.php", false);
+    xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+	xhttp.send("SID=id&PartNumber="+partNumber+"&Field=Supplier_Part_Number&Value="+supplierPN);
+  }
+  
+  if(link != "")
+  {  
+    xhttp.open("POST", "ModifyItem.php", false);
+    xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+	xhttp.send("SID=id&PartNumber="+partNumber+"&Field=Item_Link&Value="+link);
+  }
+  
+}
+
+
 
 function parseXMLResponse(xml)
 {
@@ -217,10 +324,11 @@ function parseXMLResponse(xml)
 	document.getElementById("status_code").innerHTML = statusCode;
 	document.getElementById("status_message").innerHTML = statusMessage;
   
-	//check status code and throw and alert if a fail occured.
+	//check status code and throw and alert if a fail occurred.
 	if(statusCode != "0")
 	{
 		alert("Server Error with message:" + statusMessage);
+		return false;
 	}
 	
   
@@ -338,6 +446,8 @@ function parseXMLResponse(xml)
 
     tableBrowser += "</table>"
     document.getElementById("browser").innerHTML = tableBrowser;
+	
+	return true;
   } 
 }
 
@@ -433,56 +543,56 @@ function parseXMLResponse(xml)
 	 </header>
       <form class="w3-container">
 		<div class="w3-container w3-quarter">
-		  <input class="w3-input" type="text" id="id_ivm_itemNumber">
+		  <input class="w3-input" type="text" id="id_ivm_itemNumber" placeholder="Item Number">
 		  <label>Item Number</label>
 		</div>
 
 		<div class="w3-container w3-quarter">
-		  <input class="w3-input" type="text" id="id_ivm_qty">
+		  <input class="w3-input" type="text" id="id_ivm_qty" placeholder="Quantity">
 		  <label>Quantity</label>
 		</div>
 		
 		<div class="w3-container w3-quarter">
-		  <input class="w3-input" type="text" id="id_ivm_thresh">
+		  <input class="w3-input" type="text" id="id_ivm_thresh" placeholder="Threshold">
 		  <label>Threshold</label>
 		</div>
 		
 		<div class="w3-container w3-quarter">
-		  <input class="w3-input" type="text" id="id_ivm_location">
+		  <input class="w3-input" type="text" id="id_ivm_location" placeholder="Location">
 		  <label>Location</label>
 		</div>
 		
 		<div class="w3-container">
-		  <input class="w3-input" type="text" id="id_ivm_desc">
+		  <input class="w3-input" type="text" id="id_ivm_desc" placeholder="Description">
 		  <label>Description</label>
 		</div>
 		
 		<div class="w3-container w3-half">
-		  <input class="w3-input" type="text" id="id_ivm_type">
+		  <input class="w3-input" type="text" id="id_ivm_type" placeholder="Type">
 		  <label>Type</label>
 		</div>
 		
 		<div class="w3-container w3-half">
-		  <input class="w3-input" type="text" id="id_ivm_value">
+		  <input class="w3-input" type="text" id="id_ivm_value" placeholder="Value">
 		  <label>Value</label>
 		</div>
 		
 		<div class="w3-container w3-half">
-		  <input class="w3-input" type="text" id="id_ivm_supplierName">
+		  <input class="w3-input" type="text" id="id_ivm_supplierName" placeholder="Supplier Name">
 		  <label>Supplier Name</label>
 		</div>
 		
 		<div class="w3-container w3-half">
-		  <input class="w3-input" type="text" id="id_ivm_supplierPN">
+		  <input class="w3-input" type="text" id="id_ivm_supplierPN" placeholder="Supplier Part Number">
 		  <label>Supplier Part Number</label>
 		</div>
 		
 		<div class="w3-container">
-		  <input class="w3-input" type="text" id="id_ivm_link">
+		  <input class="w3-input" type="text" id="id_ivm_link" placeholder="Part Information URL">
 		  <label>Document URL</label>
 		</div>
 		
-		<button class="button" type="button" onclick="">Create Item</button>
+		<button class="button" type="button" onclick="createNewItem()">Create Item</button>
 
 		<footer class="w3-container w3-blue w3-row">
 		  <p></p>

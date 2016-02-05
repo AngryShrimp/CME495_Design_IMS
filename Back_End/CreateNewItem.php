@@ -37,9 +37,9 @@ try
 	$log = new IMSLog();
 	$sql = new IMSSql();
 
-	$IMSBase->verifyData($partNumber,"/^.+$/");
-	$IMSBase->verifyData($sessionID,"/^.+$/");
-	
+	$IMSBase->verifyData($sessionID,"/^.+$/","SessionID");
+	$IMSBase->verifyData($partNumber,"/^.+$/","PartNumber");
+
 	if($sql->exists($partNumber,'dbo.Inventory') == TRUE)
 	{
 		$statusCode = '1';

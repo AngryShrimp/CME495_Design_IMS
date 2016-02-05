@@ -12,7 +12,7 @@
 class IMSBase
 {
 
-	public function verifyData($data,$RegEx)
+	public function verifyData($data,$RegEx,$optMessage = "")
 	{
 		$invalid_char_array = array( "<",
 									 ">",
@@ -23,7 +23,7 @@ class IMSBase
 
 		foreach(str_split($data) as $char)
 			if(in_array($char,$invalid_char_array))
-				throw new Exception('Invalid character string ('.$data.')');
+				throw new Exception("Invalid character string ($data)($optMessage)");
 		
 		
 		if(preg_match($RegEx,$data) == TRUE)
@@ -31,7 +31,7 @@ class IMSBase
 			return;
 		}
 		
-		throw new Exception('String ('.$data.') did not match RegEx ('.$RegEx.')');
+		throw new Exception("String ($data) did not match RegEx ($RegEx)($optMessage)");
 	}
 
 

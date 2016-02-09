@@ -76,13 +76,13 @@ try
 	$stmt->execute();
 	
 	
-        $dataArray = $stmt->fetchAll(PDO::FETCH_ASSOC);      
-        
-        
-        $statusCode = '0';
-        $statusMessage = "RetrieveBroswerData: Browers data filtered by ($filter) and sorted by ($sortColumn, $sortDirection) completed successfully.";
-        $log->add_log($sessionID,'Info',$statusMessage);
-        
+	$dataArray = $stmt->fetchAll(PDO::FETCH_ASSOC);      
+	
+	
+	$statusCode = '0';
+	$statusMessage = "RetrieveBroswerData: Browers data filtered by ($filter) and sorted by ($sortColumn, $sortDirection) completed successfully.";
+	$log->add_log($sessionID,'Information',$statusMessage);
+	
 	
 }
 catch(PDOException $e)

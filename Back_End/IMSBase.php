@@ -41,7 +41,8 @@ class IMSBase
 								 $query_suggest_array = NULL,
 								 $q_access_array = NULL,
 								 $browser_array = NULL,
-								 $log_array = NULL )
+								 $log_array = NULL,
+								 $class_array = NULL)
 	{
 		$xml = new XMLWriter();
 		
@@ -121,6 +122,26 @@ class IMSBase
 					{
 						$xml->startElement("LOG_ENTRY");
 							foreach($log_entry as $key => $data)
+							{
+								$xml->startElement(str_replace(' ','',$key));
+									$xml->text($data);
+								$xml->endElement();					
+							}
+						$xml->endElement();
+					}
+				
+				
+				$xml->endElement();
+			
+			}
+			
+			if(!($class_array == NULL))
+			{
+				$xml->startElement("CLASS_DATA");
+					foreach($class_array as $class_entry)
+					{
+						$xml->startElement("CLASS_ENTRY");
+							foreach($class_entry as $key => $data)
 							{
 								$xml->startElement(str_replace(' ','',$key));
 									$xml->text($data);

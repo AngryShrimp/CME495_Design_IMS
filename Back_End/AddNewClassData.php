@@ -65,7 +65,7 @@ try
 	else
 	{	
 
-		$sql->command("INSERT INTO dbo.Class_Features (Class,Part,Quantity,Date) VALUES ('$classNumber','$partNumber',$quantity,'$date');");
+		$sql->command("INSERT INTO dbo.Class_Data (Class,Part,Quantity,Date) VALUES ('$classNumber','$partNumber',$quantity,'$date');");
 		
 		$statusCode = '0';
 		$statusMessage = "Class data for ($classNumber) part number ($partNumber) created successfully. ";

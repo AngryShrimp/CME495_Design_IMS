@@ -46,6 +46,8 @@ catch(Exception $e)
 	$statusCode = '1';
 	$statusMessage = 'GenerateSID Error: '. $e->getMessage();
 	$log->add_log($sessionID,'Error',$statusMessage);
+	
+	echo "SIDError";
 
 }
 ?>

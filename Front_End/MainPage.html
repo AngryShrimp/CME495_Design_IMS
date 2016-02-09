@@ -107,8 +107,56 @@ textarea
 </style>
 
 <script>
+
+/****************************************************************
+Function:  populateForms()
+Description: This function run all data retrieval functions so 
+that all data fields are populated on page load.  Also gets a 
+SID from the server
+*****************************************************************/
+function populateForms()
+{
+	getSID();
+	getClassData();
+	loadBrowser();
+	loadLog();
+}
+
+/****************************************************************
+Function:  getSID()
+Description: Gets a SID from the server and creates a local cookie.
+*****************************************************************/
+function getSID()
+{
+
+  var xhttp = new XMLHttpRequest(); 
+  xhttp.open("POST", "GenerateSID.php", false);
+  xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+  xhttp.send(); 
+  
+  
+  var SIDResponse = xhttp.responseText;
+
+  if(SIDResponse == "SIDError")
+  {
+	alert("GET SID Error. SID Missing");
+	return;
+  }
+	
+  document.cookie=SIDResponse;
+
+  document.getElementById("id_main_SIDDisplay").innerHTML = SIDResponse;
+
+  
+  return;
+  
+}
+
+
 function loadBrowser()
 {
+  var SID = document.cookie;
+
   var xhttp = new XMLHttpRequest();
   xhttp.onreadystatechange = function() 
   {
@@ -119,11 +167,14 @@ function loadBrowser()
   };
   xhttp.open("POST", "RetrieveBrowserData.php", true);
   xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-  xhttp.send("SID=id"); 
+  xhttp.send("SID="+SID); 
 }
 
 function loadLog()
 {
+  var SID = document.cookie;
+
+
   var xhttp = new XMLHttpRequest();
   xhttp.onreadystatechange = function() 
   {
@@ -134,11 +185,19 @@ function loadLog()
   };
   xhttp.open("POST", "RetrieveLog.php", true);
   xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-  xhttp.send("SID=id&LogLevel=All"); 
+  xhttp.send("SID="+SID+"&LogLevel=All"); 
 }
 
+/****************************************************************
+Function:  showAutocomplete()
+Description: Creates a datalist to show all autocomplete matches
+for a partial search string.
+*****************************************************************/
 function showAutocomplete(partialStr)
 {
+  var SID = document.cookie;
+
+
   //Check for a selection	
   //from http://stackoverflow.com/questions/30022728/perform-action-when-clicking-html5-datalist-option
   var val = document.getElementById("id_search_bar").value;
@@ -165,11 +224,13 @@ function showAutocomplete(partialStr)
   };
   xhttp.open("POST", "QueryAutocomplete.php", true);
   xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-  xhttp.send("SID=id&Filter="+ partialStr); 
+  xhttp.send("SID="+SID+"&Filter="+ partialStr); 
 }
 
 function getQuickUpdateData(partNumber)
 {
+  var SID = document.cookie;
+
   var xhttp = new XMLHttpRequest();
   xhttp.onreadystatechange = function() 
   {
@@ -180,13 +241,69 @@ function getQuickUpdateData(partNumber)
   };
   xhttp.open("POST", "RetrieveItemData.php", true);
   xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-  xhttp.send("SID=id&PartNumber="+ partNumber); 
+  xhttp.send("SID="+SID+"&PartNumber="+ partNumber); 
 
 }
 
+/****************************************************************
+Function:  addClassDataEntry()
+Description: Sends new class data to the server to be saved.
+*****************************************************************/
+function addClassDataEntry()
+{
+  var SID = document.cookie;
 
+  var className = document.getElementById("id_cdm_classInput").value;
+  var partNumber = document.getElementById("id_cdm_PNInput").value;
+  var qty = document.getElementById("id_cdm_qtyInput").value;
+  var date = document.getElementById("id_cdm_dateInput").value;
+
+  var xhttp = new XMLHttpRequest();
+  xhttp.onreadystatechange = function() 
+  {
+    if (xhttp.readyState == 4 && xhttp.status == 200) 
+    {
+      parseXMLResponse(xhttp);
+    }
+  };
+  xhttp.open("POST", "AddNewClassData.php", true);
+  xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+  xhttp.send("SID="+SID+"&Class="+className+"&PartNumber="+partNumber+"&Quantity="+qty+"&Date="+date); 
+
+}
+
+/****************************************************************
+Function:  getClassData()
+Description: Sends a request to the server to retrieve the Class 
+Data information for display.
+*****************************************************************/
+function getClassData()
+{
+  var xhttp = new XMLHttpRequest();
+  xhttp.onreadystatechange = function() 
+  {
+    if (xhttp.readyState == 4 && xhttp.status == 200) 
+    {
+      parseXMLResponse(xhttp);
+    }
+  };
+  xhttp.open("POST", "RetrieveClassData.php", true);
+  xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+  xhttp.send("SID="+SID); 
+
+}
+
+/****************************************************************
+Function:  createNewItem()
+Description: Sends new Item data to the server for saving. 
+Synchronous mode is used to ensure previous processes are completed
+before the next is started. 
+*****************************************************************/
 function createNewItem()
 {
+  var SID = document.cookie;
+
+
   //Input Verification code goes here.
   var partNumber = document.getElementById("id_ivm_itemNumber").value;
   var qty = document.getElementById("id_ivm_qty").value;
@@ -211,7 +328,7 @@ function createNewItem()
   
   xhttp.open("POST", "CreateNewItem.php", false);
   xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-  xhttp.send("SID=id&PartNumber="+partNumber); 
+  xhttp.send("SID="+SID+"&PartNumber="+partNumber); 
   
   var returnVal = parseXMLResponse(xhttp);
   
@@ -227,7 +344,7 @@ function createNewItem()
   {  
     xhttp.open("POST", "ModifyItem.php", false);
     xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");  
-	xhttp.send("SID=id&PartNumber="+partNumber+"&Field=Quantity&Value="+qty);
+	xhttp.send("SID="+SID+"&PartNumber="+partNumber+"&Field=Quantity&Value="+qty);
   }
   
   
@@ -236,7 +353,7 @@ function createNewItem()
   {  
     xhttp.open("POST", "ModifyItem.php", false);
     xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-	xhttp.send("SID=id&PartNumber="+partNumber+"&Field=Ordering_Threshold&Value="+threshold);
+	xhttp.send("SID="+SID+"&PartNumber="+partNumber+"&Field=Ordering_Threshold&Value="+threshold);
   }
 
   
@@ -244,49 +361,49 @@ function createNewItem()
   {  
     xhttp.open("POST", "ModifyItem.php", false);
     xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-	xhttp.send("SID=id&PartNumber="+partNumber+"&Field=Location&Value="+location);
+	xhttp.send("SID="+SID+"&PartNumber="+partNumber+"&Field=Location&Value="+location);
   }
   
   if(description != "")
   {  
     xhttp.open("POST", "ModifyItem.php", false);
     xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-	xhttp.send("SID=id&PartNumber="+partNumber+"&Field=Description&Value="+description);
+	xhttp.send("SID="+SID+"&PartNumber="+partNumber+"&Field=Description&Value="+description);
   }
   
   if(type != "")
   {  
     xhttp.open("POST", "ModifyItem.php", false);
     xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-	xhttp.send("SID=id&PartNumber="+partNumber+"&Field=Type&Value="+type);
+	xhttp.send("SID="+SID+"&PartNumber="+partNumber+"&Field=Type&Value="+type);
   }
   
   if(value != "")
   {  
     xhttp.open("POST", "ModifyItem.php", false);
     xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-	xhttp.send("SID=id&PartNumber="+partNumber+"&Field=Value&Value="+value);
+	xhttp.send("SID="+SID+"&PartNumber="+partNumber+"&Field=Value&Value="+value);
   }
   
   if(supplierName != "")
   { 
     xhttp.open("POST", "ModifyItem.php", false);
     xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-	xhttp.send("SID=id&PartNumber="+partNumber+"&Field=Suppliers_Name&Value="+supplierName);
+	xhttp.send("SID="+SID+"&PartNumber="+partNumber+"&Field=Suppliers_Name&Value="+supplierName);
   }
   
   if(supplierPN != "")
   {  
     xhttp.open("POST", "ModifyItem.php", false);
     xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-	xhttp.send("SID=id&PartNumber="+partNumber+"&Field=Supplier_Part_Number&Value="+supplierPN);
+	xhttp.send("SID="+SID+"&PartNumber="+partNumber+"&Field=Supplier_Part_Number&Value="+supplierPN);
   }
   
   if(link != "")
   {  
     xhttp.open("POST", "ModifyItem.php", false);
     xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-	xhttp.send("SID=id&PartNumber="+partNumber+"&Field=Item_Link&Value="+link);
+	xhttp.send("SID="+SID+"&PartNumber="+partNumber+"&Field=Item_Link&Value="+link);
   }
   
 }
@@ -307,6 +424,8 @@ function parseXMLResponse(xml)
     //do something
     //break and report error. NO script yet
   }   
+  
+
 
   //handle xml entries
   var status = xmlDoc.getElementsByTagName("STATUS");
@@ -314,8 +433,9 @@ function parseXMLResponse(xml)
   var log = xmlDoc.getElementsByTagName("LOG");
   var autoComplete = xmlDoc.getElementsByTagName("QUERY_SUGGEST");
   var quickAccess = xmlDoc.getElementsByTagName("QACCESS");
+  var classData = xmlDoc.getElementsByTagName("CLASS_DATA");
 
-  
+
   if(status.length > 0)
   {
 	var statusCode = status[0].getElementsByTagName("STATUS_CODE")[0].childNodes[0].nodeValue;
@@ -333,7 +453,7 @@ function parseXMLResponse(xml)
 	
   
   }
-  
+
   
   if(autoComplete.length > 0)
   {
@@ -345,7 +465,6 @@ function parseXMLResponse(xml)
     {
       //do something
     }
-	
 	
 	
     for( i = 0; i < autoCompleteList.length; i++)
@@ -364,7 +483,7 @@ function parseXMLResponse(xml)
 	
   }
   
-  
+
   if(quickAccess.length > 0)
   {
 	//quick access form
@@ -386,6 +505,8 @@ function parseXMLResponse(xml)
 
 	
   }  
+  
+
   
   if(log.length > 0)
   {
@@ -410,6 +531,8 @@ function parseXMLResponse(xml)
     document.getElementById("log").innerHTML = tableLog;
 
   }
+  
+
   
   if(browser.length > 0) //Browser section present
   { 
@@ -445,16 +568,55 @@ function parseXMLResponse(xml)
     }
 
     tableBrowser += "</table>"
-    document.getElementById("browser").innerHTML = tableBrowser;
-	
-	return true;
+    document.getElementById("browser").innerHTML = tableBrowser;	
   } 
+  
+
+  
+  if(classData.length > 0)
+  { 
+
+	var class_entry = classData[0].getElementsByTagName("CLASS_ENTRY");
+	
+	//check for null data
+    if(class_entry == null)
+    {
+      //do something
+    }
+	
+	tableClassData = "<table class=\"w3-table w3-bordered w3-border w3-striped\"><tr>" +
+            "<th>Class Name</th>" + 
+            "<th>Part Number</th>" + 
+            "<th>Quantity</th>" +
+            "<th>Date</th>";
+			
+	
+	for( i = 0; i < class_entry.length; i++)
+    {
+		tableClassData += "<tr>" + "<td>" + class_entry[i].getElementsByTagName("Class")[0].childNodes[0].nodeValue + "</td>" +
+                        "<td>" + class_entry[i].getElementsByTagName("Part")[0].childNodes[0].nodeValue + "</td>" +
+                        "<td>" + class_entry[i].getElementsByTagName("Quantity")[0].childNodes[0].nodeValue + "</td>" +
+                        "<td>" + class_entry[i].getElementsByTagName("Date")[0].childNodes[0].nodeValue + "</td>" +                   
+                        "</tr>";	
+	
+	}
+	
+    tableClassData += "</table>"
+
+	
+	document.getElementById("id_cdm_table").innerHTML = tableClassData;
+
+  }  
+  
+
+  return true;
+  
 }
 
 
 </script>
 </head>
-<body>
+<body onload="populateForms()">
 
 <nav class="w3-sidenav w3-blue" style="width:15%">
   <header class="w3-container">
@@ -476,6 +638,9 @@ function parseXMLResponse(xml)
 <div class="w3-container w3-blue" style="margin-left:15%">
 <form class="w3-form">
   <div class="w3-group">
+  <a>SID:</a>
+  <a id="id_main_SIDDisplay"></a>
+  <br>
 	<form>
 	<font size="3">Search:</font><br>
 	<input list="id_search_queryList" type="text" id="id_search_bar" name="search" oninput="showAutocomplete(this.value)">
@@ -493,6 +658,7 @@ function parseXMLResponse(xml)
 <h2>Browser</h2>
 <span style="padding-left:2px"></span>
 <button class="button" type="button" onclick="document.getElementById('ItemViewModal').style.display='block'">Add Item</button>
+<button class="button" type="button" onclick="document.getElementById('ClassDataModal').style.display='block'">Class Data</button>
 <button class="button" type="button" onclick="loadBrowser()">Refresh</button>
 <div id="table-wrapper">
   <div id="table-scroll">
@@ -603,6 +769,47 @@ function parseXMLResponse(xml)
   </div>
 </div>
 
+<!-- Class Data Modal Dialog Box -->
+<div id="ClassDataModal" class="w3-modal">
+  <div class="w3-modal-content">
+    <div class="w3-container">
+	<header class="w3-container w3-blue">
+      <span onclick="document.getElementById('ClassDataModal').style.display='none'" 
+      class="w3-closebtn">&times;</span>
+	</header>
+	
+	<div id="id_cdm_table">
+	</div>
+	 
+	
+	<form class="w3-container">
+	<div class="w3-container w3-quarter">
+		<input class="w3-input w3-border" type="text" id="id_cdm_classInput" placeholder="Class">
+		<label>Class</label>
+	</div>
+	<div class="w3-container w3-quarter">
+		<input class="w3-input w3-border" type="text" id="id_cdm_PNInput" placeholder="Part Number">
+		<label>Part Number</label>
+	</div>
+	<div class="w3-container w3-quarter">
+		<input class="w3-input w3-border" type="text" id="id_cdm_qtyInput" placeholder="Quantity">
+		<label>Quantity Needed</label>
+	</div>
+	<div class="w3-container w3-quarter">
+		<input class="w3-input w3-border" type="text" id="id_cdm_dateInput" placeholder="DD-MM-YYYY">
+		<label>Date Needed</label>
+	</div>
+	<br>
+	<button class="button" type="button" onclick="addClassDataEntry()">Add Class Data</button>
+	<button class="button" type="button" onclick="getClassData()">Show</button>
+
+	</form>  
+	<footer class="w3-container w3-blue w3-row">
+		  <p></p>
+	</footer>  
+    </div>
+  </div>
+</div>
 
          
 </body>

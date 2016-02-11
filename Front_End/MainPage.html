@@ -116,7 +116,7 @@ SID from the server
 *****************************************************************/
 function populateForms()
 {
-	getSID();
+	setSID();
 	getClassData();
 	loadBrowser();
 	loadLog();
@@ -126,7 +126,7 @@ function populateForms()
 Function:  getSID()
 Description: Gets a SID from the server and creates a local cookie.
 *****************************************************************/
-function getSID()
+function setSID()
 {
 
   var xhttp = new XMLHttpRequest(); 
@@ -152,10 +152,14 @@ function getSID()
   
 }
 
+function getSID()
+{
+  return document.cookie;
+}
+
 
 function loadBrowser()
 {
-  var SID = document.cookie;
 
   var xhttp = new XMLHttpRequest();
   xhttp.onreadystatechange = function() 
@@ -167,12 +171,11 @@ function loadBrowser()
   };
   xhttp.open("POST", "RetrieveBrowserData.php", true);
   xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-  xhttp.send("SID="+SID); 
+  xhttp.send("SID="+getSID()); 
 }
 
 function loadLog()
 {
-  var SID = document.cookie;
 
 
   var xhttp = new XMLHttpRequest();
@@ -185,7 +188,7 @@ function loadLog()
   };
   xhttp.open("POST", "RetrieveLog.php", true);
   xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-  xhttp.send("SID="+SID+"&LogLevel=All"); 
+  xhttp.send("SID="+getSID()+"&LogLevel=All"); 
 }
 
 /****************************************************************
@@ -195,7 +198,6 @@ for a partial search string.
 *****************************************************************/
 function showAutocomplete(partialStr)
 {
-  var SID = document.cookie;
 
 
   //Check for a selection	
@@ -224,12 +226,11 @@ function showAutocomplete(partialStr)
   };
   xhttp.open("POST", "QueryAutocomplete.php", true);
   xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-  xhttp.send("SID="+SID+"&Filter="+ partialStr); 
+  xhttp.send("SID="+getSID()+"&Filter="+ partialStr); 
 }
 
 function getQuickUpdateData(partNumber)
 {
-  var SID = document.cookie;
 
   var xhttp = new XMLHttpRequest();
   xhttp.onreadystatechange = function() 
@@ -241,7 +242,7 @@ function getQuickUpdateData(partNumber)
   };
   xhttp.open("POST", "RetrieveItemData.php", true);
   xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-  xhttp.send("SID="+SID+"&PartNumber="+ partNumber); 
+  xhttp.send("SID="+getSID()+"&PartNumber="+ partNumber); 
 
 }
 
@@ -251,7 +252,6 @@ Description: Sends new class data to the server to be saved.
 *****************************************************************/
 function addClassDataEntry()
 {
-  var SID = document.cookie;
 
   var className = document.getElementById("id_cdm_classInput").value;
   var partNumber = document.getElementById("id_cdm_PNInput").value;
@@ -268,7 +268,7 @@ function addClassDataEntry()
   };
   xhttp.open("POST", "AddNewClassData.php", true);
   xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-  xhttp.send("SID="+SID+"&Class="+className+"&PartNumber="+partNumber+"&Quantity="+qty+"&Date="+date); 
+  xhttp.send("SID="+getSID()+"&Class="+className+"&PartNumber="+partNumber+"&Quantity="+qty+"&Date="+date); 
 
 }
 
@@ -279,7 +279,6 @@ Data information for display.
 *****************************************************************/
 function getClassData()
 {
-  var SID = document.cookie;
 
   var xhttp = new XMLHttpRequest();
   xhttp.onreadystatechange = function() 
@@ -291,7 +290,7 @@ function getClassData()
   };
   xhttp.open("POST", "RetrieveClassData.php", true);
   xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-  xhttp.send("SID="+SID); 
+  xhttp.send("SID="+getSID()); 
 	
 }
 
@@ -303,7 +302,6 @@ before the next is started.
 *****************************************************************/
 function createNewItem()
 {
-  var SID = document.cookie;
 
 
   //Input Verification code goes here.
@@ -330,7 +328,7 @@ function createNewItem()
   
   xhttp.open("POST", "CreateNewItem.php", false);
   xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-  xhttp.send("SID="+SID+"&PartNumber="+partNumber); 
+  xhttp.send("SID="+getSID()+"&PartNumber="+partNumber); 
   
   var returnVal = parseXMLResponse(xhttp);
   
@@ -346,7 +344,7 @@ function createNewItem()
   {  
     xhttp.open("POST", "ModifyItem.php", false);
     xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");  
-	xhttp.send("SID="+SID+"&PartNumber="+partNumber+"&Field=Quantity&Value="+qty);
+	xhttp.send("SID="+getSID()+"&PartNumber="+partNumber+"&Field=Quantity&Value="+qty);
   }
   
   
@@ -355,7 +353,7 @@ function createNewItem()
   {  
     xhttp.open("POST", "ModifyItem.php", false);
     xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-	xhttp.send("SID="+SID+"&PartNumber="+partNumber+"&Field=Ordering_Threshold&Value="+threshold);
+	xhttp.send("SID="+getSID()+"&PartNumber="+partNumber+"&Field=Ordering_Threshold&Value="+threshold);
   }
 
   
@@ -363,49 +361,49 @@ function createNewItem()
   {  
     xhttp.open("POST", "ModifyItem.php", false);
     xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-	xhttp.send("SID="+SID+"&PartNumber="+partNumber+"&Field=Location&Value="+location);
+	xhttp.send("SID="+getSID()+"&PartNumber="+partNumber+"&Field=Location&Value="+location);
   }
   
   if(description != "")
   {  
     xhttp.open("POST", "ModifyItem.php", false);
     xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-	xhttp.send("SID="+SID+"&PartNumber="+partNumber+"&Field=Description&Value="+description);
+	xhttp.send("SID="+getSID()+"&PartNumber="+partNumber+"&Field=Description&Value="+description);
   }
   
   if(type != "")
   {  
     xhttp.open("POST", "ModifyItem.php", false);
     xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-	xhttp.send("SID="+SID+"&PartNumber="+partNumber+"&Field=Type&Value="+type);
+	xhttp.send("SID="+getSID()+"&PartNumber="+partNumber+"&Field=Type&Value="+type);
   }
   
   if(value != "")
   {  
     xhttp.open("POST", "ModifyItem.php", false);
     xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-	xhttp.send("SID="+SID+"&PartNumber="+partNumber+"&Field=Value&Value="+value);
+	xhttp.send("SID="+getSID()+"&PartNumber="+partNumber+"&Field=Value&Value="+value);
   }
   
   if(supplierName != "")
   { 
     xhttp.open("POST", "ModifyItem.php", false);
     xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-	xhttp.send("SID="+SID+"&PartNumber="+partNumber+"&Field=Suppliers_Name&Value="+supplierName);
+	xhttp.send("SID="+getSID()+"&PartNumber="+partNumber+"&Field=Suppliers_Name&Value="+supplierName);
   }
   
   if(supplierPN != "")
   {  
     xhttp.open("POST", "ModifyItem.php", false);
     xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-	xhttp.send("SID="+SID+"&PartNumber="+partNumber+"&Field=Supplier_Part_Number&Value="+supplierPN);
+	xhttp.send("SID="+getSID()+"&PartNumber="+partNumber+"&Field=Supplier_Part_Number&Value="+supplierPN);
   }
   
   if(link != "")
   {  
     xhttp.open("POST", "ModifyItem.php", false);
     xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-	xhttp.send("SID="+SID+"&PartNumber="+partNumber+"&Field=Item_Link&Value="+link);
+	xhttp.send("SID="+getSID()+"&PartNumber="+partNumber+"&Field=Item_Link&Value="+link);
   }
   
 }
@@ -617,10 +615,57 @@ function parseXMLResponse(xml)
   }  
   
 
-  return true;
+  return true; 
   
 }
 
+
+function ivm_autoPN()
+{
+
+  var partNumber = "";
+  if(document.getElementById("id_ivm_type").value != "")
+  {
+	switch(document.getElementById("id_ivm_type").value)
+	{
+	  case "Capacitor":
+		partNumber = "C";
+		break;
+	  case "Resistor":
+		partNumber = "R";
+		break;
+	  case "Inductor":
+		partNumber = "I";
+		break;
+	  case "Equipment":
+		partNumber = "E";
+		break;
+	  case "Transistor":
+		partNumber = "Q";
+		break;
+	  case "Transformer":
+		partNumber = "T";
+		break;
+	  default:
+		partNumber = "O";
+		break;
+	}
+	
+  }
+  
+  if(document.getElementById("id_ivm_value").value != "")
+  {
+	partNumber += document.getElementById("id_ivm_value").value;
+  }
+  else
+  {
+	partNumber += "XXX";
+  }
+  
+  partNumber += "-01";
+  document.getElementById("id_ivm_itemNumber").value = partNumber;
+  return;
+}
 
 </script>
 </head>
@@ -711,63 +756,85 @@ function parseXMLResponse(xml)
 <div id="ItemViewModal" class="w3-modal">
   <div class="w3-modal-content">
     <div class="w3-container">
-	<header class="w3-container w3-blue">
+	<header class="w3-container w3-blue">	  
       <span onclick="document.getElementById('ItemViewModal').style.display='none'" 
       class="w3-closebtn">&times;</span>
+	  <h3>Add Item</h3>
 	 </header>
       <form class="w3-container">
-		<div class="w3-container w3-quarter">
-		  <input class="w3-input" type="text" id="id_ivm_itemNumber" placeholder="Item Number">
-		  <label>Item Number</label>
-		</div>
-
-		<div class="w3-container w3-quarter">
-		  <input class="w3-input" type="text" id="id_ivm_qty" placeholder="Quantity">
-		  <label>Quantity</label>
-		</div>
-		
-		<div class="w3-container w3-quarter">
-		  <input class="w3-input" type="text" id="id_ivm_thresh" placeholder="Threshold">
-		  <label>Threshold</label>
-		</div>
-		
-		<div class="w3-container w3-quarter">
-		  <input class="w3-input" type="text" id="id_ivm_location" placeholder="Location">
-		  <label>Location</label>
-		</div>
-		
-		<div class="w3-container">
-		  <input class="w3-input" type="text" id="id_ivm_desc" placeholder="Description">
-		  <label>Description</label>
-		</div>
-		
-		<div class="w3-container w3-half">
-		  <input class="w3-input" type="text" id="id_ivm_type" placeholder="Type">
+	  
+	    <div class="w3-container w3-half">
+		  <select class="w3-select w3-border" name="option" id="id_ivm_type" onchange="ivm_autoPN()">
+			<option value="" disabled selected>Select Type</option>
+			<option value="Capacitor">Capacitor</option>
+			<option value="Resistor">Resistor</option>
+			<option value="Inductor">Inductor</option>
+			<option value="Equipment">Equipment</option>
+			<option value="Transistor">Transistor</option>
+			<option value="Transformer">Transformer</option>
+			<option value="Other">Other</option>
+		  </select>
 		  <label>Type</label>
 		</div>
 		
 		<div class="w3-container w3-half">
-		  <input class="w3-input" type="text" id="id_ivm_value" placeholder="Value">
+		  <input class="w3-input w3-border" type="text" id="id_ivm_value" oninput="ivm_autoPN()">
 		  <label>Value</label>
-		</div>
-		
-		<div class="w3-container w3-half">
-		  <input class="w3-input" type="text" id="id_ivm_supplierName" placeholder="Supplier Name">
-		  <label>Supplier Name</label>
-		</div>
-		
-		<div class="w3-container w3-half">
-		  <input class="w3-input" type="text" id="id_ivm_supplierPN" placeholder="Supplier Part Number">
-		  <label>Supplier Part Number</label>
+		  <p>
 		</div>
 		
 		<div class="w3-container">
-		  <input class="w3-input" type="text" id="id_ivm_link" placeholder="Part Information URL">
-		  <label>Document URL</label>
+		  <input class="w3-input w3-border" type="text" id="id_ivm_desc">
+		  <label>Description</label>
+		  <p>
+		</div>	
+
+		<div class="w3-container w3-half">
+		  <input class="w3-input w3-border" type="text" id="id_ivm_supplierPN">
+		  <label>Supplier Part Number</label>
+		  <p>
+		</div>		
+
+		<div class="w3-container w3-half">
+		  <input class="w3-input w3-border" type="text" id="id_ivm_supplierName">
+		  <label>Supplier Name</label>
+		  <p>
 		</div>
 		
-		<button class="button" type="button" onclick="createNewItem()">Create Item</button>
+		<div class="w3-container">
+		  <input class="w3-input w3-border" type="text" id="id_ivm_link">
+		  <label>Document URL</label>
+		  <p>
+		</div>
 
+		<div class="w3-container w3-quarter">
+		  <input class="w3-input w3-border" type="text" id="id_ivm_qty">
+		  <label>Quantity</label>
+		  <p>
+		</div>
+		
+		<div class="w3-container w3-quarter">
+		  <input class="w3-input w3-border" type="text" id="id_ivm_thresh">
+		  <label>Threshold</label>
+		  <p>
+		</div>
+		
+		<div class="w3-container w3-half">
+		  <input class="w3-input w3-border" type="text" id="id_ivm_location">
+		  <label>Location</label>
+		  <p>
+		</div>
+		
+		<div class="w3-container">
+		  <input class="w3-input w3-border" type="text" id="id_ivm_itemNumber">
+		  <label>Item Number</label>
+		  <p>
+		</div>
+		
+		
+		<button class="w3-btn w3-blue" type="button" onclick="createNewItem()">Create Item</button>
+		<p>
+		
 		<footer class="w3-container w3-blue w3-row">
 		  <p></p>
 		</footer>

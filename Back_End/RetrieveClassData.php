@@ -10,7 +10,8 @@
  *	Inputs: SID: The session ID of the client
  *			PartNumber: The part number to retrieve data for.
  *
- *	Usage: 	RetrieveClassData.php?SID=<session id>
+ *	Usage: 	RetrieveClassData.php?SID=<session id>&SortColumn=<sort column>&
+ *              SortDirection=<ASC/DESC>
  ***********************************************************************/
   
 include "IMSBase.php";
@@ -31,6 +32,8 @@ try
 	if ($_SERVER["REQUEST_METHOD"] == "POST") 
 	{
 		$sessionID = $_POST["SID"];
+		$sortColumn = $_POST["SortColumn"];  
+		$sortDirection = $_POST["SortDirection"];
 	}
 	
 	$IMSBase = new IMSBase();
@@ -38,15 +41,28 @@ try
 	$sql = new IMSSql();
 
 	$IMSBase->verifyData($sessionID,"/^.+$/");	
+	$IMSBase->verifyData($sortColumn,"/^.*$/");
+	if($sortColumn != "")
+		$IMSBase->verifyData($sortDirection,"/^(ASC|DESC)$/");
 	
-	$stmt = $sql->prepare("SELECT * FROM dbo.Class_Data");
+	//build the SQL statement
+	$sqlQuery = "SELECT * FROM dbo.Class_Data";
+	
+	if($sortColumn != "")
+	{
+        $sqlQuery = $sqlQuery." ORDER BY $sortColumn $sortDirection";
+	}
+	
+	$sqlQuery = $sqlQuery.";";
+	
+	$stmt = $sql->prepare($sqlQuery);
 	$stmt->execute();
 	
 	$dataArray = $stmt->fetchAll(PDO::FETCH_ASSOC);
 	
 	
 	$statusCode = '0';
-	$statusMessage = "RetrieveClassData: ".count($dataArray)." Entries in Class Data Table";
+	$statusMessage = "RetrieveClassData: ".count($dataArray)." Entries in Class Data Table. ($sortColumn $sortDirection)";
 	$log->add_log($sessionID,'Information',$statusMessage);
 
 	       

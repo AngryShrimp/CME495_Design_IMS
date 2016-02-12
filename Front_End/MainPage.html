@@ -104,6 +104,11 @@ textarea
   resize: none;
   color:black;
 }
+th
+{
+  cursor:pointer;
+}
+
 </style>
 
 <script>
@@ -215,35 +220,18 @@ function showAutocomplete(partialStr)
 	return;
 	}
   }
-
-  var xhttp = new XMLHttpRequest();
-  xhttp.onreadystatechange = function() 
-  {
-    if (xhttp.readyState == 4 && xhttp.status == 200) 
-    {
-      parseXMLResponse(xhttp);
-    }
-  };
-  xhttp.open("POST", "QueryAutocomplete.php", true);
-  xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-  xhttp.send("SID="+getSID()+"&Filter="+ partialStr); 
+  
+  sendBackendRequest("QueryAutocomplete.php","SID="+getSID()+"&Filter="+ partialStr);
 }
 
+
+/****************************************************************
+Function:  getQuickUpdateData()
+Description: Requests data for a single item number.
+*****************************************************************/
 function getQuickUpdateData(partNumber)
 {
-
-  var xhttp = new XMLHttpRequest();
-  xhttp.onreadystatechange = function() 
-  {
-    if (xhttp.readyState == 4 && xhttp.status == 200) 
-    {
-      parseXMLResponse(xhttp);
-    }
-  };
-  xhttp.open("POST", "RetrieveItemData.php", true);
-  xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-  xhttp.send("SID="+getSID()+"&PartNumber="+ partNumber); 
-
+  sendBackendRequest("RetrieveItemData.php","SID="+getSID()+"&PartNumber="+ partNumber);
 }
 
 /****************************************************************
@@ -258,18 +246,7 @@ function addClassDataEntry()
   var qty = document.getElementById("id_cdm_qtyInput").value;
   var date = document.getElementById("id_cdm_dateInput").value;
 
-  var xhttp = new XMLHttpRequest();
-  xhttp.onreadystatechange = function() 
-  {
-    if (xhttp.readyState == 4 && xhttp.status == 200) 
-    {
-      parseXMLResponse(xhttp);
-    }
-  };
-  xhttp.open("POST", "AddNewClassData.php", true);
-  xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-  xhttp.send("SID="+getSID()+"&Class="+className+"&PartNumber="+partNumber+"&Quantity="+qty+"&Date="+date); 
-
+  sendBackendRequest("AddNewClassData.php","SID="+getSID()+"&Class="+className+"&PartNumber="+partNumber+"&Quantity="+qty+"&Date="+date);
 }
 
 /****************************************************************
@@ -279,19 +256,7 @@ Data information for display.
 *****************************************************************/
 function getClassData()
 {
-
-  var xhttp = new XMLHttpRequest();
-  xhttp.onreadystatechange = function() 
-  {
-    if (xhttp.readyState == 4 && xhttp.status == 200) 
-    {
-      parseXMLResponse(xhttp);
-    }
-  };
-  xhttp.open("POST", "RetrieveClassData.php", true);
-  xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-  xhttp.send("SID="+getSID()); 
-	
+  sendBackendRequest("RetrieveClassData.php","SID="+getSID());	
 }
 
 /****************************************************************
@@ -408,6 +373,23 @@ function createNewItem()
   
 }
 
+
+function sendBackendRequest(PHPscript,postOptions)
+{
+  var xhttp = new XMLHttpRequest();
+  xhttp.onreadystatechange = function() 
+  {
+    if (xhttp.readyState == 4 && xhttp.status == 200) 
+    {
+      parseXMLResponse(xhttp);
+    }
+  };
+  xhttp.open("POST", PHPscript, true);
+  xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+  xhttp.send(postOptions);
+  
+  return;
+}
 
 
 function parseXMLResponse(xml)
@@ -590,13 +572,80 @@ function parseXMLResponse(xml)
       //do something
     }
 	
-	tableClassData = "<table class=\"w3-table w3-bordered w3-border w3-striped\"><tr>" +
-            "<th>Class Name</th>" + 
-            "<th>Part Number</th>" + 
-            "<th>Quantity</th>" +
-            "<th>Date</th>";
-			
+	var headerLabelClass = "Class Name";
+	var headerLabelPN = "Part Number";
+	var headerLabelQty = "Quantity";
+	var headerLabelDate = "Date";
 	
+    var currentSort = document.getElementById("id_cmd_sortInfo").innerHTML;
+
+	
+	if(currentSort != "None")
+	{
+	  var currentSortSplit = currentSort.split(":");
+	  var currentSortCol = currentSortSplit[0];
+	  var currentSortDir = currentSortSplit[1];
+	  
+	  if(currentSortCol == "Class")
+	  {
+		if(currentSortDir == "ASC")
+		{
+		  headerLabelClass = "Class Name&#9650;";
+		}
+		else
+		{
+		  headerLabelClass = "Class Name&#9660;";
+		}		
+	  }
+	  
+	  if(currentSortCol == "Part")
+	  {
+		if(currentSortDir == "ASC")
+		{
+		  headerLabelPN = "Part Number&#9650;";
+		}
+		else
+		{
+		  headerLabelPN = "Part Number&#9660;";
+		}		
+	  }
+	  
+	  
+	  if(currentSortCol == "Quantity")
+	  {
+		if(currentSortDir == "ASC")
+		{
+		  headerLabelQty = "Quantity&#9650;";
+		}
+		else
+		{
+		  headerLabelQty = "Quantity&#9660;";
+		}		
+	  }
+	  
+	  
+	  if(currentSortCol == "Date")
+	  {
+		if(currentSortDir == "ASC")
+		{
+		  headerLabelDate = "Date&#9650;";
+		}
+		else
+		{
+		  headerLabelDate = "Date&#9660;";
+		}		
+	  }	
+	}
+
+	
+	//Table header
+	tableClassData = "<table class=\"w3-table w3-bordered w3-border w3-striped w3-hoverable\" ><tr>" +
+            "<th class=\"w3-border\" onclick=\"cdm_tableSort('Class')\">"+headerLabelClass+"</th>" + 
+            "<th class=\"w3-border\" onclick=\"cdm_tableSort('Part')\">"+headerLabelPN+"</th>" + 
+            "<th class=\"w3-border\" onclick=\"cdm_tableSort('Quantity')\">"+headerLabelQty+"</th>" +
+            "<th class=\"w3-border\" onclick=\"cdm_tableSort('Date')\">"+headerLabelDate+"</th>";
+			
+	//table data
 	for( i = 0; i < class_entry.length; i++)
     {
 		tableClassData += "<tr>" + "<td>" + class_entry[i].getElementsByTagName("Class")[0].childNodes[0].nodeValue + "</td>" +
@@ -619,7 +668,11 @@ function parseXMLResponse(xml)
   
 }
 
-
+/****************************************************************
+Function:  ivm_autoPN()
+Description: Generates an Item Number suggestion based on form 
+inputs.
+*****************************************************************/
 function ivm_autoPN()
 {
 
@@ -665,6 +718,42 @@ function ivm_autoPN()
   partNumber += "-01";
   document.getElementById("id_ivm_itemNumber").value = partNumber;
   return;
+}
+
+/****************************************************************
+Function:  cdm_tableSort()
+Description: Sorts the class data table based on clicked header.
+*****************************************************************/
+function cdm_tableSort(column)
+{ 
+
+  var sortDir = "ASC";
+  
+  var currentSort = document.getElementById("id_cmd_sortInfo").innerHTML;
+  
+  if(currentSort != "None")
+  {
+	var currentSortSplit = currentSort.split(":");
+	var currentSortCol = currentSortSplit[0];
+	var currentSortDir = currentSortSplit[1];
+	
+	if(currentSortCol == column)
+	{
+	  if(currentSortDir == "ASC")
+		sortDir = "DESC";
+	  else
+	    sortDir = "ASC";
+	}
+	else
+	{
+	  sortDir = "ASC";
+	}
+  
+  }
+
+  sendBackendRequest("RetrieveClassData.php","SID="+getSID()+"&SortColumn="+column+"&SortDirection="+sortDir);
+  
+  document.getElementById("id_cmd_sortInfo").innerHTML = column + ":"+sortDir;  
 }
 
 </script>
@@ -851,8 +940,9 @@ function ivm_autoPN()
 	<header class="w3-container w3-blue">
       <span onclick="document.getElementById('ClassDataModal').style.display='none'" 
       class="w3-closebtn">&times;</span>
+	  <h3>Class Data</h3>
 	</header>
-	
+	<div id="id_cmd_sortInfo" style="display: none;">None</div>
 	<div id="id_cdm_table">
 	</div>
 	 

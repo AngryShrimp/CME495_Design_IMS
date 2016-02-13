@@ -1,18 +1,18 @@
 <?PHP
 /***********************************************************************
- * 	Script: RetrieveClassData.php
- * 	Description: Script retrieving data for a single part number for
- *      the quick access form.
- *
+ * 	Script: DeleteClassData.php
+ * 	Description: Script for deleting class data from the database.
+ *				 Returns a refreshed table for display.
  *	Author: Craig Irvine (cri646@mail.usask.ca)
- *	Date: 13 January 2016
+ *	Date: 13 Feb 2016
  *
  *	Inputs: SID: The session ID of the client
+ *			ID: ID of the class record data to be deleted.
  *			SortColumn: The data column to sort. (Optional)
  *          SortDirection: The sort direction (Ascending or Descending). (Optional)
  *
- *	Usage: 	RetrieveClassData.php?SID=<session id>&SortColumn=<sort column>&
- *              SortDirection=<ASC/DESC>
+ *	Usage: DeleteClassData.php?SID=<session ID>&ID=<Record ID>&
+ *							   SortColumn=<sort column>&SortDirection=<ASC/DESC>
  ***********************************************************************/
   
 include "IMSBase.php";
@@ -21,6 +21,7 @@ include "IMSSql.php";
 
 
 $sessionID = "";
+$id = "";
 $sortColumn = "";
 $sortDirection = "";
 
@@ -34,20 +35,31 @@ try
 	if ($_SERVER["REQUEST_METHOD"] == "POST") 
 	{
 		$sessionID = $_POST["SID"];
+		$id = $_POST["ID"];  
 		$sortColumn = $_POST["SortColumn"];  
-		$sortDirection = $_POST["SortDirection"];
+		$sortDirection = $_POST["SortDirection"];		
 	}
-	
+
+
 	$IMSBase = new IMSBase();
 	$log = new IMSLog();
 	$sql = new IMSSql();
-
+	
 	$IMSBase->verifyData($sessionID,"/^.+$/");	
+	$IMSBase->verifyData($id,"/^.+$/");	
 	$IMSBase->verifyData($sortColumn,"/^.*$/");
 	if($sortColumn != "")
 		$IMSBase->verifyData($sortDirection,"/^(ASC|DESC)$/");
+		
+		
+	//Delete record
+	$sql->command("DELETE FROM dbo.Class_Data WHERE Id=$id;");
 	
-	//build the SQL statement
+	$statusCode = '0';
+	$statusMessage = "Class data record ID:$id has been deleted from the database.";
+	$log->add_log($sessionID,'Information',$statusMessage);
+	
+	//retrieve new table.
 	$sqlQuery = "SELECT * FROM dbo.Class_Data";
 	
 	if($sortColumn != "")
@@ -63,23 +75,19 @@ try
 	$dataArray = $stmt->fetchAll(PDO::FETCH_ASSOC);
 	
 	
-	$statusCode = '0';
-	$statusMessage = "RetrieveClassData: ".count($dataArray)." Entries in Class Data Table. ($sortColumn $sortDirection)";
-	$log->add_log($sessionID,'Information',$statusMessage);
-
-	       
+	
 }
 catch(PDOException $e)
 {
 	$statusCode = '1';
-	$statusMessage = 'CreateNewItem SQLError: '.$e->getMessage();
+	$statusMessage = 'DeleteClassData SQLError: '.$e->getMessage();
 	$log->add_log($sessionID,'Error',$statusMessage);
 	
 }
 catch(Exception $e)
 {
 	$statusCode = '1';
-	$statusMessage = 'CreateNewItem Error: '. $e->getMessage();
+	$statusMessage = 'DeleteClassData Error: '. $e->getMessage();
 	$log->add_log($sessionID,'Error',$statusMessage);
 
 }	
@@ -87,7 +95,6 @@ catch(Exception $e)
 //{
 	$statusArray[0] = $statusCode;
 	$statusArray[1] = $statusMessage;
-	//$dataArray will be null unless it was filled by $stmt->fetch()
 	$IMSBase->GenerateXMLResponse($sessionID,$statusArray,NULL,NULL,NULL,NULL,$dataArray);
 //}	
 ?>

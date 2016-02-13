@@ -11,9 +11,11 @@
  * 			PartNumber: The part to add to the record.
  *			Quantity: The quantity required.
  *			Date: The required date.
+ * 			SortColumn: The data column to sort. (Optional)
+ *          SortDirection: The sort direction (Ascending or Descending). (Optional)
  *
  *	Usage: AddNewClassData.php?SID=<session ID>&Class=<class>&PartNumber=<part number>&
-			Quantity=<quantity>&Date=<date>
+ *			Quantity=<quantity>&Date=<date>&SortColumn=<sort column>&SortDirection=<ASC/DESC>
  ***********************************************************************/
   
 include "IMSBase.php";
@@ -26,6 +28,9 @@ $classNumber = "";
 $partNumber = "";
 $quantity = "";
 $date = "";
+$sortColumn = "";
+$sortDirection = "";
+$dataArray=NULL;
 
 $statusMessage = "";
 $statusCode = "";
@@ -40,6 +45,8 @@ try
 		$partNumber = $_POST["PartNumber"];
 		$quantity = $_POST["Quantity"];
 		$date = $_POST["Date"];
+		$sortColumn = $_POST["SortColumn"];  
+		$sortDirection = $_POST["SortDirection"];		
 	}
 
 
@@ -52,6 +59,9 @@ try
 	$IMSBase->verifyData($partNumber,"/^.+$/");	
 	$IMSBase->verifyData($quantity,"/^[0-9]+$/");	
 	$IMSBase->verifyData($date,"/^[0-9][0-9]-[0-9][0-9]-[0-9][0-9]$/");	
+	$IMSBase->verifyData($sortColumn,"/^.*$/");
+	if($sortColumn != "")
+		$IMSBase->verifyData($sortDirection,"/^(ASC|DESC)$/");
 
 	//Add date verification?
 
@@ -64,12 +74,30 @@ try
 	}
 	else
 	{	
-
+		//add new item
 		$sql->command("INSERT INTO dbo.Class_Data (Class,Part,Quantity,Date) VALUES ('$classNumber','$partNumber',$quantity,'$date');");
 		
+		
+		//retrieve new table.
+		$sqlQuery = "SELECT * FROM dbo.Class_Data";
+		
+		if($sortColumn != "")
+		{
+			$sqlQuery = $sqlQuery." ORDER BY $sortColumn $sortDirection";
+		}
+		
+		$sqlQuery = $sqlQuery.";";
+		
+		$stmt = $sql->prepare($sqlQuery);
+		$stmt->execute();
+		
+		$dataArray = $stmt->fetchAll(PDO::FETCH_ASSOC);
+		
+		
 		$statusCode = '0';
-		$statusMessage = "Class data for ($classNumber) part number ($partNumber) created successfully. ";
-		$log->add_log($sessionID,'Info',$statusMessage);
+		$statusMessage = "Class data for ($classNumber) part number ($partNumber) created successfully.";
+		$log->add_log($sessionID,'Information',$statusMessage);
+		
 	}
 
 	
@@ -92,6 +120,6 @@ catch(Exception $e)
 //{
 	$statusArray[0] = $statusCode;
 	$statusArray[1] = $statusMessage;
-	$IMSBase->GenerateXMLResponse($sessionID,$statusArray);
+	$IMSBase->GenerateXMLResponse($sessionID,$statusArray,NULL,NULL,NULL,NULL,$dataArray);
 //}	
 ?>

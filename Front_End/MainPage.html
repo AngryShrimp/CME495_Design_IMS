@@ -122,7 +122,7 @@ SID from the server
 function populateForms()
 {
 	setSID();
-	getClassData();
+	cdm_getClassData();
 	loadBrowser();
 	loadLog();
 }
@@ -234,30 +234,7 @@ function getQuickUpdateData(partNumber)
   sendBackendRequest("RetrieveItemData.php","SID="+getSID()+"&PartNumber="+ partNumber);
 }
 
-/****************************************************************
-Function:  addClassDataEntry()
-Description: Sends new class data to the server to be saved.
-*****************************************************************/
-function addClassDataEntry()
-{
 
-  var className = document.getElementById("id_cdm_classInput").value;
-  var partNumber = document.getElementById("id_cdm_PNInput").value;
-  var qty = document.getElementById("id_cdm_qtyInput").value;
-  var date = document.getElementById("id_cdm_dateInput").value;
-
-  sendBackendRequest("AddNewClassData.php","SID="+getSID()+"&Class="+className+"&PartNumber="+partNumber+"&Quantity="+qty+"&Date="+date);
-}
-
-/****************************************************************
-Function:  getClassData()
-Description: Sends a request to the server to retrieve the Class 
-Data information for display.
-*****************************************************************/
-function getClassData()
-{
-  sendBackendRequest("RetrieveClassData.php","SID="+getSID());	
-}
 
 /****************************************************************
 Function:  createNewItem()
@@ -373,7 +350,11 @@ function createNewItem()
   
 }
 
-
+/****************************************************************
+Function:  sendBackendRequest()
+Description: Sets up and sends a XMLHttpRequest in POST mode to 
+a specified PHP script.
+*****************************************************************/
 function sendBackendRequest(PHPscript,postOptions)
 {
   var xhttp = new XMLHttpRequest();
@@ -571,7 +552,7 @@ function parseXMLResponse(xml)
     {
       //do something
     }
-	
+	var headerLabelID = "ID";
 	var headerLabelClass = "Class Name";
 	var headerLabelPN = "Part Number";
 	var headerLabelQty = "Quantity";
@@ -586,15 +567,27 @@ function parseXMLResponse(xml)
 	  var currentSortCol = currentSortSplit[0];
 	  var currentSortDir = currentSortSplit[1];
 	  
+	  if(currentSortCol == "ID")
+	  {
+		if(currentSortDir == "ASC")
+		{
+		  headerLabelID = "ID&#9650;"; //Arrow up
+		}
+		else
+		{
+		  headerLabelID = "ID&#9660;";//Arrow Down
+		}		
+	  }
+	  
 	  if(currentSortCol == "Class")
 	  {
 		if(currentSortDir == "ASC")
 		{
-		  headerLabelClass = "Class Name&#9650;";
+		  headerLabelClass = "Class Name&#9650;"; //Arrow up
 		}
 		else
 		{
-		  headerLabelClass = "Class Name&#9660;";
+		  headerLabelClass = "Class Name&#9660;";//Arrow Down
 		}		
 	  }
 	  
@@ -640,22 +633,38 @@ function parseXMLResponse(xml)
 	
 	//Table header
 	tableClassData = "<table class=\"w3-table w3-bordered w3-border w3-striped w3-hoverable\" ><tr>" +
+			"<col width=\"50\">"+
+			"<th class=\"w3-border\" onclick=\"cdm_tableSort('ID')\">"+headerLabelID+"</th>" +
             "<th class=\"w3-border\" onclick=\"cdm_tableSort('Class')\">"+headerLabelClass+"</th>" + 
             "<th class=\"w3-border\" onclick=\"cdm_tableSort('Part')\">"+headerLabelPN+"</th>" + 
             "<th class=\"w3-border\" onclick=\"cdm_tableSort('Quantity')\">"+headerLabelQty+"</th>" +
             "<th class=\"w3-border\" onclick=\"cdm_tableSort('Date')\">"+headerLabelDate+"</th>";
-			
 	//table data
 	for( i = 0; i < class_entry.length; i++)
     {
-		tableClassData += "<tr>" + "<td>" + class_entry[i].getElementsByTagName("Class")[0].childNodes[0].nodeValue + "</td>" +
-                        "<td>" + class_entry[i].getElementsByTagName("Part")[0].childNodes[0].nodeValue + "</td>" +
-                        "<td>" + class_entry[i].getElementsByTagName("Quantity")[0].childNodes[0].nodeValue + "</td>" +
-                        "<td>" + class_entry[i].getElementsByTagName("Date")[0].childNodes[0].nodeValue + "</td>" +                   
-                        "</tr>";	
 	
+		var id = class_entry[i].getElementsByTagName("Id")[0].childNodes[0].nodeValue;
+		var className = class_entry[i].getElementsByTagName("Class")[0].childNodes[0].nodeValue;
+		var part = class_entry[i].getElementsByTagName("Part")[0].childNodes[0].nodeValue;
+		var qty = class_entry[i].getElementsByTagName("Quantity")[0].childNodes[0].nodeValue;
+		var date = class_entry[i].getElementsByTagName("Date")[0].childNodes[0].nodeValue;
+	
+	
+		tableClassData += "<tr onclick=\"cdm_loadRow('" + 
+						id + "','" +
+						className + "','" +
+						part + "','" +
+						qty + "','" +
+						date +
+						"')\">" + 
+						"<td class=\"w3-border\">" + id + "</td>" +
+						"<td class=\"w3-border\">" + className + "</td>" +
+                        "<td class=\"w3-border\">" + part + "</td>" +
+                        "<td class=\"w3-border\">" + qty + "</td>" +
+                        "<td class=\"w3-border\">" + date + "</td>" +                   
+                        "</tr>";								
 	}
-	
+
     tableClassData += "</table>"
 
 	
@@ -754,6 +763,121 @@ function cdm_tableSort(column)
   sendBackendRequest("RetrieveClassData.php","SID="+getSID()+"&SortColumn="+column+"&SortDirection="+sortDir);
   
   document.getElementById("id_cmd_sortInfo").innerHTML = column + ":"+sortDir;  
+}
+
+/****************************************************************
+Function:  cdm_loadRow()
+Description: Loads a row of data into the edit box.
+*****************************************************************/
+function cdm_loadRow(id,className,part,qty,date)
+{
+	document.getElementById("id_cdm_idDisplay").innerHTML = id;
+	document.getElementById("id_cdm_classInput").value = className;
+	document.getElementById("id_cdm_PNInput").value = part;
+	document.getElementById("id_cdm_qtyInput").value = qty;
+	document.getElementById("id_cdm_dateInput").value = date;
+
+	document.getElementById("id_cdm_deleteEntry").disabled = false;
+
+	return;
+}
+
+/****************************************************************
+Function:  cdm_clearEdit()
+Description: Clears the edit box if a row is loaded into it.
+*****************************************************************/
+function cdm_clearEdit()
+{
+	if(document.getElementById("id_cdm_idDisplay").innerHTML != "New")
+	{
+		document.getElementById("id_cdm_idDisplay").innerHTML = "New";
+		document.getElementById("id_cdm_classInput").value = "";
+		document.getElementById("id_cdm_PNInput").value = "";
+		document.getElementById("id_cdm_qtyInput").value = "";
+		document.getElementById("id_cdm_dateInput").value = "";	
+		
+		document.getElementById("id_cdm_deleteEntry").disabled = true;
+
+	}
+	
+	return;
+}
+
+/****************************************************************
+Function:  cdm_deleteClassDataEntry()
+Description: Delets a selected class data entry from the database.
+*****************************************************************/
+function cdm_deleteClassDataEntry()
+{
+	var id = document.getElementById("id_cdm_idDisplay").innerHTML;
+	var sortCommand ="";
+	if(id != "New")
+	{
+		var currentSort = document.getElementById("id_cmd_sortInfo").innerHTML;
+		if(currentSort != "None")
+		{
+			var currentSortSplit = currentSort.split(":");
+			var currentSortCol = currentSortSplit[0];
+			var currentSortDir = currentSortSplit[1];
+			
+			sortCommand = "&SortColumn="+currentSortCol+"&SortDirection="+currentSortDir;
+			
+		}	
+		
+		sendBackendRequest("DeleteClassData.php","SID="+getSID()+"&ID="+id+sortCommand);
+	}
+	else
+	{
+		alert("No Class data record selected");
+	}
+	
+	return;
+}
+
+/****************************************************************
+Function:  cdm_addClassDataEntry()
+Description: Sends new class data to the server to be saved.
+*****************************************************************/
+function cdm_addClassDataEntry()
+{
+
+  var className = document.getElementById("id_cdm_classInput").value;
+  var partNumber = document.getElementById("id_cdm_PNInput").value;
+  var qty = document.getElementById("id_cdm_qtyInput").value;
+  var date = document.getElementById("id_cdm_dateInput").value;
+  var sortCommand = "";
+  
+  var currentSort = document.getElementById("id_cmd_sortInfo").innerHTML;
+  if(currentSort != "None")
+  {
+	var currentSortSplit = currentSort.split(":");
+	var currentSortCol = currentSortSplit[0];
+	var currentSortDir = currentSortSplit[1];
+	
+	sortCommand = "&SortColumn="+currentSortCol+"&SortDirection="+currentSortDir;	
+  }	  
+
+  sendBackendRequest("AddNewClassData.php","SID="+getSID()+"&Class="+className+"&PartNumber="+partNumber+"&Quantity="+qty+"&Date="+date+sortCommand);
+  
+  //clear entries
+  document.getElementById("id_cdm_idDisplay").innerHTML = "New";
+  document.getElementById("id_cdm_classInput").value = "";
+  document.getElementById("id_cdm_PNInput").value = "";
+  document.getElementById("id_cdm_qtyInput").value = "";
+  document.getElementById("id_cdm_dateInput").value = "";	
+  document.getElementById("id_cdm_deleteEntry").disabled = true;
+  
+  return;
+}
+
+/****************************************************************
+Function:  cdm_getClassData()
+Description: Sends a request to the server to retrieve the Class 
+Data information for display.
+*****************************************************************/
+function cdm_getClassData()
+{
+  sendBackendRequest("RetrieveClassData.php","SID="+getSID());	
 }
 
 </script>
@@ -946,31 +1070,34 @@ function cdm_tableSort(column)
 	<div id="id_cdm_table">
 	</div>
 	 
-	
+	<div class="w3-container">
+		<a>ID:</a>
+		<a id="id_cdm_idDisplay">New</a>
+	</div>
 	<form class="w3-container">
 	<div class="w3-container w3-quarter">
-		<input class="w3-input w3-border" type="text" id="id_cdm_classInput" placeholder="Class">
+		<input class="w3-input w3-border" type="text" id="id_cdm_classInput" placeholder="" onclick="cdm_clearEdit()">
 		<label>Class</label>
 	</div>
 	<div class="w3-container w3-quarter">
-		<input class="w3-input w3-border" type="text" id="id_cdm_PNInput" placeholder="Part Number">
+		<input class="w3-input w3-border" type="text" id="id_cdm_PNInput" placeholder="" onclick="cdm_clearEdit()">
 		<label>Part Number</label>
 	</div>
 	<div class="w3-container w3-quarter">
-		<input class="w3-input w3-border" type="text" id="id_cdm_qtyInput" placeholder="Quantity">
+		<input class="w3-input w3-border" type="text" id="id_cdm_qtyInput" placeholder="" onclick="cdm_clearEdit()">
 		<label>Quantity Needed</label>
 	</div>
 	<div class="w3-container w3-quarter">
-		<input class="w3-input w3-border" type="text" id="id_cdm_dateInput" placeholder="DD-MM-YYYY">
+		<input class="w3-input w3-border" type="text" id="id_cdm_dateInput" placeholder="" onclick="cdm_clearEdit()">
 		<label>Date Needed</label>
 	</div>
-	<br>
-	<button class="button" type="button" onclick="addClassDataEntry()">Add Class Data</button>
-	<button class="button" type="button" onclick="getClassData()">Show</button>
-
+	<p/>	
+	<button class="w3-btn w3-blue" type="button" onclick="cdm_addClassDataEntry()">Add Class Data</button>
+	<button class="w3-btn w3-red" type="button" onclick="cdm_deleteClassDataEntry()" id="id_cdm_deleteEntry" disabled>Delete</button>
+	<p/>
 	</form>  
 	<footer class="w3-container w3-blue w3-row">
-		  <p></p>
+		<p/>
 	</footer>  
     </div>
   </div>

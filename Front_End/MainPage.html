@@ -967,7 +967,7 @@ function cdm_getClassData()
 
 <!-- Modal Dialog box for Viewing Editing Single Item -->
 <div id="ItemViewModal" class="w3-modal">
-  <div class="w3-modal-content">
+  <div class="w3-modal-content w3-blue" style="width:95%">
     <div class="w3-container">
 	<header class="w3-container w3-blue">	  
       <span onclick="document.getElementById('ItemViewModal').style.display='none'" 
@@ -1045,7 +1045,7 @@ function cdm_getClassData()
 		</div>
 		
 		
-		<button class="w3-btn w3-blue" type="button" onclick="createNewItem()">Create Item</button>
+		<button class="w3-btn w3-light-green w3-border w3-round-large" type="button" onclick="createNewItem()">Create Item</button>
 		<p>
 		
 		<footer class="w3-container w3-blue w3-row">
@@ -1059,7 +1059,7 @@ function cdm_getClassData()
 
 <!-- Class Data Modal Dialog Box -->
 <div id="ClassDataModal" class="w3-modal">
-  <div class="w3-modal-content">
+  <div class="w3-modal-content w3-blue" style="width:95%">
     <div class="w3-container">
 	<header class="w3-container w3-blue">
       <span onclick="document.getElementById('ClassDataModal').style.display='none'" 
@@ -1067,7 +1067,7 @@ function cdm_getClassData()
 	  <h3>Class Data</h3>
 	</header>
 	<div id="id_cmd_sortInfo" style="display: none;">None</div>
-	<div id="id_cdm_table">
+	<div id="id_cdm_table" class="w3-white">
 	</div>
 	 
 	<div class="w3-container">
@@ -1092,8 +1092,8 @@ function cdm_getClassData()
 		<label>Date Needed</label>
 	</div>
 	<p/>	
-	<button class="w3-btn w3-blue" type="button" onclick="cdm_addClassDataEntry()">Add Class Data</button>
-	<button class="w3-btn w3-red" type="button" onclick="cdm_deleteClassDataEntry()" id="id_cdm_deleteEntry" disabled>Delete</button>
+	<button class="w3-btn w3-light-green w3-border w3-round-large" type="button" onclick="cdm_addClassDataEntry()">Add Class Data</button>
+	<button class="w3-btn w3-red w3-border w3-round-large" type="button" onclick="cdm_deleteClassDataEntry()" id="id_cdm_deleteEntry" disabled>Delete</button>
 	<p/>
 	</form>  
 	<footer class="w3-container w3-blue w3-row">

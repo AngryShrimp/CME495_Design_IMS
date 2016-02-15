@@ -519,7 +519,7 @@ function parseXMLResponse(xml)
             "<th>Type</th>" +
             "<th>Value</th>" +
             "<th>Location</th>" +
-            //"<th>Supplier Part Number</th>" +
+            "<th>Supplier Part Number</th>" +
             "<th>Ordering Threshold</th>" +
             "<th>Description</th>";
     for( i = 0; i < browser_entry.length; i++)
@@ -530,8 +530,8 @@ function parseXMLResponse(xml)
                         "<td>" + browser_entry[i].getElementsByTagName("Type")[0].childNodes[0].nodeValue + "</td>" +
                         "<td>" + browser_entry[i].getElementsByTagName("Value")[0].childNodes[0].nodeValue + "</td>" +
                         "<td>" + browser_entry[i].getElementsByTagName("Location")[0].childNodes[0].nodeValue + "</td>" +                        
-                        //"<td>" + browser_entry[i].getElementsByTagName("SupplierPartNumber")[0].childNodes[0].nodeValue + "</td>" +
-                        "<td>" + browser_entry[i].getElementsByTagName("OrderingThreshold")[0].childNodes[0].nodeValue + "</td>" +
+                        "<td>" + browser_entry[i].getElementsByTagName("Supplier_Part_Number")[0].childNodes[0].nodeValue + "</td>" +
+                        "<td>" + browser_entry[i].getElementsByTagName("Ordering_Threshold")[0].childNodes[0].nodeValue + "</td>" +
                         "<td>" + browser_entry[i].getElementsByTagName("Description")[0].childNodes[0].nodeValue + "</td>" +
                         "</tr>";
     }

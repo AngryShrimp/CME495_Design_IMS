@@ -26,7 +26,7 @@ class IMSLog
 			//default log location
 			$this->log_file_loc = "log\IMSLog.csv";
 		}
-		
+
 		//Check that log folder exists and check write permissions.
 		if(!file_exists("log"))
 		{
@@ -39,7 +39,9 @@ class IMSLog
 		if(!is_writable(dirname($this->log_file_loc)))
 		{
 			throw new Exception("Log directory ($this->log_file_loc) is not writeable.");
-		}		
+		}	
+
+
 
 	}
 	
@@ -72,10 +74,9 @@ class IMSLog
 	public function read_log($levelFilter)
 	{
             $logData = array();
-	
-            
-            waitForLock();
-                
+
+            $this->waitForLock();
+
             $lock_file = fopen($this->log_file_loc.".lock",'w+');	
             fwrite($lock_file,"Locked");
             fclose($lock_file);
@@ -106,8 +107,7 @@ class IMSLog
             unlink($this->log_file_loc.".lock");	
             
             return $logData;
-            
-            
+   
 	}
 	
 
@@ -123,13 +123,9 @@ class IMSLog
 				throw new Exception("Logging time-out waiting for lock");
 			}
 			time_nanosleep(0, 100000000); //sleep for a 10th of a second.
-		}					
+		}		
 		return;
-
-	}
-	
-
-	
+	}	
 }
 
 

@@ -60,6 +60,24 @@ class IMSLog
 		
 		$log_file = fopen($this->log_file_loc,'a');
 		
+		//check for empty inputs.
+		if($SID == "")
+		{
+			$SID = "Unknown";
+		}
+		if($Level == "")
+		{
+			$Level = "Unknown";
+		}
+		if($SID == "")
+		{
+			$Message = "Unknown";
+		}
+		
+		//Ensure Message does not have any commas.
+		str_replace(',','-',$Message);
+		
+		
 		$log_entry = date("c").",".$SID.",".$Level.",".$Message."\n";
 		
 		fwrite($log_file,$log_entry);
@@ -84,20 +102,25 @@ class IMSLog
             $log_file = fopen($this->log_file_loc,'r');
 
 
-            while(! feof($log_file))
+            while(!feof($log_file))
             {
                 $csvData = fgetcsv($log_file);
                 
-                if(($csvData[2] == $levelFilter) || ($levelFilter == "All"))
-                {            
-                    $logArray['Date'] = $csvData[0];
-                    $logArray['SID'] = $csvData[1];
-                    $logArray['Level'] = $csvData[2];
-                    $logArray['Description'] = $csvData[3];
-                    
-                
-                    $logData[] = $logArray;
-                }
+				//Prevent blank lines from creating a log entry in the response.
+				if($csvData[0] != "")
+				{
+				
+					if(($csvData[2] == $levelFilter) || ($levelFilter == "All"))
+					{            
+						$logArray['Date'] = $csvData[0];
+						$logArray['SID'] = $csvData[1];
+						$logArray['Level'] = $csvData[2];
+						$logArray['Description'] = $csvData[3];
+						
+					
+						$logData[] = $logArray;
+					}
+				}
             }
             
             

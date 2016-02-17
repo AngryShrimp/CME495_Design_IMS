@@ -144,7 +144,7 @@ function setSID()
 
   if(SIDResponse == "SIDError")
   {
-	alert("GET SID Error. SID Missing");
+    IMSError("setSID Error","SID Missing.");
 	return;
   }
 	
@@ -222,6 +222,7 @@ function showAutocomplete(partialStr)
   }
   
   sendBackendRequest("QueryAutocomplete.php","SID="+getSID()+"&Filter="+ partialStr);
+  return;
 }
 
 
@@ -232,6 +233,8 @@ Description: Requests data for a single item number.
 function getQuickUpdateData(partNumber)
 {
   sendBackendRequest("RetrieveItemData.php","SID="+getSID()+"&PartNumber="+ partNumber);
+  
+  return;
 }
 
 
@@ -384,8 +387,8 @@ function parseXMLResponse(xml)
   //error check for null XML response.
   if(xmlDoc == null)
   {
-    //do something
-    //break and report error. NO script yet
+    IMSError("parseXMLResponse Error","Returned XML Doc is Null");
+	return false;    
   }   
   
 
@@ -410,17 +413,16 @@ function parseXMLResponse(xml)
 	//check status code and throw and alert if a fail occurred.
 	if(statusCode != "0")
 	{
-		alert("Server Error with message:" + statusMessage);
-		return false;
+	  IMSError("parseXMLResponse Error","Server Error with message:" + statusMessage);
+	  return false;
 	}
 	
   
   }
   else //Bad XML Response format if STATUS is missing
   {
-	alert("Bad XML Response Format");
-
-	return false;
+    IMSError("parseXMLResponse Error","Bad XML Response Format");
+	return false;	
   }
 
   
@@ -432,7 +434,8 @@ function parseXMLResponse(xml)
 	//check for null data
     if(autoCompleteList == null)
     {
-      //do something
+      IMSError("parseXMLResponse Error","AutoComplete List is NULL");
+	  return false;	
     }
 	
 	
@@ -483,7 +486,8 @@ function parseXMLResponse(xml)
     //check for null data
     if(log_entry == null)
     {
-      //do something
+	  IMSError("parseXMLResponse Error","Log List is NULL");
+	  return false;	
     }
 
     tableLog = "<table><tr>" +
@@ -518,7 +522,8 @@ function parseXMLResponse(xml)
     //check for null data
     if(browser_entry == null)
     {
-      //do something
+      IMSError("parseXMLResponse Error","Broswer List is NULL");
+	  return false;	
     }
     
     tableBrowser = "<table><tr>" +
@@ -558,7 +563,8 @@ function parseXMLResponse(xml)
 	//check for null data
     if(class_entry == null)
     {
-      //do something
+      IMSError("parseXMLResponse Error","Class Data Entry is NULL");
+	  return false;	
     }
 	var headerLabelID = "ID";
 	var headerLabelClass = "Class Name";
@@ -640,7 +646,7 @@ function parseXMLResponse(xml)
 
 	
 	//Table header
-	tableClassData = "<table class=\"w3-table w3-bordered w3-border w3-striped w3-hoverable\" ><tr>" +
+	tableClassData = "<table class=\"w3-table w3-bordered w3-border w3-striped w3-hoverable\"><tr>" +
 			"<col width=\"50\">"+
 			"<th class=\"w3-border\" onclick=\"cdm_tableSort('ID')\">"+headerLabelID+"</th>" +
             "<th class=\"w3-border\" onclick=\"cdm_tableSort('Class')\">"+headerLabelClass+"</th>" + 
@@ -836,7 +842,8 @@ function cdm_deleteClassDataEntry()
 	}
 	else
 	{
-		alert("No Class data record selected");
+		IMSError("cdm_deleteClassDataEntry Error","No Class data record selected.");
+	    return false;	
 	}
 	
 	return;
@@ -888,6 +895,19 @@ function cdm_getClassData()
   sendBackendRequest("RetrieveClassData.php","SID="+getSID());	
 }
 
+/****************************************************************
+Function:  IMSError()
+Description: Launches an error modal dialog box. 
+*****************************************************************/
+function IMSError(title,message)
+{
+  document.getElementById('id_iem_title').innerHTML = title;
+  document.getElementById('id_iem_message').innerHTML = message;
+  document.getElementById('IMSErrorModal').style.display='block';
+  
+  return;
+}
+
 </script>
 </head>
 <body onload="populateForms()">
@@ -934,6 +954,7 @@ function cdm_getClassData()
 <button class="button" type="button" onclick="document.getElementById('ItemViewModal').style.display='block'">Add Item</button>
 <button class="button" type="button" onclick="document.getElementById('ClassDataModal').style.display='block'">Class Data</button>
 <button class="button" type="button" onclick="loadBrowser()">Refresh</button>
+<button class="button" type="button" onclick="IMSError('Test Error Title','Test Error Message')">Push Me</button>
 <div id="table-wrapper">
   <div id="table-scroll">
     <table id="browser">
@@ -1075,7 +1096,7 @@ function cdm_getClassData()
 	  <h3>Class Data</h3>
 	</header>
 	<div id="id_cmd_sortInfo" style="display: none;">None</div>
-	<div id="id_cdm_table" class="w3-white">
+	<div id="id_cdm_table" class="w3-responsive w3-white" style="max-height: 50vh;">
 	</div>
 	 
 	<div class="w3-container">
@@ -1104,6 +1125,25 @@ function cdm_getClassData()
 	<button class="w3-btn w3-red w3-border w3-round-large" type="button" onclick="cdm_deleteClassDataEntry()" id="id_cdm_deleteEntry" disabled>Delete</button>
 	<p/>
 	</form>  
+	<footer class="w3-container w3-blue w3-row">
+		<p/>
+	</footer>  
+    </div>
+  </div>
+</div>
+
+
+<!-- Class Data Modal Dialog Box -->
+<div id="IMSErrorModal" class="w3-modal">
+  <div class="w3-modal-content w3-blue" style="width:70%">
+    <div class="w3-container">
+	<header class="w3-container w3-blue">
+      <span onclick="document.getElementById('IMSErrorModal').style.display='none'" 
+      class="w3-closebtn">&times;</span>
+	  <h3 id="id_iem_title">IMS Error</h3>
+	</header>
+	<p id="id_iem_message" class="w3-text-black">Error Message</p>
+	<button class="w3-btn w3-red w3-border w3-round-large" type="button" onclick="document.getElementById('IMSErrorModal').style.display='none'">OK</button>
 	<footer class="w3-container w3-blue w3-row">
 		<p/>
 	</footer>  

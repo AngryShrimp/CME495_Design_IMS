@@ -7,9 +7,9 @@
  *	Date: 27 January 2016
  *
  *	Inputs:     SID: The session ID of the client
- *		
+ *				type: Type of report.  Can be full or manual entries only.
  *
- *	Usage: CreateNewItem.php?SID=<session ID>
+ *	Usage: CreateNewItem.php?SID=<session ID>&type=<manual or blank>
  ***********************************************************************/
   
 include "IMSBase.php";
@@ -22,12 +22,15 @@ $sessionID = "";
 $statusMessage = "";
 $statusCode = 0;
 
+$tableType = "";
+
 
 try
 {
         if ($_SERVER["REQUEST_METHOD"] == "POST") 
         {
 		$sessionID = $_POST["SID"];
+		$tableType = $_POST["type"];
         }
 	
 	$IMSBase = new IMSBase();
@@ -36,9 +39,12 @@ try
 
 	$IMSBase->verifyData($sessionID,"/^.+$/");
         
-	
-	$sqlQuery = "SELECT Supplier_Part_Number, Item_Link, Quantity FROM dbo.Inventory WHERE Quantity < Ordering_Threshold UNION 
+	if ($tableType == "manual")
+		$sqlQuery = "SELECT Supplier_Part_Number, Item_Link, Quantity FROM dbo.Purchase_List;";	
+	else
+		$sqlQuery = "SELECT Supplier_Part_Number, Item_Link, Quantity FROM dbo.Inventory WHERE Quantity < Ordering_Threshold UNION 
 			SELECT Supplier_Part_Number, Item_Link, Quantity FROM dbo.Purchase_List;";
+	
 	
 	$stmt = $sql->prepare($sqlQuery);
 	$stmt->execute();

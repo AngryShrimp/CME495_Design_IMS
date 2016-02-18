@@ -196,7 +196,7 @@ Function:  showAutocomplete()
 Description: Creates a datalist to show all autocomplete matches
 for a partial search string.
 *****************************************************************/
-function showAutocomplete(partialStr)
+function search_showAutocomplete(partialStr)
 {
 
 
@@ -204,15 +204,23 @@ function showAutocomplete(partialStr)
   //from http://stackoverflow.com/questions/30022728/perform-action-when-clicking-html5-datalist-option
   var val = document.getElementById("id_search_bar").value;
   var opts = document.getElementById('id_search_queryList').childNodes;
+  
+  if(val == "") //blank or removed entry, delete the datalist.
+  {
+    document.getElementById("id_search_queryList").innerHTML = "";
+	return;
+  }
+  
   for (var i = 0; i < opts.length; i++) 
   {
 	if (opts[i].value === val) 
 	{
-	// An item was selected from the list!
-	//close datalist and launch item load functions.
-	document.getElementById('id_search_queryList').style.display = 'none';
-	getQuickUpdateData(opts[i].value);
-	return;
+	  // An item was selected from the list!
+	  //Remove datalists and launch item load functions.
+	  document.getElementById("id_cdm_partList").innerHTML = "";
+      document.getElementById("id_search_queryList").innerHTML = "";
+	  getQuickUpdateData(val);
+	  return;
 	}
   }
   
@@ -433,7 +441,6 @@ function parseXMLResponse(xml)
 	  return false;	
     }
 	
-	
     for( i = 0; i < autoCompleteList.length; i++)
 	{
 		autoCompleteHtml += "<option value=\""
@@ -443,11 +450,13 @@ function parseXMLResponse(xml)
 		+" - "
 		+autoCompleteList[i].getElementsByTagName("Description")[0].childNodes[0].nodeValue
 		+"</option>";
-	}
+	}	
 	
+	//Main page search bar.
     document.getElementById("id_search_queryList").innerHTML = autoCompleteHtml;
-
 	
+	//Add Class Data Part Number
+	document.getElementById("id_cdm_partList").innerHTML = autoCompleteHtml;
   }
   
 
@@ -492,7 +501,7 @@ function parseXMLResponse(xml)
 
     /*Add sort stuff here*/
 
-    tableLog = "<table class=\"w3-table w3-bordered w3-border w3-striped w3-hoverable\"><tr>" +
+    tableLog = "<table class=\"w3-table w3-bordered w3-border w3-striped w3-hoverable\" style=\"table-layout:fixed; width=100%;\"><tr>" +
             "<col width=\"250\">"+
             "<th class=\"w3-border\" onclick=\"\">"+logHeaderLabelDate+"</th>" +
             "<th class=\"w3-border\" onclick=\"\">"+logHeaderLabelSID+"</th>" + 
@@ -504,10 +513,10 @@ function parseXMLResponse(xml)
       document.getElementById("log").innerHTML = i;
 
       tableLog += "<tr>" + 
-				          "<td class=\"w3-border\">" + log_entry[i].getElementsByTagName("Date")[0].childNodes[0].nodeValue + "</td>" +
-                  "<td class=\"w3-border\">" + log_entry[i].getElementsByTagName("SID")[0].childNodes[0].nodeValue + "</td>" +
-                  "<td class=\"w3-border\">" + log_entry[i].getElementsByTagName("Level")[0].childNodes[0].nodeValue + "</td>" +
-                  "<td class=\"w3-border\">" + log_entry[i].getElementsByTagName("Description")[0].childNodes[0].nodeValue + "</td>" +
+				          "<td class=\"w3-border\" style=\"word-wrap: break-word\">" + log_entry[i].getElementsByTagName("Date")[0].childNodes[0].nodeValue + "</td>" +
+                  "<td class=\"w3-border\" style=\"word-wrap: break-word\">" + log_entry[i].getElementsByTagName("SID")[0].childNodes[0].nodeValue + "</td>" +
+                  "<td class=\"w3-border\" style=\"word-wrap: break-word\">" + log_entry[i].getElementsByTagName("Level")[0].childNodes[0].nodeValue + "</td>" +
+                  "<td class=\"w3-border\" style=\"word-wrap: break-word\">" + log_entry[i].getElementsByTagName("Description")[0].childNodes[0].nodeValue + "</td>" +
                   "</tr>";
     }
     tableLog += "</table>";
@@ -539,7 +548,7 @@ function parseXMLResponse(xml)
 
     /*Add Sort stuff here*/
     
-    tableBrowser = "<table class=\"w3-table w3-bordered w3-border w3-striped w3-hoverable\"><tr>" +
+    tableBrowser = "<table class=\"w3-table w3-bordered w3-border w3-striped w3-hoverable\" style=\"table-layout:fixed; width=100%;\"><tr>" +
             "<col width=\"150\">"+
             "<th class=\"w3-border\" onclick=\"\">"+browserHeaderLabelName+"</th>" +
             "<th class=\"w3-border\" onclick=\"\">"+browserHeaderLabelQuantity+"</th>" + 
@@ -554,14 +563,14 @@ function parseXMLResponse(xml)
     {
 
       tableBrowser += "<tr>" + 
-                        "<td class=\"w3-border\">" + browser_entry[i].getElementsByTagName("Name")[0].childNodes[0].nodeValue + "</td>" +
-                        "<td class=\"w3-border\">" + browser_entry[i].getElementsByTagName("Quantity")[0].childNodes[0].nodeValue + "</td>" +
-                        "<td class=\"w3-border\">" + browser_entry[i].getElementsByTagName("Type")[0].childNodes[0].nodeValue + "</td>" +
-                        "<td class=\"w3-border\">" + browser_entry[i].getElementsByTagName("Value")[0].childNodes[0].nodeValue + "</td>" +
-                        "<td class=\"w3-border\">" + browser_entry[i].getElementsByTagName("Location")[0].childNodes[0].nodeValue + "</td>" +                        
-                        "<td class=\"w3-border\">" + browser_entry[i].getElementsByTagName("Supplier_Part_Number")[0].childNodes[0].nodeValue + "</td>" +
-                        "<td class=\"w3-border\">" + browser_entry[i].getElementsByTagName("Ordering_Threshold")[0].childNodes[0].nodeValue + "</td>" +
-                        "<td class=\"w3-border\">" + browser_entry[i].getElementsByTagName("Description")[0].childNodes[0].nodeValue + "</td>" +
+                        "<td class=\"w3-border\" style=\"word-wrap: break-word\">" + browser_entry[i].getElementsByTagName("Name")[0].childNodes[0].nodeValue + "</td>" +
+                        "<td class=\"w3-border\" style=\"word-wrap: break-word\">" + browser_entry[i].getElementsByTagName("Quantity")[0].childNodes[0].nodeValue + "</td>" +
+                        "<td class=\"w3-border\" style=\"word-wrap: break-word\">" + browser_entry[i].getElementsByTagName("Type")[0].childNodes[0].nodeValue + "</td>" +
+                        "<td class=\"w3-border\" style=\"word-wrap: break-word\">" + browser_entry[i].getElementsByTagName("Value")[0].childNodes[0].nodeValue + "</td>" +
+                        "<td class=\"w3-border\" style=\"word-wrap: break-word\">" + browser_entry[i].getElementsByTagName("Location")[0].childNodes[0].nodeValue + "</td>" +                        
+                        "<td class=\"w3-border\" style=\"word-wrap: break-word\">" + browser_entry[i].getElementsByTagName("Supplier_Part_Number")[0].childNodes[0].nodeValue + "</td>" +
+                        "<td class=\"w3-border\" style=\"word-wrap: break-word\">" + browser_entry[i].getElementsByTagName("Ordering_Threshold")[0].childNodes[0].nodeValue + "</td>" +
+                        "<td class=\"w3-border\" style=\"word-wrap: break-word\">" + browser_entry[i].getElementsByTagName("Description")[0].childNodes[0].nodeValue + "</td>" +
                         "</tr>";
     }
 
@@ -662,7 +671,7 @@ function parseXMLResponse(xml)
 
 	
 	//Table header
-	tableClassData = "<table class=\"w3-table w3-bordered w3-border w3-striped w3-hoverable\"><tr>" +
+	tableClassData = "<table class=\"w3-table w3-bordered w3-border w3-striped w3-hoverable\" style=\"table-layout:fixed; width=100%;\"><tr>" +
 			"<col width=\"50\">"+
 			"<th class=\"w3-border\" onclick=\"cdm_tableSort('ID')\">"+headerLabelID+"</th>" +
             "<th class=\"w3-border\" onclick=\"cdm_tableSort('Class')\">"+headerLabelClass+"</th>" + 
@@ -687,11 +696,11 @@ function parseXMLResponse(xml)
 						qty + "','" +
 						date +
 						"')\">" + 
-						"<td class=\"w3-border\">" + id + "</td>" +
-						"<td class=\"w3-border\">" + className + "</td>" +
-                        "<td class=\"w3-border\">" + part + "</td>" +
-                        "<td class=\"w3-border\">" + qty + "</td>" +
-                        "<td class=\"w3-border\">" + date + "</td>" +                   
+						"<td class=\"w3-border\" style=\"word-wrap: break-word\">" + id + "</td>" +
+						"<td class=\"w3-border\" style=\"word-wrap: break-word\">" + className + "</td>" +
+                        "<td class=\"w3-border\" style=\"word-wrap: break-word\">" + part + "</td>" +
+                        "<td class=\"w3-border\" style=\"word-wrap: break-word\">" + qty + "</td>" +
+                        "<td class=\"w3-border\" style=\"word-wrap: break-word\">" + date + "</td>" +                   
                         "</tr>";								
 	}
 
@@ -826,6 +835,9 @@ function cdm_clearEdit()
 		document.getElementById("id_cdm_qtyInput").value = "";
 		document.getElementById("id_cdm_dateInput").value = "";	
 		
+        document.getElementById("id_cdm_partList").innerHTML = "";
+
+		
 		document.getElementById("id_cdm_deleteEntry").disabled = true;
 
 	}
@@ -896,6 +908,7 @@ function cdm_addClassDataEntry()
   document.getElementById("id_cdm_PNInput").value = "";
   document.getElementById("id_cdm_qtyInput").value = "";
   document.getElementById("id_cdm_dateInput").value = "";	
+  document.getElementById("id_cdm_partList").innerHTML = "";
   document.getElementById("id_cdm_deleteEntry").disabled = true;
   
   return;
@@ -910,6 +923,43 @@ function cdm_getClassData()
 {
   sendBackendRequest("RetrieveClassData.php","SID="+getSID());	
 }
+
+/****************************************************************
+Function:  cdm_showPNAutocomplete()
+Description: Creates a datalist to show all autocomplete matches
+for a partial search string.
+*****************************************************************/
+function cdm_showPNAutocomplete(partialStr)
+{
+
+
+  //Check for a selection	
+  //from http://stackoverflow.com/questions/30022728/perform-action-when-clicking-html5-datalist-option
+  var val = document.getElementById("id_cdm_PNInput").value;
+  var opts = document.getElementById('id_cdm_partList').childNodes;
+  
+  if(val == "") //blank or removed entry, delete the datalist.
+  {
+    document.getElementById("id_cdm_partList").innerHTML = "";
+	return;
+  }
+  
+  for (var i = 0; i < opts.length; i++) 
+  {
+	if (opts[i].value === val) 
+	{
+	// An item was selected from the list!
+	//remove datalists
+	document.getElementById("id_cdm_partList").innerHTML = "";
+    document.getElementById("id_search_queryList").innerHTML = "";
+	return;
+	}
+  }
+  
+  sendBackendRequest("QueryAutocomplete.php","SID="+getSID()+"&Filter="+ partialStr);
+  return;
+}
+
 
 /****************************************************************
 Function:  IMSError()
@@ -953,7 +1003,7 @@ function IMSError(title,message)
   <br>
 	<form>
 	<font size="3">Search:</font><br>
-	<input list="id_search_queryList" type="text" id="id_search_bar" name="search" oninput="showAutocomplete(this.value)">
+	<input list="id_search_queryList" type="text" id="id_search_bar" name="search" oninput="search_showAutocomplete(this.value)">
 	<datalist id="id_search_queryList">
 	</datalist>
 	<!-- <a class='button'>Search</a> -->
@@ -1108,7 +1158,9 @@ function IMSError(title,message)
 		<label>Class</label>
 	</div>
 	<div class="w3-container w3-quarter">
-		<input class="w3-input w3-border w3-text-black" type="text" id="id_cdm_PNInput" placeholder="" onclick="cdm_clearEdit()">
+		<input list="id_cdm_partList" class="w3-input w3-border w3-text-black" type="text" id="id_cdm_PNInput" placeholder="" oninput="cdm_showPNAutocomplete(this.value)" onclick="cdm_clearEdit()">
+		<datalist id="id_cdm_partList">
+		</datalist>
 		<label>Part Number</label>
 	</div>
 	<div class="w3-container w3-quarter">

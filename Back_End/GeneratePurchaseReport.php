@@ -36,16 +36,22 @@ try
 
 	$IMSBase->verifyData($sessionID,"/^.+$/");
         
-	$sql->command('DELETE FROM dbo.Purchase_List');
 	
-	$sql->command("INSERT INTO dbo.Purchase_List (Vendor_Part_Number, Vendor_Link, Quantity_Remaining) SELECT 
-	Supplier_Part_Number, Item_Link, Quantity FROM dbo.Inventory WHERE Quantity < Ordering_Threshold");
+	$sqlQuery = "SELECT Supplier_Part_Number, Item_Link, Quantity FROM dbo.Inventory WHERE Quantity < Ordering_Threshold UNION 
+			SELECT Supplier_Part_Number, Item_Link, Quantity FROM dbo.Purchase_List;";
+	
+	$stmt = $sql->prepare($sqlQuery);
+	$stmt->execute();
+	
+	
+	$dataArray = $stmt->fetchAll(PDO::FETCH_ASSOC);	
+	
 	
 }
 catch(PDOException $e)
 {
 	$statusCode = 1;
-	$statusMessage = 'CreateNewItem SQLError: '.$e->getMessage();
+	$statusMessage = 'GeneratePurchaseReport SQLError: '.$e->getMessage();
 	$log->add_log($sessionID,'Error',$statusMessage);
         echo "Error: " . $e->getMessage();
 	
@@ -53,20 +59,19 @@ catch(PDOException $e)
 catch(Exception $e)
 {
 	$statusCode = 1;
-	$statusMessage = 'CreateNewItem Error: '. $e->getMessage();
+	$statusMessage = 'GeneratePurchaseReport SQLError: '. $e->getMessage();
 	$log->add_log($sessionID,'Error',$statusMessage);
         echo "Error: " . $e->getMessage();
 
 }	
 if ($statusCode == 0){
         $statusMessage = "Purchase report generated.";
-	$log->add_log($sessionID,'Info',$statusMessage);
+		$log->add_log($sessionID,'Info',$statusMessage);
     
         $statusArray[0] = $statusCode;
-	$statusArray[1] = $statusMessage;
+		$statusArray[1] = $statusMessage;
         
         
-        echo "Script execution successful\n\n\n";
-	$IMSBase->GenerateXMLResponse($sessionID,$statusArray);
+		$IMSBase->GenerateXMLResponse($sessionID,$statusArray,NULL,NULL,$dataArray);
 }	
 ?>

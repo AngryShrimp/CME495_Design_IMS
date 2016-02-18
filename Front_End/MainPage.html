@@ -85,11 +85,6 @@ table td:nth-child(7)
 {
  	width:100%;
 }
-#table-wrapper table * 
-{
-	background:gray;
- 	color:black;
-}
 #table-wrapper table thead th .text 
 {
 	position:absolute;   
@@ -486,26 +481,33 @@ function parseXMLResponse(xml)
     //check for null data
     if(log_entry == null)
     {
-	  IMSError("parseXMLResponse Error","Log List is NULL");
-	  return false;	
+      IMSError("parseXMLResponse Error","Log List is NULL");
+	    return false;	
     }
 
-    tableLog = "<table><tr>" +
-               "<th>Date</th>" +
-               "<th>SID</th>" +
-               "<th>Level</th>" +
-               "<th>Description</th>" +
-               "</tr>";
+    var logHeaderLabelDate = "Date";
+    var logHeaderLabelSID = "SID";
+    var logHeaderLabelLevel = "Log Type";
+    var logHeaderLabelDescription = "Description";
+
+    /*Add sort stuff here*/
+
+    tableLog = "<table class=\"w3-table w3-bordered w3-border w3-striped w3-hoverable\"><tr>" +
+            "<col width=\"250\">"+
+            "<th class=\"w3-border\" onclick=\"\">"+logHeaderLabelDate+"</th>" +
+            "<th class=\"w3-border\" onclick=\"\">"+logHeaderLabelSID+"</th>" + 
+            "<th class=\"w3-border\" onclick=\"\">"+logHeaderLabelLevel+"</th>" + 
+            "<th class=\"w3-border\" onclick=\"\">"+logHeaderLabelDescription+"</th>";
 			   
     for( i = 0; i < log_entry.length; i++)
     {
       document.getElementById("log").innerHTML = i;
 
       tableLog += "<tr>" + 
-				  "<td>" + log_entry[i].getElementsByTagName("Date")[0].childNodes[0].nodeValue + "</td>" +
-                  "<td>" + log_entry[i].getElementsByTagName("SID")[0].childNodes[0].nodeValue + "</td>" +
-                  "<td>" + log_entry[i].getElementsByTagName("Level")[0].childNodes[0].nodeValue + "</td>" +
-                  "<td>" + log_entry[i].getElementsByTagName("Description")[0].childNodes[0].nodeValue + "</td>" +
+				          "<td class=\"w3-border\">" + log_entry[i].getElementsByTagName("Date")[0].childNodes[0].nodeValue + "</td>" +
+                  "<td class=\"w3-border\">" + log_entry[i].getElementsByTagName("SID")[0].childNodes[0].nodeValue + "</td>" +
+                  "<td class=\"w3-border\">" + log_entry[i].getElementsByTagName("Level")[0].childNodes[0].nodeValue + "</td>" +
+                  "<td class=\"w3-border\">" + log_entry[i].getElementsByTagName("Description")[0].childNodes[0].nodeValue + "</td>" +
                   "</tr>";
     }
     tableLog += "</table>";
@@ -523,29 +525,43 @@ function parseXMLResponse(xml)
     if(browser_entry == null)
     {
       IMSError("parseXMLResponse Error","Broswer List is NULL");
-	  return false;	
+	    return false;	
     }
+
+    var browserHeaderLabelName = "Name";
+    var browserHeaderLabelQuantity = "Quantity";
+    var browserHeaderLabelType = "Part Type";
+    var browserHeaderLabelValue = "Value";
+    var browserHeaderLabelLocation = "Location";
+    var browserHeaderLabelPartNumber = "Supplier Part Number";
+    var browserHeaderLabelOrderingThreshold = "Ordering Threshold";
+    var browserHeaderLabelDescription = "Description";
+
+    /*Add Sort stuff here*/
     
-    tableBrowser = "<table><tr>" +
-            "<th>Part Number</th>" + 
-            "<th>Quantity</th>" + 
-            "<th>Type</th>" +
-            "<th>Value</th>" +
-            "<th>Location</th>" +
-            "<th>Supplier Part Number</th>" +
-            "<th>Ordering Threshold</th>" +
-            "<th>Description</th>";
+    tableBrowser = "<table class=\"w3-table w3-bordered w3-border w3-striped w3-hoverable\"><tr>" +
+            "<col width=\"150\">"+
+            "<th class=\"w3-border\" onclick=\"\">"+browserHeaderLabelName+"</th>" +
+            "<th class=\"w3-border\" onclick=\"\">"+browserHeaderLabelQuantity+"</th>" + 
+            "<th class=\"w3-border\" onclick=\"\">"+browserHeaderLabelType+"</th>" + 
+            "<th class=\"w3-border\" onclick=\"\">"+browserHeaderLabelValue+"</th>" +
+            "<th class=\"w3-border\" onclick=\"\">"+browserHeaderLabelLocation+"</th>" + 
+            "<th class=\"w3-border\" onclick=\"\">"+browserHeaderLabelPartNumber+"</th>" + 
+            "<th class=\"w3-border\" onclick=\"\">"+browserHeaderLabelOrderingThreshold+"</th>" + 
+            "<th class=\"w3-border\" onclick=\"\">"+browserHeaderLabelDescription+"</th>";
+
     for( i = 0; i < browser_entry.length; i++)
     {
 
-      tableBrowser += "<tr>" + "<td>" + browser_entry[i].getElementsByTagName("Name")[0].childNodes[0].nodeValue + "</td>" +
-                        "<td>" + browser_entry[i].getElementsByTagName("Quantity")[0].childNodes[0].nodeValue + "</td>" +
-                        "<td>" + browser_entry[i].getElementsByTagName("Type")[0].childNodes[0].nodeValue + "</td>" +
-                        "<td>" + browser_entry[i].getElementsByTagName("Value")[0].childNodes[0].nodeValue + "</td>" +
-                        "<td>" + browser_entry[i].getElementsByTagName("Location")[0].childNodes[0].nodeValue + "</td>" +                        
-                        "<td>" + browser_entry[i].getElementsByTagName("Supplier_Part_Number")[0].childNodes[0].nodeValue + "</td>" +
-                        "<td>" + browser_entry[i].getElementsByTagName("Ordering_Threshold")[0].childNodes[0].nodeValue + "</td>" +
-                        "<td>" + browser_entry[i].getElementsByTagName("Description")[0].childNodes[0].nodeValue + "</td>" +
+      tableBrowser += "<tr>" + 
+                        "<td class=\"w3-border\">" + browser_entry[i].getElementsByTagName("Name")[0].childNodes[0].nodeValue + "</td>" +
+                        "<td class=\"w3-border\">" + browser_entry[i].getElementsByTagName("Quantity")[0].childNodes[0].nodeValue + "</td>" +
+                        "<td class=\"w3-border\">" + browser_entry[i].getElementsByTagName("Type")[0].childNodes[0].nodeValue + "</td>" +
+                        "<td class=\"w3-border\">" + browser_entry[i].getElementsByTagName("Value")[0].childNodes[0].nodeValue + "</td>" +
+                        "<td class=\"w3-border\">" + browser_entry[i].getElementsByTagName("Location")[0].childNodes[0].nodeValue + "</td>" +                        
+                        "<td class=\"w3-border\">" + browser_entry[i].getElementsByTagName("Supplier_Part_Number")[0].childNodes[0].nodeValue + "</td>" +
+                        "<td class=\"w3-border\">" + browser_entry[i].getElementsByTagName("Ordering_Threshold")[0].childNodes[0].nodeValue + "</td>" +
+                        "<td class=\"w3-border\">" + browser_entry[i].getElementsByTagName("Description")[0].childNodes[0].nodeValue + "</td>" +
                         "</tr>";
     }
 
@@ -558,90 +574,90 @@ function parseXMLResponse(xml)
   if(classData.length > 0)
   { 
 
-	var class_entry = classData[0].getElementsByTagName("CLASS_ENTRY");
+    var class_entry = classData[0].getElementsByTagName("CLASS_ENTRY");
 	
-	//check for null data
+    //check for null data
     if(class_entry == null)
     {
       IMSError("parseXMLResponse Error","Class Data Entry is NULL");
-	  return false;	
+      return false;	
     }
-	var headerLabelID = "ID";
-	var headerLabelClass = "Class Name";
-	var headerLabelPN = "Part Number";
-	var headerLabelQty = "Quantity";
-	var headerLabelDate = "Date";
+    var headerLabelID = "ID";
+    var headerLabelClass = "Class Name";
+    var headerLabelPN = "Part Number";
+    var headerLabelQty = "Quantity";
+    var headerLabelDate = "Date";
 	
     var currentSort = document.getElementById("id_cmd_sortInfo").innerHTML;
 
 	
-	if(currentSort != "None")
-	{
-	  var currentSortSplit = currentSort.split(":");
-	  var currentSortCol = currentSortSplit[0];
-	  var currentSortDir = currentSortSplit[1];
+    if(currentSort != "None")
+    {
+      var currentSortSplit = currentSort.split(":");
+      var currentSortCol = currentSortSplit[0];
+      var currentSortDir = currentSortSplit[1];
 	  
-	  if(currentSortCol == "ID")
-	  {
-		if(currentSortDir == "ASC")
-		{
-		  headerLabelID = "ID&#9650;"; //Arrow up
-		}
-		else
-		{
-		  headerLabelID = "ID&#9660;";//Arrow Down
-		}		
-	  }
+      if(currentSortCol == "ID")
+      {
+		    if(currentSortDir == "ASC")
+		    {
+		      headerLabelID = "ID&#9650;"; //Arrow up
+		    }
+		    else
+		    {
+		      headerLabelID = "ID&#9660;";//Arrow Down
+		    }		
+      }
 	  
-	  if(currentSortCol == "Class")
-	  {
-		if(currentSortDir == "ASC")
-		{
-		  headerLabelClass = "Class Name&#9650;"; //Arrow up
-		}
-		else
-		{
-		  headerLabelClass = "Class Name&#9660;";//Arrow Down
-		}		
-	  }
+      if(currentSortCol == "Class")
+      {
+		    if(currentSortDir == "ASC")
+		    {
+		      headerLabelClass = "Class Name&#9650;"; //Arrow up
+		    }
+		    else
+		    {
+		      headerLabelClass = "Class Name&#9660;";//Arrow Down
+		    }		
+      }
 	  
-	  if(currentSortCol == "Part")
-	  {
-		if(currentSortDir == "ASC")
-		{
-		  headerLabelPN = "Part Number&#9650;";
-		}
-		else
-		{
-		  headerLabelPN = "Part Number&#9660;";
-		}		
-	  }
-	  
-	  
-	  if(currentSortCol == "Quantity")
-	  {
-		if(currentSortDir == "ASC")
-		{
-		  headerLabelQty = "Quantity&#9650;";
-		}
-		else
-		{
-		  headerLabelQty = "Quantity&#9660;";
-		}		
-	  }
+      if(currentSortCol == "Part")
+      {
+		    if(currentSortDir == "ASC")
+		    {
+		      headerLabelPN = "Part Number&#9650;";
+		    }
+		    else
+		    {
+		      headerLabelPN = "Part Number&#9660;";
+		    }		
+      }
 	  
 	  
-	  if(currentSortCol == "Date")
-	  {
-		if(currentSortDir == "ASC")
-		{
-		  headerLabelDate = "Date&#9650;";
-		}
-		else
-		{
-		  headerLabelDate = "Date&#9660;";
-		}		
-	  }	
+      if(currentSortCol == "Quantity")
+      {
+		    if(currentSortDir == "ASC")
+		    {
+		      headerLabelQty = "Quantity&#9650;";
+		    }
+		    else
+		    {
+		      headerLabelQty = "Quantity&#9660;";
+		    }		
+      }
+	  
+	  
+  	  if(currentSortCol == "Date")
+   	  {
+    		if(currentSortDir == "ASC")
+    		{
+    		  headerLabelDate = "Date&#9650;";
+     		}
+  	  	else
+    		{
+		      headerLabelDate = "Date&#9660;";
+    		}		
+	    }	
 	}
 
 	
@@ -923,9 +939,9 @@ function IMSError(title,message)
   <a href="ShoppingList.html">Shopping List</a> 
   <br> 
   <div style="padding-left:5%">Quick Update:</div>
-  <span style="padding-left:5%"><textarea type="text" rows="1" cols="19" maxlength="18" id="id_qa_ID" name="quickID" placeholder="PartID"></textarea></span>
-  <span style="padding-left:5%"><textarea type="text" rows="1" cols="19" maxlength="18" id="id_qa_Description" name="quickDescription" placeholder="Description"></textarea></span> 
-  <span style="padding-left:5%"><textarea type="text" rows="6" cols="19" maxlength="115" id="id_qa_Quantity" name="quickQuantity" placeholder="Quantity"></textarea></span> 
+  <span style="padding-left:5%"><textarea type="text" rows="1" style="width: 13vw;" maxlength="18" id="id_qa_ID" name="quickID" placeholder="PartID"></textarea></span>
+  <span style="padding-left:5%"><textarea type="text" rows="1" style="width: 13vw;" maxlength="18" id="id_qa_Quantity" name="quickQuantity" placeholder="Quantity"></textarea></span> 
+  <span style="padding-left:5%"><textarea type="text" rows="6" style="width: 13vw;" maxlength="115" id="id_qa_Description" name="quickDescription" placeholder="Description"></textarea></span> 
   <span style="padding-left:5%"><button class='button' type='button'>Update</button></span>
 </nav>
 
@@ -947,50 +963,33 @@ function IMSError(title,message)
 </form>
 </div>
 
-
 <div class="w3-container" style="margin-left:15%">
-<h2>Browser</h2>
-<span style="padding-left:2px"></span>
-<button class="button" type="button" onclick="document.getElementById('ItemViewModal').style.display='block'">Add Item</button>
-<button class="button" type="button" onclick="document.getElementById('ClassDataModal').style.display='block'">Class Data</button>
-<button class="button" type="button" onclick="loadBrowser()">Refresh</button>
-<button class="button" type="button" onclick="IMSError('Test Error Title','Test Error Message')">Push Me</button>
-<div id="table-wrapper">
-  <div id="table-scroll">
-    <table id="browser">
-    </table>
+  <h2>Browser</h2>
+  <span style="padding-left:2px"></span>
+  <button class="button" type="button" onclick="document.getElementById('ItemViewModal').style.display='block'">Add Item</button>
+  <button class="button" type="button" onclick="document.getElementById('ClassDataModal').style.display='block'">Class Data</button>
+  <button class="button" type="button" onclick="loadBrowser()">Refresh</button>
+  <button class="button" type="button" onclick="IMSError('Test Error Title','Test Error Message')">Push Me</button>
+  <div id="browser" class="w3-responsive w3-white" style="max-height: 22vh;">
   </div>
 </div>
-</div>
-
 <br>
 
 <div class="w3-container" style="margin-left:15%">
-<h2>Log</h2>
-<button class="button" type="button" onclick="loadLog()">Refresh</button>
-<div id="table-wrapper">
-  <div id="table-scroll">
-    <table id="log">
-    </table>
+  <h2>Log</h2>
+  <button class="button" type="button" onclick="loadLog()">Refresh</button>
+  <div id="log" class="w3-responsive w3-white" style="max-height: 22vh;">
   </div>
-</div>
-
-</div>
-
-</div>
-
-<div style="margin-left:15%">
-
-
-</div>
+</div>div>
+<br>
 
 <footer class="w3-container w3-blue w3-row" style="margin-left:15%">
-<div class="w3-container w3-third w3-red">
-<p id="status_code"></p>
-</div>
-<div class="w3-container w3-twothird w3-teal">
-<p id="status_message"></p>
-</div>
+  <div class="w3-container w3-third w3-red">
+    <p id="status_code"></p>
+  </div>
+  <div class="w3-container w3-twothird w3-teal">
+    <p id="status_message"></p>
+  </div>
 </footer>
 
 
@@ -1132,8 +1131,10 @@ function IMSError(title,message)
   </div>
 </div>
 
+<!-- Log Browser Modal -->
 
-<!-- Class Data Modal Dialog Box -->
+
+<!-- IMS Error Modal Dialog Box -->
 <div id="IMSErrorModal" class="w3-modal">
   <div class="w3-modal-content w3-blue" style="width:70%">
     <div class="w3-container">

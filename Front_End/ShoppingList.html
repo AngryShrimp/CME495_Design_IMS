@@ -78,9 +78,58 @@ textarea {
  	overflow:auto;  
  	margin-top:20px;
 }
+
 </style>
 
 <script>
+
+/****************************************************************
+Function:  sendBackendRequest()
+Description: Sets up and sends a XMLHttpRequest in POST mode to 
+a specified PHP script.
+*****************************************************************/
+function sendBackendRequest(PHPscript,postOptions)
+{
+  var xhttp = new XMLHttpRequest();
+  xhttp.onreadystatechange = function() 
+  {
+    if (xhttp.readyState == 4 && xhttp.status == 200) 
+    {
+      parseXMLResponse(xhttp);
+    }
+  };
+  xhttp.open("POST", PHPscript, true);
+  xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+  xhttp.send(postOptions);
+  
+  return;
+}
+
+
+/****************************************************************
+Function:  cdm_addClassDataEntry()
+Description: Sends new class data to the server to be saved.
+*****************************************************************/
+function cdm_addClassDataEntry()
+{
+
+  var SupplierNumber = document.getElementById("id_cdm_SupplierNumber").value;
+  var ItemLink = document.getElementById("id_cdm_ItemLink").value;
+  var Quantity = document.getElementById("id_cdm_Quantity").value;
+
+
+  
+  sendBackendRequest("AddPurchaseListItem.php","SID="+getSID()+"&SN="+SupplierNumber+"&IL="+ItemLink+"&QN="+Quantity);
+  //clear entries
+  document.getElementById("id_cdm_idDisplay").innerHTML = "New";
+  document.getElementById("id_cdm_SupplierNumber").value = "";
+  document.getElementById("id_cdm_ItemLink").value = "";	
+  document.getElementById("id_cdm_Quantity").value = "";
+  
+  location.reload();
+  
+  return;
+}
 
 
 /**************************************************************
@@ -318,21 +367,21 @@ function RetrievePurchaseReport()
   <a href="ShoppingList.html">Shopping List</a> 
   <br> 
   <div style="padding-left:5%">Quick Update:</div>
-  <span style="padding-left:5%"><textarea type="text" rows="1" cols="19" maxlength="18" id="quickID" name="quickID" placeholder="PartID"></textarea></span>
-  <span style="padding-left:5%"><textarea type="text" rows="1" cols="19" maxlength="18" id="quickDescription" name="quickDescription" placeholder="Description"></textarea></span> 
-  <span style="padding-left:5%"><textarea type="text" rows="6" cols="19" maxlength="115" id="quickQuantity" name="quickQuantity" placeholder="Quantity"></textarea></span> 
+  <span style="padding-left:5%"><textarea  rows="1" cols="19" maxlength="18" id="quickID" name="quickID" placeholder="PartID"></textarea></span>
+  <span style="padding-left:5%"><textarea  rows="1" cols="19" maxlength="18" id="quickDescription" name="quickDescription" placeholder="Description"></textarea></span> 
+  <span style="padding-left:5%"><textarea  rows="6" cols="19" maxlength="115" id="quickQuantity" name="quickQuantity" placeholder="Quantity"></textarea></span> 
   <span style="padding-left:5%"><button class='button' type='button'>Update</button></span>
 </nav>
 
 <div class="w3-container w3-blue" style="margin-left:15%">
 <form class="w3-form">
   <div class="w3-group">
-    <form action="action_page.php">
+
     <font size="3">Search:</font><br>
     <input type="text" id="searchbar" name="search">
     <a class='button'>Search</a>
     <a href='AdvancedSearch.html' class='button'>Advanced Search</a>
-    </form>
+
   </div>
 </form>
 </div>
@@ -357,28 +406,60 @@ function RetrievePurchaseReport()
 <form action="RemoveManualEntries.php" method="post">
 	<div class="w3-container w3-striped" style="margin-left:15%">
   		<div id="table-scroll2">
-  			<table style="width:100%" id="ManualPurchaseData"></table>  		
+  			<table style="width:100%" id="ManualPurchaseData">
+  				<tr><td>Table is Empty</td></tr>
+  			</table>  		
   		</div>
   		<input class="button" type="submit" name="formSubmit" value="Delete Selected" />
   	</div>
 </form>
 
-<div class="w3-container" style="margin-left:15%">
-<table class="w3-table w3-striped w3-bordered">
-<h2>Options</h2>
-<a class='button'>Add Item to List</a>
+<div class="w3-container" style="margin-left:15%">	
+		<h2>Options</h2>
+		<button class="button" type="button" onclick="document.getElementById('ClassDataModal').style.display='block'">Add Item</button>
 </div>
 
-
+<!-- Class Data Modal Dialog Box -->
+<div id="ClassDataModal" class="w3-modal">
+  <div class="w3-modal-content w3-blue" style="width:95%">
+    <div class="w3-container">
+	<header class="w3-container w3-blue">
+      <span onclick="document.getElementById('ClassDataModal').style.display='none'" 
+      class="w3-closebtn">&times;</span>
+	  <h3>Add Item to Purchase List</h3>
+	</header>
+	<div id="id_cmd_sortInfo" style="display: none;">None</div>
+	<div id="id_cdm_table" class="w3-responsive w3-white" style="max-height: 50vh;">
+	</div>
+	
+	<div class="w3-container">
+		<a>ID:</a>
+		<a id="id_cdm_idDisplay">New</a>
+	</div>
+	<form class="w3-container">
+		<div class="w3-container w3-quarter">
+		<input class="w3-input w3-border w3-text-black" type="text" id="id_cdm_SupplierNumber" placeholder="Eg. C3P0-01">
+		<label>Supplier Part Number</label>
+	</div>
+	<div class="w3-container w3-quarter">
+		<input class="w3-input w3-border w3-text-black" type="text" id="id_cdm_ItemLink" placeholder="Eg. www.digikey.com/item/itemNumber.html">
+		<label>Item Link</label>
+	</div>
+	<div class="w3-container w3-quarter">
+		<input class="w3-input w3-border w3-text-black" type="text" id="id_cdm_Quantity" placeholder="Eg. 12">
+		<label>Quantity Remaining</label>
+	</div>
+	
+	<p/>	
+	<button class="w3-btn w3-light-green w3-border w3-round-large" type="button" onclick="cdm_addClassDataEntry()">Add Class Data</button>
+	<p/>
+	</form>  
+	<footer class="w3-container w3-blue w3-row">
+		<p/>
+	</footer>  
+    </div>
+  </div>
 </div>
-           
-<div class="w3-tab" style="margin-left:15%">
-
-<div id="link1" class="w3-container"></div>
-<div id="link2" class="w3-container"></div>
-<div id="link3" class="w3-container"></div>
-
-
 
 
            

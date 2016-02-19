@@ -12,10 +12,6 @@
  *	Usage: CreateNewItem.php?SID=<session ID>$SN=<Alphanumeric>&IL=<Alphanumeric>&QN=<Integer>
  ***********************************************************************/
   
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
-error_reporting(E_ALL);
-
 include "IMSBase.php";
 include "IMSLog.php";
 include "IMSSql.php";
@@ -29,36 +25,36 @@ $statusCode = 0;
 $supplierNumber = "";
 $itemLink = "";
 $quantity = "";
-$somevalue = "";
+
 
 try
 {
-	$sql = new IMSSql();
+        if ($_SERVER["REQUEST_METHOD"] == "POST") 
+        {
+		$sessionID = $_POST["SID"];
+		$supplierNumber = $_POST["SN"];
+		$itemLink = $_POST["IL"];
+		$quantity = $_POST["QN"];		
+        }
+	
 	$IMSBase = new IMSBase();
 	$log = new IMSLog();
+	$sql = new IMSSql();
+
+	$IMSBase->verifyData($sessionID,"/^.+$/");
+        
+	$sqlQuery = "INSERT INTO dbo.Purchase_List (Supplier_Part_Number, Item_Link, Quantity) VALUES ('" . 
+					$supplierNumber . "','" .
+					$itemLink . "','" . 
+					$quantity . "');";
 	
-	if ($_SERVER["REQUEST_METHOD"] == "POST"){
-		$aItem = $_POST['formItem'];
-	}
-
-	if(empty($aItem))
-	{
-		echo("No items to delete");
-	}
-	else
-	{
-		$N = count($aItem);
-
-		
-		for($i=0; $i < $N; $i++)
-		{
-			
-			$sqlQuery = "DELETE FROM dbo.Purchase_List WHERE Supplier_Part_Number = '" . $aItem[$i] . "';";
-			$stmt = $sql->prepare($sqlQuery);
-			$stmt->execute();
-		}
-		echo("You Deleted $N items(s): ");
-	}	
+	
+	$stmt = $sql->prepare($sqlQuery);
+	$stmt->execute();
+	
+	
+	
+	
 }
 catch(PDOException $e)
 {
@@ -84,6 +80,6 @@ if ($statusCode == 0){
 		$statusArray[1] = $statusMessage;
         
         
-		//$IMSBase->GenerateXMLResponse($sessionID,$statusArray);
+		$IMSBase->GenerateXMLResponse($sessionID,$statusArray);
 }	
 ?>

@@ -48,7 +48,7 @@ class IMSLog
 	
 	
 	
-	public function add_log($SID,$Level,$Message)
+	public function add_log($SID,$Level,$Message,$ItemNum = "N/A")
 	{
 
 
@@ -75,10 +75,10 @@ class IMSLog
 		}
 		
 		//Ensure Message does not have any commas.
-		str_replace(',','-',$Message);
+		$Message = str_replace(',','-',$Message);
 		
 		
-		$log_entry = date("c").",".$SID.",".$Level.",".$Message."\n";
+		$log_entry = date("c").",".$SID.",".$Level.",".$Message.",".$ItemNum."\n";
 		
 		fwrite($log_file,$log_entry);
 		
@@ -116,7 +116,7 @@ class IMSLog
 						$logArray['SID'] = $csvData[1];
 						$logArray['Level'] = $csvData[2];
 						$logArray['Description'] = $csvData[3];
-						
+						$logArray['Item'] = $csvData[4];
 					
 						$logData[] = $logArray;
 					}

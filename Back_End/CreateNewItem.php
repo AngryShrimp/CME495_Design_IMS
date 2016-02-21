@@ -44,7 +44,7 @@ try
 	{
 		$statusCode = '1';
 		$statusMessage = "CreateNewItem Error: $partNumber already exits in database.";
-		$log->add_log($sessionID,'Info',$statusMessage);
+		$log->add_log($sessionID,'Information',$statusMessage);
 	}
 	else
 	{
@@ -52,7 +52,7 @@ try
 		
 		$statusCode = '0';
 		$statusMessage = 'Item ('.$partNumber.') created successfully. ';
-		$log->add_log($sessionID,'Info',$statusMessage);
+		$log->add_log($sessionID,'Information',$statusMessage,$partNumber);
 	}
 	
 }

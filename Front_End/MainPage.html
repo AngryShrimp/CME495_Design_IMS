@@ -253,16 +253,16 @@ function createNewItem()
 
 
   //Input Verification code goes here.
-  var partNumber = document.getElementById("id_ivm_itemNumber").value;
-  var qty = document.getElementById("id_ivm_qty").value;
-  var threshold = document.getElementById("id_ivm_thresh").value;
-  var location = document.getElementById("id_ivm_location").value;
-  var description = document.getElementById("id_ivm_desc").value;
-  var type = document.getElementById("id_ivm_type").value;
-  var value = document.getElementById("id_ivm_value").value;
-  var supplierName = document.getElementById("id_ivm_supplierName").value;
-  var supplierPN = document.getElementById("id_ivm_supplierPN").value;
-  var link = document.getElementById("id_ivm_link").value;
+  var partNumber = document.getElementById("id_cvm_itemNumber").value;
+  var qty = document.getElementById("id_cvm_qty").value;
+  var threshold = document.getElementById("id_cvm_thresh").value;
+  var location = document.getElementById("id_cvm_location").value;
+  var description = document.getElementById("id_cvm_desc").value;
+  var type = document.getElementById("id_cvm_type").value;
+  var value = document.getElementById("id_cvm_value").value;
+  var supplierName = document.getElementById("id_cvm_supplierName").value;
+  var supplierPN = document.getElementById("id_cvm_supplierPN").value;
+  var link = document.getElementById("id_cvm_link").value;
 	
   //Create new Item record
   var xhttp = new XMLHttpRequest();
@@ -496,6 +496,7 @@ function parseXMLResponse(xml)
 
     var logHeaderLabelDate = "Date";
     var logHeaderLabelSID = "SID";
+    var logHeaderLabelPN = "Item Number";
     var logHeaderLabelLevel = "Log Type";
     var logHeaderLabelDescription = "Description";
 
@@ -505,22 +506,44 @@ function parseXMLResponse(xml)
             "<col width=\"250\">"+
             "<th class=\"w3-border\" onclick=\"\">"+logHeaderLabelDate+"</th>" +
             "<th class=\"w3-border\" onclick=\"\">"+logHeaderLabelSID+"</th>" + 
+            "<th class=\"w3-border\" onclick=\"\">"+logHeaderLabelPN+"</th>" + 
             "<th class=\"w3-border\" onclick=\"\">"+logHeaderLabelLevel+"</th>" + 
             "<th class=\"w3-border\" onclick=\"\">"+logHeaderLabelDescription+"</th>";
+			
+			
+	tableItemLog = tableLog;
+	var tableRow = "";
 			   
     for( i = 0; i < log_entry.length; i++)
     {
       document.getElementById("log").innerHTML = i;
 
-      tableLog += "<tr>" + 
-				          "<td class=\"w3-border\" style=\"word-wrap: break-word\">" + log_entry[i].getElementsByTagName("Date")[0].childNodes[0].nodeValue + "</td>" +
+      tableRow = "<tr>" + 
+				  "<td class=\"w3-border\" style=\"word-wrap: break-word\">" + log_entry[i].getElementsByTagName("Date")[0].childNodes[0].nodeValue + "</td>" +
                   "<td class=\"w3-border\" style=\"word-wrap: break-word\">" + log_entry[i].getElementsByTagName("SID")[0].childNodes[0].nodeValue + "</td>" +
+                  "<td class=\"w3-border\" style=\"word-wrap: break-word\">" + log_entry[i].getElementsByTagName("Item")[0].childNodes[0].nodeValue + "</td>" +
                   "<td class=\"w3-border\" style=\"word-wrap: break-word\">" + log_entry[i].getElementsByTagName("Level")[0].childNodes[0].nodeValue + "</td>" +
                   "<td class=\"w3-border\" style=\"word-wrap: break-word\">" + log_entry[i].getElementsByTagName("Description")[0].childNodes[0].nodeValue + "</td>" +
                   "</tr>";
+ 
+	  tableLog += tableRow;
+ 
+      var ItemViewPN = document.getElementById("id_ivm_itemNumber").value;
+	  if(ItemViewPN != "")
+	  {
+		var xmlPN = log_entry[i].getElementsByTagName("Item")[0].childNodes[0].nodeValue;
+		if(ItemViewPN == xmlPN)
+		{
+		  tableItemLog += tableRow;
+		}
+	  }
+				  
     }
     tableLog += "</table>";
+	tableItemLog += "</table>";
     document.getElementById("log").innerHTML = tableLog;
+	document.getElementById("id_ivm_table").innerHTML = tableItemLog;
+
 
   }
   
@@ -717,17 +740,17 @@ function parseXMLResponse(xml)
 }
 
 /****************************************************************
-Function:  ivm_autoPN()
+Function:  cdm_autoPN()
 Description: Generates an Item Number suggestion based on form 
 inputs.
 *****************************************************************/
-function ivm_autoPN()
+function cdm_autoPN()
 {
 
   var partNumber = "";
-  if(document.getElementById("id_ivm_type").value != "")
+  if(document.getElementById("id_cvm_type").value != "")
   {
-	switch(document.getElementById("id_ivm_type").value)
+	switch(document.getElementById("id_cvm_type").value)
 	{
 	  case "Capacitor":
 		partNumber = "C";
@@ -754,9 +777,9 @@ function ivm_autoPN()
 	
   }
   
-  if(document.getElementById("id_ivm_value").value != "")
+  if(document.getElementById("id_cvm_value").value != "")
   {
-	partNumber += document.getElementById("id_ivm_value").value;
+	partNumber += document.getElementById("id_cvm_value").value;
   }
   else
   {
@@ -764,7 +787,7 @@ function ivm_autoPN()
   }
   
   partNumber += "-01";
-  document.getElementById("id_ivm_itemNumber").value = partNumber;
+  document.getElementById("id_cvm_itemNumber").value = partNumber;
   return;
 }
 
@@ -960,6 +983,26 @@ function cdm_showPNAutocomplete(partialStr)
   return;
 }
 
+/****************************************************************
+Function:  ivm_modifyItem(type)
+Description: Modifies a field for the currently loaded item.
+*****************************************************************/
+function ivm_modifyItem(id,field)
+{
+  var itemNumber = document.getElementById("id_ivm_itemNumber").value;
+  var value = "";
+
+  if(itemNumber == "") // nothing loaded.
+  {
+	return;
+  }  	
+  value = document.getElementById(id).value;		
+	
+  sendBackendRequest("ModifyItem.php","SID="+getSID()+"&PartNumber="+ itemNumber + "&Field="+field + "&Value=" + value);
+  return;
+
+}
+
 
 /****************************************************************
 Function:  IMSError()
@@ -1016,10 +1059,11 @@ function IMSError(title,message)
 <div class="w3-container" style="margin-left:15%">
   <h2>Browser</h2>
   <span style="padding-left:2px"></span>
-  <button class="button" type="button" onclick="document.getElementById('ItemViewModal').style.display='block'">Add Item</button>
+  <button class="button" type="button" onclick="document.getElementById('ItemCreateModal').style.display='block'">Add Item</button>
   <button class="button" type="button" onclick="document.getElementById('ClassDataModal').style.display='block'">Class Data</button>
   <button class="button" type="button" onclick="loadBrowser()">Refresh</button>
   <button class="button" type="button" onclick="IMSError('Test Error Title','Test Error Message')">Push Me</button>
+  <button class="button" type="button" onclick="document.getElementById('ItemViewModal').style.display='block'">Edit Item</button>
   <div id="browser" class="w3-responsive w3-white" style="max-height: 22vh;">
   </div>
 </div>
@@ -1043,19 +1087,19 @@ function IMSError(title,message)
 </footer>
 
 
-<!-- Modal Dialog box for Viewing Editing Single Item -->
-<div id="ItemViewModal" class="w3-modal">
+<!-- Modal Dialog box for Creating an Item -->
+<div id="ItemCreateModal" class="w3-modal">
   <div class="w3-modal-content w3-blue" style="width:95%">
     <div class="w3-container">
 	<header class="w3-container w3-blue">	  
-      <span onclick="document.getElementById('ItemViewModal').style.display='none'" 
+      <span onclick="document.getElementById('ItemCreateModal').style.display='none'" 
       class="w3-closebtn">&times;</span>
 	  <h3>Add Item</h3>
 	 </header>
       <form class="w3-container">
 	  
 	    <div class="w3-container w3-half">
-		  <select class="w3-select w3-border" name="option" id="id_ivm_type" onchange="ivm_autoPN()">
+		  <select class="w3-select w3-border" name="option" id="id_cvm_type" onchange="cdm_autoPN()">
 			<option value="" disabled selected>Select Type</option>
 			<option value="Capacitor">Capacitor</option>
 			<option value="Resistor">Resistor</option>
@@ -1069,55 +1113,55 @@ function IMSError(title,message)
 		</div>
 		
 		<div class="w3-container w3-half">
-		  <input class="w3-input w3-border w3-text-black" type="text" id="id_ivm_value" oninput="ivm_autoPN()">
+		  <input class="w3-input w3-border w3-text-black" type="text" id="id_cvm_value" oninput="cdm_autoPN()">
 		  <label>Value</label>
 		  <p>
 		</div>
 		
 		<div class="w3-container">
-		  <input class="w3-input w3-border w3-text-black" type="text" id="id_ivm_desc">
+		  <input class="w3-input w3-border w3-text-black" type="text" id="id_cvm_desc">
 		  <label>Description</label>
 		  <p>
 		</div>	
 
 		<div class="w3-container w3-half">
-		  <input class="w3-input w3-border w3-text-black" type="text" id="id_ivm_supplierPN">
+		  <input class="w3-input w3-border w3-text-black" type="text" id="id_cvm_supplierPN">
 		  <label>Supplier Part Number</label>
 		  <p>
 		</div>		
 
 		<div class="w3-container w3-half">
-		  <input class="w3-input w3-border w3-text-black" type="text" id="id_ivm_supplierName">
+		  <input class="w3-input w3-border w3-text-black" type="text" id="id_cvm_supplierName">
 		  <label>Supplier Name</label>
 		  <p>
 		</div>
 		
 		<div class="w3-container">
-		  <input class="w3-input w3-border w3-text-black" type="text" id="id_ivm_link">
+		  <input class="w3-input w3-border w3-text-black" type="text" id="id_cvm_link">
 		  <label>Document URL</label>
 		  <p>
 		</div>
 
 		<div class="w3-container w3-quarter">
-		  <input class="w3-input w3-border w3-text-black" type="text" id="id_ivm_qty">
+		  <input class="w3-input w3-border w3-text-black" type="text" id="id_cvm_qty">
 		  <label>Quantity</label>
 		  <p>
 		</div>
 		
 		<div class="w3-container w3-quarter">
-		  <input class="w3-input w3-border w3-text-black" type="text" id="id_ivm_thresh">
+		  <input class="w3-input w3-border w3-text-black" type="text" id="id_cvm_thresh">
 		  <label>Threshold</label>
 		  <p>
 		</div>
 		
 		<div class="w3-container w3-half">
-		  <input class="w3-input w3-border w3-text-black" type="text" id="id_ivm_location">
+		  <input class="w3-input w3-border w3-text-black" type="text" id="id_cvm_location">
 		  <label>Location</label>
 		  <p>
 		</div>
 		
 		<div class="w3-container">
-		  <input class="w3-input w3-border w3-text-black" type="text" id="id_ivm_itemNumber">
+		  <input class="w3-input w3-border w3-text-black" type="text" id="id_cvm_itemNumber">
 		  <label>Item Number</label>
 		  <p>
 		</div>
@@ -1126,6 +1170,97 @@ function IMSError(title,message)
 		<button class="w3-btn w3-light-green w3-border w3-round-large" type="button" onclick="createNewItem()">Create Item</button>
 		<p>
 		
+		<footer class="w3-container w3-blue w3-row">
+		  <p></p>
+		</footer>
+		
+	  </form>
+    </div>
+  </div>
+</div>
+
+
+<!-- Modal Dialog box for Viewing Editing Single Item -->
+<div id="ItemViewModal" class="w3-modal">
+  <div class="w3-modal-content w3-blue" style="width:95%">
+    <div class="w3-container">
+	<header class="w3-container w3-blue">	  
+      <span onclick="document.getElementById('ItemViewModal').style.display='none'" 
+      class="w3-closebtn">&times;</span>
+	  <h3>Edit Item</h3>
+	 </header>
+      <form class="w3-container">
+	  
+	    <div class="w3-container">
+		  <input class="w3-input w3-border w3-text-black" type="text" id="id_ivm_itemNumber" disabled>
+		  <label>Item Number</label>
+		  <p>
+		</div>	
+		
+	    <div class="w3-container w3-half">
+		  <select class="w3-select w3-border" name="option" id="id_ivm_type">
+			<option value="" disabled selected>Select Type</option>
+			<option value="Capacitor">Capacitor</option>
+			<option value="Resistor">Resistor</option>
+			<option value="Inductor">Inductor</option>
+			<option value="Equipment">Equipment</option>
+			<option value="Transistor">Transistor</option>
+			<option value="Transformer">Transformer</option>
+			<option value="Other">Other</option>
+		  </select>
+		  <label>Type</label>
+		</div>
+		
+		<div class="w3-container w3-half">
+		  <input class="w3-input w3-border w3-text-black" type="text" id="id_ivm_value" onchange="ivm_modifyItem(this.id,'Value')">
+		  <label>Value</label>
+		  <p>
+		</div>
+		
+		<div class="w3-container">
+		  <input class="w3-input w3-border w3-text-black" type="text" id="id_ivm_desc" onchange="ivm_modifyItem(this.id,'Description')">
+		  <label>Description</label>
+		  <p>
+		</div>	
+
+		<div class="w3-container w3-half">
+		  <input class="w3-input w3-border w3-text-black" type="text" id="id_ivm_supplierPN" onchange="ivm_modifyItem(this.id,'Supplier_Part_Number')">
+		  <label>Supplier Part Number</label>
+		  <p>
+		</div>		
+
+		<div class="w3-container w3-half">
+		  <input class="w3-input w3-border w3-text-black" type="text" id="id_ivm_supplierName" onchange="ivm_modifyItem(this.id,'Suppliers_Name')">
+		  <label>Supplier Name</label>
+		  <p>
+		</div>
+		
+		<div class="w3-container">
+		  <input class="w3-input w3-border w3-text-black" type="text" id="id_ivm_link" onchange="ivm_modifyItem(this.id,'Item_Link')">
+		  <label>Document URL</label>		  <p>
+		</div>
+
+		<div class="w3-container w3-quarter">
+		  <input class="w3-input w3-border w3-text-black" type="text" id="id_ivm_qty" onchange="ivm_modifyItem(this.id,'Quantity')">
+		  <label>Quantity</label>		
+		</div>
+		
+		<div class="w3-container w3-quarter">
+		  <input class="w3-input w3-border w3-text-black" type="text" id="id_ivm_thresh" onchange="ivm_modifyItem(this.id,'Ordering_Threshold')">
+		  <label>Threshold</label>		  
+		</div>
+		
+		<div class="w3-container w3-half">
+		  <input class="w3-input w3-border w3-text-black" type="text" id="id_ivm_location" onchange="ivm_modifyItem(this.id,'Location')">
+		  <label>Location</label>		 
+		</div>		
+			
+		<div class="w3-container">
+		<p/>
+		</div>
+		
+		<div id="id_ivm_table" class="w3-responsive w3-white" style="max-height: 30vh;">
+		</div>		
 		<footer class="w3-container w3-blue w3-row">
 		  <p></p>
 		</footer>

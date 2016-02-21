@@ -63,7 +63,7 @@ try
 		
 		$statusCode = '0';
 		$statusMessage = "Item($partNumber) $field was updated with $value";
-		$log->add_log($sessionID,'Info',$statusMessage);
+		$log->add_log($sessionID,'Information',$statusMessage,$partNumber);
 	}
 	
 }

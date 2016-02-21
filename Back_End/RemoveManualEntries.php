@@ -58,6 +58,10 @@ try
 			$stmt->execute();
 		}
 		echo("You Deleted $N items(s): ");
+		for($i=0; $i < $N; $i++)
+		{
+			echo($aItem[$i] . " ");
+		}
 	}	
 }
 catch(PDOException $e)

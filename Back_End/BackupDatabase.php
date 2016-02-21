@@ -3,88 +3,45 @@
  * 	Script: BackupDatabase.php
  * 	Description: Script for backing up IMS database.
  *
- *	Author: Justin Fraser (jaf470@mail.usask.ca)
- *	Date: 27 January 2016
- *
- *	Inputs:     (int) SID: The session ID of the client.
- *                  (String) Path: Path to save database file
- *                  (String) Filename: Name of the backup
- *
- *	Usage: BackupDatabase.php?SID=<session ID>&Path=<eg. C:\backup>
- *             &Filename=<backup.bak>
- * 
- * 
- *      Issues: Permissions issues prevent script from running.
+ *	Author: Justin Fraser (jaf470@mail.usask.ca), using
+ *  Code written by: Robert Johnson
+ *  Reference:
+ *  https://social.msdn.microsoft.com/Forums/sqlserver/en-US/e0908b2f-4afa-4626-830d-9683486186c8/backup-database?forum=sqldriverforphp
+ *  
+ *	Date: 18 February 2016
  ***********************************************************************/
-  
-include "IMSBase.php";
-include "IMSLog.php";
-include "IMSSql.php";
 
+header('content-type: text/plain;charset=UTF-8');
 
-$sessionID = "";
-$path = "";
-$filename = "";
-$database = IMS;
+$query = "
+BACKUP DATABASE IMS TO DISK = N'C:\\backup\IMS_Backup.bak' 
+WITH NOFORMAT, NOINIT, NAME = N'dbname Database Backup Test', 
+SKIP, NOREWIND, NOUNLOAD
+";
 
-$statusMessage = "";
-$statusCode = 0;
+$server = 'JUSTIN-PC\SQLEXPRESS';
+$login = 'IMSBackup';
+$password = 'backup';
+$DB = 'IMS';
 
+$conn = sqlsrv_connect($server,array('UID'=>$login, 'PWD'=>$password,'Database'=>$DB,'CharacterSet'=>'UTF-8'));
 
-try
+if ( !$conn )
 {
-	if ($_SERVER["REQUEST_METHOD"] == "POST") 
+	print_r(sqlsrv_errors());
+	exit;
+}
+
+sqlsrv_configure("WarningsReturnAsErrors", 0);
+if ( ($stmt = sqlsrv_query($conn, $query)) )
+{
+	do 
 	{
-		$sessionID = $_POST["SID"];
-		$path = $_POST["Path"];  
-                $filename = $_POST["Filename"];
-	}
-
-
-	$IMSBase = new IMSBase();
-	$log = new IMSLog();
-	$sql = new IMSSql();
-
-	$IMSBase->verifyData($path,"/^.+$/");
-	$IMSBase->verifyData($sessionID,"/^.+$/");
-        $IMSBase->verifyData($filename,"/^.+$/");	
-                
-        $fullPath = $path;
-        $fullPath .= '\\';
-        $fullPath .= $filename;
-        
-        $fullPath = "'$fullPath'";        
-        
-        $sql->command("BACKUP DATABASE $database TO DISK = $fullPath");
-		
-	
+		print_r(sqlsrv_errors());
+		echo " * ---End of result --- *\r\n";
+	} while ( sqlsrv_next_result($stmt) ) ;
+	sqlsrv_free_stmt($stmt);
 }
-catch(PDOException $e)
-{
-	$statusCode = 1;
-	$statusMessage = 'BackupDatabase SQLError: '.$e->getMessage();
-	$log->add_log($sessionID,'Error',$statusMessage);
-        echo "Error: " . $e->getMessage();
-	
-}
-catch(Exception $e)
-{
-	$statusCode = 1;
-	$statusMessage = 'BackupDatabase Error: '. $e->getMessage();
-	$log->add_log($sessionID,'Error',$statusMessage);
-        echo "Error: " . $e->getMessage();
-
-}
-
-if ($statusCode == 0){
-        $statusMessage = "Database backed up to $fullPath successfully";
-	$log->add_log($sessionID,'Info',$statusMessage);
-    
-        $statusArray[0] = $statusCode;
-	$statusArray[1] = $statusMessage;
-        
-        
-        echo "Script execution successful\n\n\n";
-	$IMSBase->GenerateXMLResponse($sessionID,$statusArray);
-}
+sqlsrv_configure("WarningsReturnAsErrors", 1);
+sqlsrv_close($conn);
 ?>

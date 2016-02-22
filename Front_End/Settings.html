@@ -60,11 +60,37 @@
   height:40px;
   color:black;
 }
-textarea {
+#textareacode {
   resize: none;
   color:black;
+  margin-left: 15%;
+  width:80%;
 }
 </style>
+
+<script>
+/****************************************************************
+Function:  sendBackendRequest()
+Description: Sets up and sends a XMLHttpRequest in POST mode to 
+a specified PHP script.
+*****************************************************************/
+function sendBackendRequest(PHPscript)
+{
+  var xhttp = new XMLHttpRequest();
+  xhttp.onreadystatechange = function() 
+  {
+    if (xhttp.readyState == 4 && xhttp.status == 200) 
+    {
+    	document.getElementById("textareacode").innerHTML = xhttp.responseText;;
+    }
+  };
+  xhttp.open("POST", PHPscript, true);
+  xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+  xhttp.send();
+  
+  return;
+}
+</script>
 <body>
 
 <nav class="w3-sidenav w3-blue" style="width:15%">
@@ -89,12 +115,24 @@ textarea {
 <h2>Database Settings</h2>
 
 <a class='button'>Link to Database</a>
-<a class='button'>Backup Database</a>
-<a class='button'>Import Backup Data</a>
+<button onclick='sendBackendRequest("BackupDatabase.php")' class='button'>Backup Database</button>
+<button onclick='sendBackendRequest("RestoreDatabase.php")' class='button'>Import Backup Data</button>
 
 </div>
 
+	<div class="w3-container">
+		<div class="textareacontainer">
+			<div class="textarea">
+			  <div style="overflow:auto;">
+				<div class="headerText">Output:</div>
+			  </div>
+			  <div class="textareawrapper">
+				<textarea autocomplete="off" class="codearea" id="textareacode" wrap="logical" spellcheck="false" rows="25">Waiting...</textarea>
+			   </div>
+			</div>
+		</div>
 
+	</div>
            
 <div class="w3-tab" style="margin-left:15%">
 

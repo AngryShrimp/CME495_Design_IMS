@@ -1,23 +1,23 @@
 <?php
 /***********************************************************************
- * 	Script: BackupDatabase.php
- * 	Description: Script for backing up IMS database.
- *
- *	Author: Justin Fraser (jaf470@mail.usask.ca), using
- *  Code written by: Robert Johnson
- *  Reference:
- *  https://social.msdn.microsoft.com/Forums/sqlserver/en-US/e0908b2f-4afa-4626-830d-9683486186c8/backup-database?forum=sqldriverforphp
- *  
- *	Date: 18 February 2016
- ***********************************************************************/
+ * 	Script: RestoreDatabase.php
+* 	Description: Script for restoring IMS database.
+* 	
+* 	Precondition: Database must be setup for SIMPLE recovery
+*
+*	Author: Justin Fraser (jaf470@mail.usask.ca), using
+*
+*	Date: 21 February 2016
+***********************************************************************/
 
 header('content-type: text/plain;charset=UTF-8');
 
-$query = "
-BACKUP DATABASE IMS TO DISK = N'C:\\backup\IMS_Backup.bak' 
-WITH NOFORMAT, INIT, NAME = N'dbname Database Backup Test', 
-SKIP, NOREWIND, NOUNLOAD
-";
+
+$query = array("USE master",
+		"ALTER DATABASE IMS SET SINGLE_USER WITH ROLLBACK IMMEDIATE",
+		"RESTORE DATABASE IMS FROM DISK = N'C:\\backup\IMS_Backup.bak'",
+		"ALTER DATABASE IMS SET MULTI_USER"
+);
 
 $server = 'JUSTIN-PC\SQLEXPRESS';
 $login = 'IMSBackup';
@@ -33,7 +33,9 @@ if ( !$conn )
 }
 
 sqlsrv_configure("WarningsReturnAsErrors", 0);
-if ( ($stmt = sqlsrv_query($conn, $query)) )
+
+foreach ($query as $current){
+if ( ($stmt = sqlsrv_query($conn, $current)) )
 {
 	do 
 	{
@@ -44,12 +46,13 @@ if ( ($stmt = sqlsrv_query($conn, $query)) )
             echo ("code: ".$error[ 'code']."\n");
             echo ("message: ".$error[ 'message']."\n");
         }
-	    }
-		//print_r(sqlsrv_errors());
-		echo "* ---End of result --- *\r\n";
+	    };
+		
 	} while ( sqlsrv_next_result($stmt) ) ;
 	sqlsrv_free_stmt($stmt);
 }
+}
+
 sqlsrv_configure("WarningsReturnAsErrors", 1);
 sqlsrv_close($conn);
 ?>

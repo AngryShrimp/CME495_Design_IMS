@@ -1024,11 +1024,12 @@ function IMSError(title,message)
 <nav class="w3-sidenav w3-blue" style="width:15%">
   <header class="w3-container">
   </header>
-  <a href="MainPage.html">Home</a>
-  <a href="AddItem.html">Add Item</a>
-  <a href="Settings.html">Settings</a>   
-  <a href="ActivityLog.html">Alerts</a> 
-  <a href="ClassModification.html">Class List</a> 
+  <a onclick="document.getElementById('ItemCreateModal').style.display='block'">Add Item</a>
+  <a onclick="document.getElementById('ItemViewModal').style.display='block'">Edit Item</a>
+  <a>Settings</a>   
+  <a onclick="IMSError('Test Error Title','Test Error Message')">Test Error Message</a> 
+  <a>Alerts</a>
+  <a onclick="document.getElementById('ClassDataModal').style.display='block'">Class Data</a> 
   <a href="ShoppingList.html">Shopping List</a> 
   <br> 
   <div style="padding-left:5%">Quick Update:</div>
@@ -1059,19 +1060,16 @@ function IMSError(title,message)
 <div class="w3-container" style="margin-left:15%">
   <h2>Browser</h2>
   <span style="padding-left:2px"></span>
-  <button class="button" type="button" onclick="document.getElementById('ItemCreateModal').style.display='block'">Add Item</button>
-  <button class="button" type="button" onclick="document.getElementById('ClassDataModal').style.display='block'">Class Data</button>
-  <button class="button" type="button" onclick="loadBrowser()">Refresh</button>
-  <button class="button" type="button" onclick="IMSError('Test Error Title','Test Error Message')">Push Me</button>
-  <button class="button" type="button" onclick="document.getElementById('ItemViewModal').style.display='block'">Edit Item</button>
+  <button class="w3-btn w3-blue w3-border w3-round-large" type="button" onclick="loadBrowser()">Refresh</button>
+  <br><br>
   <div id="browser" class="w3-responsive w3-white" style="max-height: 22vh;">
   </div>
 </div>
-<br>
 
 <div class="w3-container" style="margin-left:15%">
   <h2>Log</h2>
-  <button class="button" type="button" onclick="loadLog()">Refresh</button>
+  <button class="w3-btn w3-blue w3-border w3-round-large" type="button" onclick="loadLog()">Refresh</button>
+  <br><br>
   <div id="log" class="w3-responsive w3-white" style="max-height: 22vh;">
   </div>
 </div>div>

@@ -192,7 +192,7 @@ function loadLog()
 }
 
 /****************************************************************
-Function:  showAutocomplete()
+Function:  search_showAutocomplete()
 Description: Creates a datalist to show all autocomplete matches
 for a partial search string.
 *****************************************************************/
@@ -446,6 +446,8 @@ function parseXMLResponse(xml)
 		autoCompleteHtml += "<option value=\""
 		+autoCompleteList[i].getElementsByTagName("Name")[0].childNodes[0].nodeValue 
 		+"\" style=\"color:black\">"
+		+autoCompleteList[i].getElementsByTagName("Name")[0].childNodes[0].nodeValue 
+		+" - "
 		+autoCompleteList[i].getElementsByTagName("Type")[0].childNodes[0].nodeValue 
 		+" - "
 		+autoCompleteList[i].getElementsByTagName("Description")[0].childNodes[0].nodeValue
@@ -614,7 +616,6 @@ function parseXMLResponse(xml)
       IMSError("parseXMLResponse Error","Class Data Entry is NULL");
       return false;	
     }
-    var headerLabelID = "ID";
     var headerLabelClass = "Class Name";
     var headerLabelPN = "Part Number";
     var headerLabelQty = "Quantity";
@@ -627,19 +628,8 @@ function parseXMLResponse(xml)
     {
       var currentSortSplit = currentSort.split(":");
       var currentSortCol = currentSortSplit[0];
-      var currentSortDir = currentSortSplit[1];
-	  
-      if(currentSortCol == "ID")
-      {
-		    if(currentSortDir == "ASC")
-		    {
-		      headerLabelID = "ID&#9650;"; //Arrow up
-		    }
-		    else
-		    {
-		      headerLabelID = "ID&#9660;";//Arrow Down
-		    }		
-      }
+      var currentSortDir = currentSortSplit[1];	  
+      
 	  
       if(currentSortCol == "Class")
       {
@@ -696,7 +686,7 @@ function parseXMLResponse(xml)
 	//Table header
 	tableClassData = "<table class=\"w3-table w3-bordered w3-border w3-striped w3-hoverable\" style=\"table-layout:fixed; width=100%;\"><tr>" +
 			"<col width=\"50\">"+
-			"<th class=\"w3-border\" onclick=\"cdm_tableSort('ID')\">"+headerLabelID+"</th>" +
+			"<th class=\"w3-border\">SEL</th>" +
             "<th class=\"w3-border\" onclick=\"cdm_tableSort('Class')\">"+headerLabelClass+"</th>" + 
             "<th class=\"w3-border\" onclick=\"cdm_tableSort('Part')\">"+headerLabelPN+"</th>" + 
             "<th class=\"w3-border\" onclick=\"cdm_tableSort('Quantity')\">"+headerLabelQty+"</th>" +
@@ -719,7 +709,9 @@ function parseXMLResponse(xml)
 						qty + "','" +
 						date +
 						"')\">" + 
-						"<td class=\"w3-border\" style=\"word-wrap: break-word\">" + id + "</td>" +
+						"<td class=\"w3-border\" style=\"word-wrap: break-word\"><input class=\"w3-check\" type=\"checkbox\" "+
+						"id=\"id_cdm_checkbox" + i + "\" " +
+						"onchange=\"cdm_selCheck(this.id,'"  + id + "')\"></input></td>" +
 						"<td class=\"w3-border\" style=\"word-wrap: break-word\">" + className + "</td>" +
                         "<td class=\"w3-border\" style=\"word-wrap: break-word\">" + part + "</td>" +
                         "<td class=\"w3-border\" style=\"word-wrap: break-word\">" + qty + "</td>" +
@@ -834,12 +826,20 @@ Description: Loads a row of data into the edit box.
 function cdm_loadRow(id,className,part,qty,date)
 {
 	document.getElementById("id_cdm_idDisplay").innerHTML = id;
-	document.getElementById("id_cdm_classInput").value = className;
-	document.getElementById("id_cdm_PNInput").value = part;
-	document.getElementById("id_cdm_qtyInput").value = qty;
-	document.getElementById("id_cdm_dateInput").value = date;
 
-	document.getElementById("id_cdm_deleteEntry").disabled = false;
+	document.getElementById("id_cdm_classInput").value = className;
+	document.getElementById("id_cdm_classInputOrginal").innerHTML = className;
+
+	document.getElementById("id_cdm_PNInput").value = part;
+	document.getElementById("id_cdm_PNInputOrginal").innerHTML = part;
+
+	document.getElementById("id_cdm_qtyInput").value = qty;
+	document.getElementById("id_cdm_qtyInputOrginal").innerHTML = qty;
+
+	document.getElementById("id_cdm_dateInput").value = date;
+	document.getElementById("id_cdm_dateInputOrginal").innerHTML = date;
+
+	document.getElementById("id_cdm_modifyBtn").disabled = false;
 
 	return;
 }
@@ -860,8 +860,7 @@ function cdm_clearEdit()
 		
         document.getElementById("id_cdm_partList").innerHTML = "";
 
-		
-		document.getElementById("id_cdm_deleteEntry").disabled = true;
+		document.getElementById("id_cdm_modifyBtn").disabled = true;
 
 	}
 	
@@ -870,7 +869,7 @@ function cdm_clearEdit()
 
 /****************************************************************
 Function:  cdm_deleteClassDataEntry()
-Description: Delets a selected class data entry from the database.
+Description: Deletes a selected class data entry from the database.
 *****************************************************************/
 function cdm_deleteClassDataEntry()
 {
@@ -895,6 +894,43 @@ function cdm_deleteClassDataEntry()
 	{
 		IMSError("cdm_deleteClassDataEntry Error","No Class data record selected.");
 	    return false;	
+	}
+	
+	return;
+}
+
+/****************************************************************
+Function:  cdm_deleteSelClassDataEntry()
+Description: Deletes all check entries in the class data form.
+*****************************************************************/
+function cdm_deleteSelClassDataEntry()
+{
+	var idList = document.getElementById("id_cdm_deletionList").innerHTML;
+	var sortCommand ="";
+	if(idList != "None")
+	{
+		var currentSort = document.getElementById("id_cmd_sortInfo").innerHTML;
+		if(currentSort != "None")
+		{
+			var currentSortSplit = currentSort.split(":");
+			var currentSortCol = currentSortSplit[0];
+			var currentSortDir = currentSortSplit[1];
+			
+			sortCommand = "&SortColumn="+currentSortCol+"&SortDirection="+currentSortDir;				
+		}	
+	
+		idListSplit = idList.split(",");
+		for(i=0;i<idListSplit.length;i++)
+		{		
+			sendBackendRequest("DeleteClassData.php","SID="+getSID()+"&ID="+idListSplit[i]+sortCommand);
+		}
+		document.getElementById("id_cdm_deletionList").innerHTML = "None";
+		
+	}
+	else
+	{
+		IMSError("cdm_deleteSelClassDataEntry Error","No Class data records selected.");
+	    return;	
 	}
 	
 	return;
@@ -932,9 +968,71 @@ function cdm_addClassDataEntry()
   document.getElementById("id_cdm_qtyInput").value = "";
   document.getElementById("id_cdm_dateInput").value = "";	
   document.getElementById("id_cdm_partList").innerHTML = "";
-  document.getElementById("id_cdm_deleteEntry").disabled = true;
   
   return;
+}
+
+/****************************************************************
+Function:  cdm_modifyClassDataEntry()
+Description: Modifies an existing class data record.
+*****************************************************************/
+function cdm_modifyClassDataEntry()
+{
+	var id = document.getElementById("id_cdm_idDisplay").innerHTML;
+	var sortCommand = "";
+	
+	if(id != "New")
+	{
+		var currentSort = document.getElementById("id_cmd_sortInfo").innerHTML;
+		if(currentSort != "None")
+		{
+			var currentSortSplit = currentSort.split(":");
+			var currentSortCol = currentSortSplit[0];
+			var currentSortDir = currentSortSplit[1];
+			
+			sortCommand = "&SortColumn="+currentSortCol+"&SortDirection="+currentSortDir;	
+		}	
+	
+	
+		var class_new = document.getElementById("id_cdm_classInput").value;
+		var class_old = document.getElementById("id_cdm_classInputOrginal").innerHTML;
+
+		var PN_new = document.getElementById("id_cdm_PNInput").value;
+		var PN_old = document.getElementById("id_cdm_PNInputOrginal").innerHTML;
+
+		var qty_new = document.getElementById("id_cdm_qtyInput").value;
+		var qty_old = document.getElementById("id_cdm_qtyInputOrginal").innerHTML;
+
+		var date_new = document.getElementById("id_cdm_dateInput").value;
+		var date_old = document.getElementById("id_cdm_dateInputOrginal").innerHTML;
+		
+		if(	class_new != class_old)
+		{
+			sendBackendRequest("ModifyClassData.php","SID="+getSID()+"&ID="+id+"&Field=Class&Value="+class_new+sortCommand);
+			document.getElementById("id_cdm_classInputOrginal").innerHTML = class_new;
+		}
+		if(	PN_new != PN_old)
+		{
+			sendBackendRequest("ModifyClassData.php","SID="+getSID() + "&ID="+id+"&Field=Part&Value="+PN_new+sortCommand);
+			document.getElementById("id_cdm_PNInputOrginal").innerHTML = PN_new;
+		}
+		if(	qty_new != qty_old)
+		{
+			sendBackendRequest("ModifyClassData.php","SID="+getSID() + "&ID="+id+"&Field=Quantity&Value="+qty_new+sortCommand);
+			document.getElementById("id_cdm_qtyInputOrginal").innerHTML = qty_new;
+		}
+		if(	date_new != date_old)
+		{
+			sendBackendRequest("ModifyClassData.php","SID="+getSID() + "&ID="+id+"&Field=Date&Value="+date_new+sortCommand);
+			document.getElementById("id_cdm_dateInputOrginal").innerHTML = date_new;
+		}
+
+	}
+	else
+	{
+		IMSError("cdm_modifyClassDataEntry Error","No record selected to modify.");
+	}
+	return;
 }
 
 /****************************************************************
@@ -982,6 +1080,56 @@ function cdm_showPNAutocomplete(partialStr)
   sendBackendRequest("QueryAutocomplete.php","SID="+getSID()+"&Filter="+ partialStr);
   return;
 }
+
+
+/****************************************************************
+Function:  cdm_selCheck()
+Description: Adds and deletes an ID from the delete selection string
+based on checking and unchecking a box.
+*****************************************************************/
+function cdm_selCheck(checkboxID,recordID)
+{
+	var selState = document.getElementById(checkboxID).checked;
+	var currentList = document.getElementById("id_cdm_deletionList").innerHTML;
+	var newList = "None";
+
+	if(selState) //Add
+	{
+		if(currentList == "None")
+		{
+			newList = recordID;
+		}
+		else
+		{
+			newList = currentList;
+			newList += "," + recordID;
+		}
+	}
+	else //Delete
+	{
+		splitArray = currentList.split(",");
+		
+		index = splitArray.indexOf(recordID);
+		splitArray.splice(index,1);
+		
+		if(splitArray.length != 0)
+		{
+			newList = "";		
+			for(i=0;i < splitArray.length;i++)
+			{			
+				newList += splitArray[i];
+				if(i != splitArray.length-1)
+				{
+					newList += ",";
+				}		
+			}
+		}
+	}
+	
+    document.getElementById("id_cdm_deletionList").innerHTML = newList;
+
+}
+
 
 /****************************************************************
 Function:  ivm_modifyItem(type)
@@ -1278,6 +1426,7 @@ function IMSError(title,message)
 	  <h3>Class Data</h3>
 	</header>
 	<div id="id_cmd_sortInfo" style="display: none;">None</div>
+	<div id="id_cdm_deletionList" style="display: none;">None</div>
 	<div id="id_cdm_table" class="w3-responsive w3-white" style="max-height: 50vh;">
 	</div>
 	 
@@ -1287,26 +1436,35 @@ function IMSError(title,message)
 	</div>
 	<form class="w3-container">
 	<div class="w3-container w3-quarter">
-		<input class="w3-input w3-border w3-text-black" type="text" id="id_cdm_classInput" placeholder="" onclick="cdm_clearEdit()">
+		<input class="w3-input w3-border w3-text-black" type="text" id="id_cdm_classInput" placeholder="" onclick="">
 		<label>Class</label>
 	</div>
+	<div id="id_cdm_classInputOrginal" style="display: none;"></div>
+
 	<div class="w3-container w3-quarter">
-		<input list="id_cdm_partList" class="w3-input w3-border w3-text-black" type="text" id="id_cdm_PNInput" placeholder="" oninput="cdm_showPNAutocomplete(this.value)" onclick="cdm_clearEdit()">
+		<input list="id_cdm_partList" class="w3-input w3-border w3-text-black" type="text" id="id_cdm_PNInput" placeholder="" oninput="cdm_showPNAutocomplete(this.value)" onclick="">
 		<datalist id="id_cdm_partList">
 		</datalist>
 		<label>Part Number</label>
 	</div>
+	<div id="id_cdm_PNInputOrginal" style="display: none;"></div>
+
 	<div class="w3-container w3-quarter">
-		<input class="w3-input w3-border w3-text-black" type="text" id="id_cdm_qtyInput" placeholder="" onclick="cdm_clearEdit()">
+		<input class="w3-input w3-border w3-text-black" type="text" id="id_cdm_qtyInput" placeholder="" onclick="">
 		<label>Quantity Needed</label>
 	</div>
+	<div id="id_cdm_qtyInputOrginal" style="display: none;"></div>
+
 	<div class="w3-container w3-quarter">
-		<input class="w3-input w3-border w3-text-black" type="text" id="id_cdm_dateInput" placeholder="" onclick="cdm_clearEdit()">
+		<input class="w3-input w3-border w3-text-black" type="text" id="id_cdm_dateInput" placeholder="" onclick="">
 		<label>Date Needed</label>
 	</div>
+	<div id="id_cdm_dateInputOrginal" style="display: none;"></div>
+
 	<p/>	
 	<button class="w3-btn w3-light-green w3-border w3-round-large" type="button" onclick="cdm_addClassDataEntry()">Add Class Data</button>
-	<button class="w3-btn w3-red w3-border w3-round-large" type="button" onclick="cdm_deleteClassDataEntry()" id="id_cdm_deleteEntry" disabled>Delete</button>
+	<button class="w3-btn w3-light-green w3-border w3-round-large" type="button" onclick="cdm_modifyClassDataEntry()" id="id_cdm_modifyBtn" disabled>Modify Class Data</button>
+	<button class="w3-btn w3-red w3-border w3-round-large" type="button" onclick="cdm_deleteSelClassDataEntry()">Delete Selected</button>
 	<p/>
 	</form>  
 	<footer class="w3-container w3-blue w3-row">

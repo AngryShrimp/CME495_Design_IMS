@@ -69,7 +69,7 @@ try
 	if($sql->exists($partNumber,'dbo.Inventory') == FALSE)
 	{
 		$statusCode = '1';
-		$statusMessage = "AddNewCladdData Error: $partNumber does not exist in database.";
+		$statusMessage = "AddNewClassData Error: $partNumber does not exist in database.";
 		$log->add_log($sessionID,'Error',$statusMessage);
 	}
 	else

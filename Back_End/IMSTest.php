@@ -66,25 +66,20 @@ class IMSTest
 		$item_url = "www.".$this->randomString(1,20).".com";
 
 
-		$manual_request_value = 0;
-
-		$manual_request_date = "DD/MM/YYYY";
-		
+			
 		
 		//gather data in an array
 		$item_data_array = array( "Name" => $part_number,
-								 "Supplier Part Number" => $man_part_number,
-								 "Suppliers Name" => $man_name,
+								 "Supplier_Part_Number" => $man_part_number,
+								 "Suppliers_Name" => $man_name,
 								 "Description" => $item_description,
 								 "Quantity" => $item_quantity,
-								 "Ordering Threshold" => $ordering_threshold,
+								 "Ordering_Threshold" => $ordering_threshold,
 								 "Location" => $item_location,
-								 "Flags" => $item_flags,
-								 "Item Link" => $item_url,
+								 //"Flags" => $item_flags,
+								 "Item_Link" => $item_url,
 								 "Type" => $part_type_array[$part_type],
-								 "Value" => $part_value,
-								 "MANUAL_REQ_VAL" => $manual_request_value,
-								 "MANUAL_REQ_DATE" => $manual_request_date );
+								 "Value" => $part_value );
 								 
 		return $item_data_array;
 		
@@ -116,6 +111,27 @@ class IMSTest
 
 		return $string;
 	}
+	
+	
+	function translateXMLtoArray($xml,$section)
+	{
+		$XMLData = new SimpleXMLElement($xml);
+
+		$array;
+		foreach($XMLData->children() as $level1)
+		{
+			if($level1->getName() == $section)
+			{
+				foreach($level1->children() as $level2)
+				{
+					$array[$level2->getName()] = $level2;		
+				}
+			
+			}
+		}
+		return $array;
+	}
+	
 }
 
 ?>

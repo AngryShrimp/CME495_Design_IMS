@@ -1,28 +1,23 @@
 <?PHP
 /***********************************************************************
- * 	Script: RetrieveClassData.php
+ * 	Script: RetrieveEmailAddress.php
  * 	Description: Script retrieving data for a single part number for
  *      the quick access form.
  *
  *	Author: Craig Irvine (cri646@mail.usask.ca)
- *	Date: 13 January 2016
+ *	Date: 27 Feb 2016
  *
  *	Inputs: SID: The session ID of the client
- *			SortColumn: The data column to sort. (Optional)
- *          SortDirection: The sort direction (Ascending or Descending). (Optional)
  *
- *	Usage: 	RetrieveClassData.php?SID=<session id>&SortColumn=<sort column>&
- *              SortDirection=<ASC/DESC>
+ *	Usage: 	RetrieveEmailAddress.php?SID=<session id>
  ***********************************************************************/
-  
+   
 include "IMSBase.php";
 include "IMSLog.php";
 include "IMSSql.php";
 
 
 $sessionID = "";
-$sortColumn = "";
-$sortDirection = "";
 
 $statusMessage = "";
 $statusCode = "";
@@ -34,8 +29,7 @@ try
 	if ($_SERVER["REQUEST_METHOD"] == "POST") 
 	{
 		$sessionID = $_POST["SID"];
-		$sortColumn = $_POST["SortColumn"];  
-		$sortDirection = $_POST["SortDirection"];
+
 	}
 	
 	$IMSBase = new IMSBase();
@@ -43,19 +37,10 @@ try
 	$sql = new IMSSql();
 
 	$IMSBase->verifyData($sessionID,"/^.+$/");	
-	$IMSBase->verifyData($sortColumn,"/^.*$/");
-	if($sortColumn != "")
-		$IMSBase->verifyData($sortDirection,"/^(ASC|DESC)$/");
 	
 	//build the SQL statement
-	$sqlQuery = "SELECT * FROM dbo.Class_Data";
-	
-	if($sortColumn != "")
-	{
-        $sqlQuery = $sqlQuery." ORDER BY $sortColumn $sortDirection";
-	}
-	
-	$sqlQuery = $sqlQuery.";";
+	$sqlQuery = "SELECT * FROM dbo.Emails;";
+
 	
 	$stmt = $sql->prepare($sqlQuery);
 	$stmt->execute();
@@ -64,7 +49,7 @@ try
 	
 	
 	$statusCode = '0';
-	$statusMessage = "RetrieveClassData: ".count($dataArray)." Entries in Class Data Table. ($sortColumn $sortDirection)";
+	$statusMessage = "RetrieveEmailAddress: ".count($dataArray)." Entries in Email Address Table.";
 	$log->add_log($sessionID,'Information',$statusMessage);
 
 	       
@@ -72,14 +57,14 @@ try
 catch(PDOException $e)
 {
 	$statusCode = '1';
-	$statusMessage = 'CreateNewItem SQLError: '.$e->getMessage();
+	$statusMessage = 'RetrieveEmailAddress SQLError: '.$e->getMessage();
 	$log->add_log($sessionID,'Error',$statusMessage);
 	
 }
 catch(Exception $e)
 {
 	$statusCode = '1';
-	$statusMessage = 'CreateNewItem Error: '. $e->getMessage();
+	$statusMessage = 'RetrieveEmailAddress Error: '. $e->getMessage();
 	$log->add_log($sessionID,'Error',$statusMessage);
 
 }	
@@ -88,6 +73,6 @@ catch(Exception $e)
 	$statusArray[0] = $statusCode;
 	$statusArray[1] = $statusMessage;
 	//$dataArray will be null unless it was filled by $stmt->fetch()
-	$IMSBase->GenerateXMLResponse($sessionID,$statusArray,NULL,NULL,NULL,NULL,$dataArray,"CLASS_DATA","CLASS_ENTRY");
+	$IMSBase->GenerateXMLResponse($sessionID,$statusArray,NULL,NULL,NULL,NULL,$dataArray,"EMAIL_LIST","EMAIL_ENTRY");
 //}	
 ?>

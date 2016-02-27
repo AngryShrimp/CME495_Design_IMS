@@ -58,7 +58,7 @@ try
 	$IMSBase->verifyData($sessionID,"/^.+$/");	
 	$IMSBase->verifyData($partNumber,"/^.+$/");	
 	$IMSBase->verifyData($quantity,"/^[0-9]+$/");	
-	$IMSBase->verifyData($date,"/^[0-9][0-9]-[0-9][0-9]-[0-9][0-9]$/");	
+	$IMSBase->verifyData($date,"/^[0-9][0-9][0-9][0-9]-[0-9][0-9]-[0-9][0-9]$/");	
 	$IMSBase->verifyData($sortColumn,"/^.*$/");
 	if($sortColumn != "")
 		$IMSBase->verifyData($sortDirection,"/^(ASC|DESC)$/");
@@ -120,6 +120,6 @@ catch(Exception $e)
 //{
 	$statusArray[0] = $statusCode;
 	$statusArray[1] = $statusMessage;
-	$IMSBase->GenerateXMLResponse($sessionID,$statusArray,NULL,NULL,NULL,NULL,$dataArray);
+	$IMSBase->GenerateXMLResponse($sessionID,$statusArray,NULL,NULL,NULL,NULL,$dataArray,"CLASS_DATA","CLASS_ENTRY");
 //}	
 ?>

@@ -30,7 +30,8 @@ $supplierNumber = "";
 $itemLink = "";
 $quantity = "";
 $somevalue = "";
-
+$dataArray = "";
+$aItem = "";
 try
 {
 	$sql = new IMSSql();
@@ -38,12 +39,15 @@ try
 	$log = new IMSLog();
 	
 	if ($_SERVER["REQUEST_METHOD"] == "POST"){
-		$aItem = $_POST['formItem'];
+		$aItem = $_POST['itemList'];
+		$sessionID = $_POST['SID'];
 	}
 
+	
 	if(empty($aItem))
 	{
-		echo("No items to delete");
+		//echo("No items to delete");
+		$N = 0;
 	}
 	else
 	{
@@ -57,12 +61,22 @@ try
 			$stmt = $sql->prepare($sqlQuery);
 			$stmt->execute();
 		}
+		/*
 		echo("You Deleted $N items(s): ");
 		for($i=0; $i < $N; $i++)
 		{
 			echo($aItem[$i] . " ");
 		}
-	}	
+		*/
+	}
+	
+	$sqlQuery = "SELECT Supplier_Part_Number, Item_Link, Quantity FROM dbo.Purchase_List;";
+	
+	$stmt = $sql->prepare($sqlQuery);
+	$stmt->execute();
+	
+	
+	$dataArray = $stmt->fetchAll(PDO::FETCH_ASSOC);
 }
 catch(PDOException $e)
 {
@@ -81,13 +95,19 @@ catch(Exception $e)
 
 }	
 if ($statusCode == 0){
-        $statusMessage = "Item added to purchase list.";
+        $statusMessage = "Deleted ". $N . " Item(s) from list: ";
+        
+        for($i=0; $i < $N; $i++)
+        {
+        	$statusMessage .= $aItem[$i] . " ";
+        }
+        
 		$log->add_log($sessionID,'Info',$statusMessage);
     
         $statusArray[0] = $statusCode;
 		$statusArray[1] = $statusMessage;
         
         
-		//$IMSBase->GenerateXMLResponse($sessionID,$statusArray);
+		$IMSBase->GenerateXMLResponse($sessionID,$statusArray, NULL, NULL, $dataArray);
 }	
 ?>

@@ -60,7 +60,7 @@
   height:40px;
   color:black;
 }
-textarea {
+#textarea {
   resize: none;
   color:black;
 }
@@ -78,11 +78,44 @@ textarea {
  	overflow:auto;  
  	margin-top:20px;
 }
-
+#textareaCode {
+  resize: none;
+  color:black;
+  margin-left: 15%;
+  width:80%;
+}
 </style>
 
 <script>
 
+function RemoveEntry(){
+	var x = document.getElementsByName("formItem");
+	
+	var a = 0;
+	var b = 0;
+	
+	var options = "SID="+getSID();
+	for (a = 0; a < x.length; a++){
+		if (x[a].checked == true){
+			options += "&itemList["+b+"]="+x[a].value;
+			b++;
+		}
+	}
+	var xhttp = new XMLHttpRequest();
+	  xhttp.onreadystatechange = function() 
+	  {
+	    if (xhttp.readyState == 4 && xhttp.status == 200) 
+	    {
+	    }
+	  };
+	  xhttp.open("POST", "RemoveManualEntries.php", true);
+	  xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+	  xhttp.send(options);
+	  
+	  location.reload();
+	  
+	  return;
+}
 /****************************************************************
 Function:  sendBackendRequest()
 Description: Sets up and sends a XMLHttpRequest in POST mode to 
@@ -185,8 +218,8 @@ function cdm_addClassDataEntry()
 	    	var quantity = browser_entry[i].getElementsByTagName("Quantity")[0].childNodes[0].nodeValue;
 	    	
 	      tableBrowser += "<tr>" + 
-	      						"<td><input type=\"checkbox\" name=\"formItem[]\"" +
-	      						" value="+supplier_part_number+ " />" + supplier_part_number + "</td>" +
+	      						"<td><input type=\"checkbox\" name=\"formItem\"" +
+	      						" value="+supplier_part_number+ "></input>" + supplier_part_number +"</td>" +
 	                        	"<td>" + item_link + "</td>" +
 	                        	"<td>" + quantity + "</td>" +
 	                      "</tr>";
@@ -403,18 +436,16 @@ function RetrievePurchaseReport()
 	<h2>Manual Purchase List</h2>
 </div>
 
-<form action="RemoveManualEntries.php" method="post">
-	<div class="w3-container w3-striped" style="margin-left:15%">
-  		<div id="table-scroll2">
-  			<table style="width:100%" id="ManualPurchaseData">
-  				<tr><td>Table is Empty</td></tr>
-  			</table>  		
-  		</div>
-  		<button class="button" type="button" onclick="document.getElementById('ClassDataModal').style.display='block'">Add Item</button>
-  		<input class="button" type="submit" name="formSubmit" value="Delete Selected" />
-  		
-  	</div>
-</form>
+<div class="w3-container w3-striped" style="margin-left:15%">
+	<div id="table-scroll2">
+		<table style="width:100%" id="ManualPurchaseData">
+			<tr><td>Table is Empty</td></tr>
+		</table>  		
+	</div>
+	<button class="button" type="button" onclick="document.getElementById('ClassDataModal').style.display='block'">Add Item</button>
+	<button class="button" type="button" onclick="RemoveEntry()">Delete Selected</button>  		
+</div>
+
 
 
 <!-- Class Data Modal Dialog Box -->
@@ -458,7 +489,17 @@ function RetrievePurchaseReport()
     </div>
   </div>
 </div>
-
+	<div class="w3-container">
+		<div class="textareacontainer">
+			<div class="textarea">
+			  <div style="overflow:auto;">
+				<div class="headerText">Output:</div>
+			  </div>
+			  <div class="textareawrapper">
+				<textarea autocomplete="off" class="code_input" id="textareaCode" wrap="logical" spellcheck="false" style="width:100%" rows="25">Text area for testing purposes.</textarea>
+			   </div>
+			</div>
+		</div>
 
            
 </body>

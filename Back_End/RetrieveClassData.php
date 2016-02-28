@@ -88,6 +88,6 @@ catch(Exception $e)
 	$statusArray[0] = $statusCode;
 	$statusArray[1] = $statusMessage;
 	//$dataArray will be null unless it was filled by $stmt->fetch()
-	$IMSBase->GenerateXMLResponse($sessionID,$statusArray,NULL,NULL,NULL,NULL,$dataArray,"CLASS_DATA","CLASS_ENTRY");
+	$IMSBase->GenerateXMLResponse($sessionID,$statusArray,NULL,$dataArray,"CLASS_DATA","CLASS_ENTRY");
 //}	
 ?>

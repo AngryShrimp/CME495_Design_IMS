@@ -37,11 +37,8 @@ class IMSBase
 
 
 	public function GenerateXMLResponse($session_ID,
-								 $status_array,
-								 $query_suggest_array = NULL,
-								 $q_access_array = NULL,
-								 $browser_array = NULL,
-								 $log_array = NULL,
+								 $status_array,						
+								 $q_access_array = NULL,								
 								 $associative_array = NULL,
 								 $section_name = NULL,
 								 $subsection_name = NULL)
@@ -64,24 +61,8 @@ class IMSBase
 				$xml->startElement("STATUS_MESSAGE");
 					$xml->text($status_array[1]);		
 				$xml->endElement();
-			$xml->endElement();	
-			
-			if(!($query_suggest_array == NULL))
-			{
-				$xml->startElement("QUERY_SUGGEST");
-					foreach($query_suggest_array as $suggestion)
-					{					
-						$xml->startElement("SUGGESTION");
-							foreach($suggestion as $key => $value)
-							{
-								$xml->startElement($key);
-									$xml->text($value);	
-								$xml->endElement();								
-							}
-						$xml->endElement();
-					}
-				$xml->endElement();
-			}
+			$xml->endElement();			
+		
 			
 			if(!($q_access_array == NULL))
 			{
@@ -94,48 +75,7 @@ class IMSBase
 						}				
 				$xml->endElement();
 			
-			}
-			
-			if(!($browser_array == NULL))
-			{
-				$xml->startElement("BROWSER");
-				foreach($browser_array as $browser_entry)
-				{
-					$xml->startElement("BROWSER_ENTRY");
-					
-						foreach($browser_entry as $key => $data)
-						{
-							$xml->startElement(str_replace(' ','',$key));
-								$xml->text(trim($data));
-							$xml->endElement();					
-						}				
-		
-					$xml->endElement();
-				}
-				$xml->endElement();
-			
-			}
-			
-			
-			if(!($log_array == NULL))
-			{
-				$xml->startElement("LOG");
-					foreach($log_array as $log_entry)
-					{
-						$xml->startElement("LOG_ENTRY");
-							foreach($log_entry as $key => $data)
-							{
-								$xml->startElement(str_replace(' ','',$key));
-									$xml->text($data);
-								$xml->endElement();					
-							}
-						$xml->endElement();
-					}
-				
-				
-				$xml->endElement();
-			
-			}	
+			}			
 			
 			if(!($associative_array == NULL))
 			{

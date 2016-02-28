@@ -104,6 +104,6 @@ catch(Exception $e)
 	$statusArray[0] = $statusCode;
 	$statusArray[1] = $statusMessage;
 	//$dataArray will be null unless it was filled by $stmt->fetch()
-	$IMSBase->GenerateXMLResponse($sessionID,$statusArray,NULL,NULL,$dataArray);
+	$IMSBase->GenerateXMLResponse($sessionID,$statusArray,NULL,$dataArray,"BROWSER","BROWSER_ENTRY");
 //}	
 ?>

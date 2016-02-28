@@ -65,6 +65,6 @@ catch(Exception $e)
 //{
 	$statusArray[0] = $statusCode;
 	$statusArray[1] = $statusMessage;
-	$IMSBase->GenerateXMLResponse($sessionID,$statusArray,NULL,NULL,NULL,$logArray);
+	$IMSBase->GenerateXMLResponse($sessionID,$statusArray,NULL,$logArray,"LOG","LOG_ENTRY");
 //}	
 ?>

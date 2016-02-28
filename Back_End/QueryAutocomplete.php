@@ -94,6 +94,6 @@ catch(Exception $e)
 //{
 	$statusArray[0] = $statusCode;
 	$statusArray[1] = $statusMessage;
-	$IMSBase->GenerateXMLResponse($sessionID,$statusArray,$suggestionArray);
+	$IMSBase->GenerateXMLResponse($sessionID,$statusArray,NULL,$suggestionArray,"QUERY_SUGGEST","SUGGESTION");
 //}	
 ?>

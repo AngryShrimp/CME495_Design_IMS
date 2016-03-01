@@ -107,7 +107,7 @@ class IMSLog
                 $csvData = fgetcsv($log_file);
                 
 				//Prevent blank lines from creating a log entry in the response.
-				if($csvData[0] != "")
+				if($csvData[0] != NULL)
 				{
 				
 					if(($csvData[2] == $levelFilter) || ($levelFilter == "All"))

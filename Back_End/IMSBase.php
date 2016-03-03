@@ -64,7 +64,7 @@ class IMSBase
 			$xml->endElement();			
 		
 			
-			if(!($q_access_array == NULL))
+			if(!($q_access_array === NULL))
 			{
 				$xml->startElement("QACCESS");
 					foreach($q_access_array as $key => $data)
@@ -77,7 +77,7 @@ class IMSBase
 			
 			}			
 			
-			if(!($associative_array == NULL))
+			if(!($associative_array === NULL))
 			{
 				$xml->startElement($section_name);
 					foreach($associative_array as $array_entry)

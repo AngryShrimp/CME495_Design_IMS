@@ -58,7 +58,7 @@ try
 	if($filter != "")
 	{
             $sqlQuery = $sqlQuery." WHERE Name LIKE '%$filter%' or Description LIKE '%filter%'"
-						." or [Supplier Part Number] LIKE '%$filter%' or Type LIKE '%$filter%'"
+						." or [Supplier_Part_Number] LIKE '%$filter%' or Type LIKE '%$filter%'"
 						." or Value LIKE '%$filter%'";
 	}
 	
@@ -76,11 +76,10 @@ try
 	$stmt->execute();
 	
 	
-	$dataArray = $stmt->fetchAll(PDO::FETCH_ASSOC);      
-	
-	
+	$dataArray = $stmt->fetchAll(PDO::FETCH_ASSOC);      	
+		
 	$statusCode = '0';
-	$statusMessage = "RetrieveBroswerData: Browers data filtered by ($filter) and sorted by ($sortColumn, $sortDirection) completed successfully.";
+	$statusMessage = "RetrieveBroswerData: Browser data filtered by ($filter) and sorted by ($sortColumn, $sortDirection) completed successfully.";
 	$log->add_log($sessionID,'Information',$statusMessage);
 	
 	

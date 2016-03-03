@@ -5,62 +5,6 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="stylesheet" href="http://www.w3schools.com/lib/w3.css">
 <style type="text/css">
-.button 
-{
-  border: 1px solid #0a3c59;
-  background: #156bad;
-  background: -webkit-gradient(linear, left top, left bottom, from(#2195f3), to(#156bad));
-  background: -webkit-linear-gradient(top, #2195f3, #156bad);
-  background: -moz-linear-gradient(top, #2195f3, #156bad);
-  background: -ms-linear-gradient(top, #2195f3, #156bad);
-  background: -o-linear-gradient(top, #2195f3, #156bad);
-  background-image: -ms-linear-gradient(top, #2195f3 0%, #156bad 100%);
-  padding: 10.5px 21px;
-  -webkit-border-radius: 6px;
-  -moz-border-radius: 6px;
-  border-radius: 6px;
-  -webkit-box-shadow: rgba(255,255,255,0.4) 0 1px 0, inset rgba(255,255,255,0.4) 0 1px 0;
-  -moz-box-shadow: rgba(255,255,255,0.4) 0 1px 0, inset rgba(255,255,255,0.4) 0 1px 0;
-  box-shadow: rgba(255,255,255,0.4) 0 1px 0, inset rgba(255,255,255,0.4) 0 1px 0;
-  text-shadow: #7ea4bd 0 1px 0;
-  color: #ffffff;
-  font-size: 14px;
-  font-family: helvetica, serif;
-  text-decoration: none;
-  vertical-align: middle;
-}
-.button:hover 
-{
-  border: 1px solid #0a3c59;
-  text-shadow: #1e4158 0 1px 0;
-  background: #156bad;
-  background: -webkit-gradient(linear, left top, left bottom, from(#2195f3), to(#156bad));
-  background: -webkit-linear-gradient(top, #2195f3, #156bad);
-  background: -moz-linear-gradient(top, #2195f3, #156bad);
-  background: -ms-linear-gradient(top, #2195f3, #156bad);
-  background: -o-linear-gradient(top, #2195f3, #156bad);
-  background-image: -ms-linear-gradient(top, #2195f3 0%, #156bad 100%);
-  color: #000000;
-}
-.button:active 
-{
-  text-shadow: #1e4158 0 1px 0;
-  border: 1px solid #0a3c59;
-  background: #2195f3;
-  background: -webkit-gradient(linear, left top, left bottom, from(#156bad), to(#156bad));
-  background: -webkit-linear-gradient(top, #156bad, #2195f3);
-  background: -moz-linear-gradient(top, #156bad, #2195f3);
-  background: -ms-linear-gradient(top, #156bad, #2195f3);
-  background: -o-linear-gradient(top, #156bad, #2195f3);
-  background-image: -ms-linear-gradient(top, #156bad 0%, #2195f3 100%);
-  color: #000000;
-}
-#id_search_bar
-{
-  width:500px;
-  height:40px;
-  color:black;
-}
 table 
 {
  	table-layout: fixed;
@@ -127,7 +71,7 @@ th
   <span style="padding-left:5%"><textarea type="text" rows="1" style="width: 13vw;" maxlength="18" id="id_qa_ID" name="quickID" placeholder="PartID"></textarea></span>
   <span style="padding-left:5%"><textarea type="text" rows="1" style="width: 13vw;" maxlength="18" id="id_qa_Quantity" name="quickQuantity" placeholder="Quantity"></textarea></span> 
   <span style="padding-left:5%"><textarea type="text" rows="6" style="width: 13vw;" maxlength="115" id="id_qa_Description" name="quickDescription" placeholder="Description"></textarea></span> 
-  <span style="padding-left:5%"><button class='button' type='button'>Update</button></span>
+  <span style="padding-left:5%"><button class="w3-btn w3-light-green w3-border w3-round-large" type='button'>Update</button></span>
 </nav>
 
 <div class="w3-container w3-blue" style="margin-left:15%">
@@ -138,10 +82,9 @@ th
   <br>
 	<form>
 	<font size="3">Search:</font><br>
-	<input list="id_search_queryList" type="text" id="id_search_bar" name="search" oninput="search_showAutocomplete(this.value)">
+	<input list="id_search_queryList" class="w3-input w3-border w3-text-black" type="text" id="id_search_bar" name="search" oninput="main_queryBarOnInput(this)">
 	<datalist id="id_search_queryList">
 	</datalist>
-	<a href='AdvancedSearch.html' class='button'>Advanced Search</a>
 	</form>
   </div>
 </form>

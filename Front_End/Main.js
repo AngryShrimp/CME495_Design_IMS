@@ -8,7 +8,7 @@ function populateForms()
 {
 	setSID();
 	cdm_getClassData();
-	loadBrowser();
+	main_loadBrowser();
 	elm_getEmailList();
 	loadLog();
 }
@@ -48,10 +48,27 @@ function getSID()
   return document.cookie;
 }
 
+/****************************************************************
+Function:  main_loadBrowser()
+Description: Requests an update to the item browser using settings
+from the front end elements.
+*****************************************************************/
+function main_loadBrowser()
+{
 
-function loadBrowser()
-{  
-  sendBackendRequest("Back_End/RetrieveBrowserData.php","SID="+getSID());  
+  var filter = "";
+  
+  var searchBarVal = document.getElementById("id_search_bar").value;
+  
+  if(searchBarVal != "")
+  {
+	filter = "&Filter=" + searchBarVal;
+  }
+
+  
+  sendBackendRequest("Back_End/RetrieveBrowserData.php","SID="+getSID()+filter);  
+  
+  return;
 }
 
 function loadLog()
@@ -540,4 +557,15 @@ function search_showAutocomplete(partialStr)
   
   sendBackendRequest("Back_End/QueryAutocomplete.php","SID="+getSID()+"&Filter="+ partialStr);
   return;
+}
+
+/****************************************************************
+Function:  main_queryBarOnInput()
+Description: Runs all functions required when the query bar has
+an onInput event.
+*****************************************************************/
+function main_queryBarOnInput(element)
+{
+	search_showAutocomplete(element.value);
+	main_loadBrowser();
 }

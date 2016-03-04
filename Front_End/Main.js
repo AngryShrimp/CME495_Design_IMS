@@ -447,16 +447,20 @@ function parseXMLResponse(xml)
 	    }	
 	}
 
+	var tableClassData = "";
+	var tableClassDataHeader = "";
 	
 	//Table header
-	tableClassData = "<table class=\"w3-table w3-bordered w3-border w3-striped w3-hoverable\" style=\"table-layout:fixed; width=100%;\"><tr>" +
-			"<col width=\"50\">"+
+	tableClassDataHeader = "<table class=\"w3-table w3-bordered w3-border w3-striped w3-hoverable\" style=\"table-layout:fixed; width:100%; overflow-y:scroll;\"><tr>" +
+			"<col width=\"8%\"></col><col width=\"23%\"></col><col width=\"23%\"></col><col width=\"23%\"></col><col width=\"23%\">" +
 			"<th class=\"w3-border\">SEL</th>" +
             "<th class=\"w3-border\" onclick=\"cdm_tableSort('Class')\">"+headerLabelClass+"</th>" + 
             "<th class=\"w3-border\" onclick=\"cdm_tableSort('Part')\">"+headerLabelPN+"</th>" + 
             "<th class=\"w3-border\" onclick=\"cdm_tableSort('Quantity')\">"+headerLabelQty+"</th>" +
-            "<th class=\"w3-border\" onclick=\"cdm_tableSort('Date')\">"+headerLabelDate+"</th>";
+            "<th class=\"w3-border\" onclick=\"cdm_tableSort('Date')\">"+headerLabelDate+"</th></table>";
 	//table data
+	tableClassData = "<table class=\"w3-table w3-bordered w3-border w3-striped w3-hoverable\" style=\"table-layout:fixed; width:100%;\">"+
+			"<col width=\"8%\"></col><col width=\"23%\"></col><col width=\"23%\"></col><col width=\"23%\"></col><col width=\"23%\"></col>" ;
 	for( i = 0; i < class_entry.length; i++)
     {
 	
@@ -486,7 +490,7 @@ function parseXMLResponse(xml)
 
     tableClassData += "</table>"
 
-	
+	document.getElementById("id_cdm_tableHeader").innerHTML = tableClassDataHeader;
 	document.getElementById("id_cdm_table").innerHTML = tableClassData;
 
   }  

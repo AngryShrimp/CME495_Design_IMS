@@ -17,7 +17,7 @@ $rand_class = $test->randomClassData();
 
 
 //retrieve browser data for current part numbers
-$browser = $test->curl_req("http://localhost/RetrieveBrowserData.php","SID=id");
+$browser = $test->curl_req("http://localhost/Back_End/RetrieveBrowserData.php","SID=id");
 $browserEntryArray = $test->translateXMLtoArray($browser,"BROWSER");
 
 //Take random existing part number
@@ -30,7 +30,7 @@ foreach($rand_class as $k => $v)
 }
 
 $add_options = "SID=id&Class=".$rand_class['Class']."&PartNumber=".$rand_class['Part']."&Quantity=".$rand_class['Quantity']."&Date=".$rand_class['Date'];
-$output = $test->curl_req("http://localhost/AddNewClassData.php",$add_options);
+$output = $test->curl_req("http://localhost/Back_End/AddNewClassData.php",$add_options);
 
 //test the output for errors	
 $status_array = $test->translateXMLtoArray($output,"STATUS");
@@ -48,7 +48,7 @@ if($status_code != "0")
 echo "Checking Class Data\n";
 
 //Check class data entry
-$output = $test->curl_req("http://localhost/RetrieveClassData.php","SID=id");
+$output = $test->curl_req("http://localhost/Back_End/RetrieveClassData.php","SID=id");
 
 
 //test the output for errors	

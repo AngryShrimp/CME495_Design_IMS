@@ -8,9 +8,15 @@
  *	Date: 08 January 2016
  *
  ***********************************************************************/
-
+require_once "vendor/autoload.php";
+ 
+ 
+ 
 class IMSBase
 {
+	private $php_options_file_loc = "IMS_Settings.ini";
+
+
 
 	public function verifyData($data,$RegEx,$optMessage = "")
 	{
@@ -101,7 +107,93 @@ class IMSBase
 
 		echo $xml->outputMemory(true);
 		
-}
+	}
+	
+	
+	public function sendEmail($to_array,$subject,$message)
+	{
+		
+	
+		$host = "";
+		$username = "";
+		$password = "";
+		$fromemail = "";
+		$fromname = "";
+		
+		if(file_exists($this->php_options_file_loc))
+		{
+			$options_file = parse_ini_file($this->php_options_file_loc,TRUE);	
+			
+			$host = $options_file["EMAIL_SETTINGS"]["EMAIL_HOST"];
+			$username = $options_file["EMAIL_SETTINGS"]["EMAIL_USER"];
+			$password = $options_file["EMAIL_SETTINGS"]["EMAIL_PASS"];
+			$fromemail = $options_file["EMAIL_SETTINGS"]["EMAIL_FROMEMAIL"];
+			$fromname = $options_file["EMAIL_SETTINGS"]["EMAIL_FROMNAME"];
+		}
+		else
+		{
+			throw new Exception("IMSBase->sendEmail: Could not find IMS_Settings.ini");
+		}
+		
+		
+		if($host == "")
+		{
+			throw new Exception("IMSBase->sendEmail: SMTP Host Name Missing");
+		}
+		if($username == "")
+		{
+			throw new Exception("IMSBase->sendEmail: SMTP User Name Missing");
+		}
+		if($password == "")
+		{
+			throw new Exception("IMSBase->sendEmail: SMTP Password Missing");
+		}
+		if($fromemail == "")
+		{
+			throw new Exception("IMSBase->sendEmail: SMTP From Email Missing");
+		}
+		if($fromname == "")
+		{
+			throw new Exception("IMSBase->sendEmail: SMTP From Name Missing");
+		}	
+	
+	
+		$mail = new PHPMailer(true); //Throw exceptions on error
+		
+		$mail->SMTPDebug = 0;
+		$mail->isSMTP();
+		$mail->Host = $host;		
+		$mail->SMTPAuth=true;
+		$mail->Username = $username;                 
+		$mail->Password = $password;
+		$mail->SMTPSecure = "tls";
+		$mail->Port = 587;
+		
+		
+		
+		$mail->From = $fromemail;
+		$mail->FromName = $fromname;
+		
+		
+		foreach($to_array as $to)
+		{
+			$mail->addAddress($to);
+		}
+		
+		
+		$mail->isHTML(true);
+		
+		$mail->Subject = $subject;
+		$mail->Body = $message;
+		$mail->AltBody = "Plain Text Email";	
+	
+		$mail->send();
+		
+		echo "mail sent";
+		
+	}
+	
+	
 
 }
 ?>

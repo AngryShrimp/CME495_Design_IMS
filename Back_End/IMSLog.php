@@ -106,8 +106,8 @@ class IMSLog
             {
                 $csvData = fgetcsv($log_file);
                 
-				//Prevent blank lines from creating a log entry in the response.
-				if($csvData[0] != NULL)
+				//Prevent invalid lines from creating a log entry in the response.
+				if(count($csvData) == 5)
 				{
 				
 					if(($csvData[2] == $levelFilter) || ($levelFilter == "All"))
@@ -118,7 +118,8 @@ class IMSLog
 						$logArray['Description'] = $csvData[3];
 						$logArray['Item'] = $csvData[4];
 					
-						$logData[] = $logArray;
+						//prepends the array, array entries are in newest to oldest order.
+						array_unshift($logData,$logArray);
 					}
 				}
             }

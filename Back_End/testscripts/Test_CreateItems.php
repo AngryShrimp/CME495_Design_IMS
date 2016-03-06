@@ -29,13 +29,13 @@ foreach($rand_item as $k => $v)
 	if($k == 'Name')	
 	{
 		echo "Creating Item Number: ".$rand_item['Name']."\n";
-		curl_setopt($ch, CURLOPT_URL, "http://localhost/CreateNewItem.php");
+		curl_setopt($ch, CURLOPT_URL, "http://localhost/Back_End/CreateNewItem.php");
 		curl_setopt($ch, CURLOPT_POSTFIELDS, "SID=ID&PartNumber=$PN");
 	}
 	else
 	{
 		echo "Modifying Item Number ".$rand_item['Name']." with Field:$k => Value:$v\n";
-		curl_setopt($ch, CURLOPT_URL, "http://localhost/ModifyItem.php");
+		curl_setopt($ch, CURLOPT_URL, "http://localhost/Back_End/ModifyItem.php");
 		curl_setopt($ch, CURLOPT_POSTFIELDS, "SID=ID&PartNumber=$PN&Field=$k&Value=$v");
 	}
 
@@ -56,7 +56,7 @@ foreach($rand_item as $k => $v)
 
 echo "Checking Item\n";
 
-curl_setopt($ch, CURLOPT_URL, "http://localhost/RetrieveItemData.php");
+curl_setopt($ch, CURLOPT_URL, "http://localhost/Back_End/RetrieveItemData.php");
 curl_setopt($ch, CURLOPT_POSTFIELDS, "SID=ID&PartNumber=$PN");
 
 $output = curl_exec($ch);

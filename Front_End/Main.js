@@ -18,34 +18,14 @@ Function:  getSID()
 Description: Gets a SID from the server and creates a local cookie.
 *****************************************************************/
 function setSID()
-{
-
-  /*var xhttp = new XMLHttpRequest(); 
-  xhttp.open("POST", "Back_End/GenerateSID.php", false);
-  xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-  xhttp.send(); 
-  
-  
-  var SIDResponse = xhttp.responseText;
-
-  if(SIDResponse == "SIDError")
-  {
-    IMSError("setSID Error","SID Missing.");
-	return;
-  }*/
-	
-  //document.cookie=SIDResponse;
-  
+{  
   var current_sid = document.cookie;
   if(current_sid == "")
   {
-
 	window.location = "default.php";
-  }
-  
+  } 
 
   document.getElementById("id_main_SIDDisplay").innerHTML = document.cookie;
-
   
   return;
   

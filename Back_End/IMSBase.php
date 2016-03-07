@@ -14,7 +14,7 @@ require_once "vendor/autoload.php";
  
 class IMSBase
 {
-	private $php_options_file_loc = "IMS_Settings.ini";
+	
 
 
 
@@ -112,6 +112,7 @@ class IMSBase
 	
 	public function sendEmail($to_array,$subject,$message)
 	{
+		$php_options_file_loc = $_SERVER['DOCUMENT_ROOT']."\Back_End\IMS_Settings.ini";
 		
 	
 		$host = "";
@@ -120,9 +121,9 @@ class IMSBase
 		$fromemail = "";
 		$fromname = "";
 		
-		if(file_exists($this->php_options_file_loc))
+		if(file_exists(php_options_file_loc))
 		{
-			$options_file = parse_ini_file($this->php_options_file_loc,TRUE);	
+			$options_file = parse_ini_file(php_options_file_loc,TRUE);	
 			
 			$host = $options_file["EMAIL_SETTINGS"]["EMAIL_HOST"];
 			$username = $options_file["EMAIL_SETTINGS"]["EMAIL_USER"];

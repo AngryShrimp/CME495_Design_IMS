@@ -65,7 +65,7 @@ try
 	
 	$statusCode = '0';
 	$statusMessage = "RetrieveClassData: ".count($dataArray)." Entries in Class Data Table. ($sortColumn $sortDirection)";
-	$log->add_log($sessionID,'Information',$statusMessage);
+	$log->add_log($sessionID,'Debug',$statusMessage);
 
 	       
 }

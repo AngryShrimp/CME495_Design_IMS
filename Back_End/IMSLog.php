@@ -25,6 +25,7 @@ class IMSLog
 		{		
 			//default log location
 			$this->log_file_loc = $_SERVER['DOCUMENT_ROOT']."\Back_End\log\IMSLog.csv";
+			
 		}
 
 		//Check that log folder exists and check write permissions.
@@ -40,8 +41,7 @@ class IMSLog
 		{
 			throw new Exception("Log directory ($this->log_file_loc) is not writeable.");
 		}	
-
-
+		
 
 	}
 	

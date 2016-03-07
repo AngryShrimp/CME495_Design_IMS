@@ -181,7 +181,60 @@ class IMSSql {
 		}	
 	}
 	
+	public function set_sid($sid,$date,$ip,$key)
+	{
 	
+		try
+		{		
+			$runlevel = "0";
+		
+			$this->command("DELETE FROM dbo.SID_List WHERE EXPIRE<'$date'");			
+
+			$stmt = $this->prepare("SELECT * FROM dbo.SID_List;");
+			$stmt->execute();	
+			
+			$dataArray = $stmt->fetchAll(PDO::FETCH_ASSOC);   		
+
+			if($key == "update")
+			{
+				$runlevel = "1";
+			}
+			else if($key == "modify")
+			{
+				$runlevel = "2";
+			}
+
+			$exp_date = date("Y-m-d H:i:s",time()+3600);
+			
+			$this->command("INSERT INTO dbo.SID_List (SID,CLIENT_IP,EXPIRE,LEVEL) VALUES ('$sid','$ip','$exp_date','$runlevel');");
+
+		}
+		catch (PDOException $e)
+		{
+			throw $e;
+		}
+		return;	
+	}
+	
+	
+	public function getRunLevel($SID)
+	{
+		$stmt = $this->prepare("SELECT * FROM dbo.SID_List;");
+		$stmt->execute();	
+		
+		$dataArray = $stmt->fetchAll(PDO::FETCH_ASSOC); 
+		
+		
+		foreach($dataArray as $data)
+		{
+			if($data['SID'] == $SID)
+			{
+				return $data['LEVEL'];
+			}
+		}	
+		
+		return "0";
+	}	
 }
 
 

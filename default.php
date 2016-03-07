@@ -11,11 +11,10 @@ $key = "";
  
 try 
 {
-
 	$log = new IMSLog();
 	$sql = new IMSSql();	
 	
-	
+
 	if ($_SERVER["REQUEST_METHOD"] == "GET") 
 	{
 		$key = $_GET["Key"];
@@ -33,27 +32,7 @@ try
 
 	$SID = hash("crc32",$message);
 	
-	
-	$sql->command("DELETE FROM dbo.SID_List WHERE EXPIRE<'$date'");
-	
-	
-	$stmt = $sql->prepare("SELECT * FROM dbo.SID_List;");
-	$stmt->execute();	
-	
-	$dataArray = $stmt->fetchAll(PDO::FETCH_ASSOC);   		
-	
-	if($key == "update")
-	{
-		$runlevel = "1";
-	}
-	else if($key == "modify")
-	{
-		$runlevel = "2";
-	}
-	
-	$exp_date = date("Y-m-d H:i:s",time()+3600);
-		
-	$sql->command("INSERT INTO dbo.SID_List (SID,CLIENT_IP,EXPIRE,LEVEL) VALUES ('$SID','$ipaddress','$exp_date','$runlevel');");
+	$sql->set_sid($SID,$date,$ipaddress,$key);
 
 	
 }
@@ -63,7 +42,6 @@ catch(PDOException $e)
 	$statusMessage = 'GenerateSID Error: '. $e->getMessage();
 	//$log->add_log($sessionID,'Error',$statusMessage);
 }
-
 catch(Exception $e)
 {
 	$statusCode = '1';

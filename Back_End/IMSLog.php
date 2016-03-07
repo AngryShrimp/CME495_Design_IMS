@@ -24,11 +24,11 @@ class IMSLog
 		else
 		{		
 			//default log location
-			$this->log_file_loc = "log\IMSLog.csv";
+			$this->log_file_loc = $_SERVER['DOCUMENT_ROOT']."\Back_End\log\IMSLog.csv";
 		}
 
 		//Check that log folder exists and check write permissions.
-		if(!file_exists("log"))
+		if(!file_exists($this->log_file_loc))
 		{
 			if(!mkdir(dirname($this->log_file_loc)))
 			{

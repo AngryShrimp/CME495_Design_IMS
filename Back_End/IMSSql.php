@@ -15,16 +15,17 @@ class IMSSql {
 	private $l_username = "";
 	private $l_password = "";
 	private $conn;
-	private $php_options_file_loc = "IMS_Settings.ini";
 	private $sql_driver = "sqlsrv";
 
 
 
 	public function __construct($server="",$user="",$pass="")
 	{
-		if(file_exists($this->php_options_file_loc))
+		$php_options_file_loc = $_SERVER['DOCUMENT_ROOT']."\Back_End\IMS_Settings.ini";
+	
+		if(file_exists($php_options_file_loc))
 		{
-			$options_file = parse_ini_file($this->php_options_file_loc,TRUE);	
+			$options_file = parse_ini_file($php_options_file_loc,TRUE);	
 			
 			$this->l_servername = $options_file["SQL_SERVER"]["SQL_LOCATION"];
 			$this->l_username = $options_file["SQL_SERVER"]["SQL_USER"];

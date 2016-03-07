@@ -80,7 +80,7 @@ try
 		
 	$statusCode = '0';
 	$statusMessage = "RetrieveBroswerData: Browser data filtered by ($filter) and sorted by ($sortColumn, $sortDirection) completed successfully.";
-	$log->add_log($sessionID,'Information',$statusMessage);
+	$log->add_log($sessionID,'Debug',$statusMessage);
 	
 	
 }

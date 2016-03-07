@@ -2,3 +2,4 @@
 /Back_End/log
 Back_End/testscripts/php_error.log
 *.log
+log/IMSLog.csv

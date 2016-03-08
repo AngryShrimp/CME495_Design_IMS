@@ -29,7 +29,8 @@ class IMSLog
 		}
 
 		//Check that log folder exists and check write permissions.
-		if(!file_exists($this->log_file_loc))
+		$path = pathinfo($this->log_file_loc);
+		if(!file_exists($path['dirname']))
 		{
 			if(!mkdir(dirname($this->log_file_loc)))
 			{
@@ -37,7 +38,7 @@ class IMSLog
 			}
 		}
 		
-		if(!is_writable(dirname($this->log_file_loc)))
+		if(!is_writable($path['dirname']))
 		{
 			throw new Exception("Log directory ($this->log_file_loc) is not writeable.");
 		}	
@@ -59,6 +60,13 @@ class IMSLog
 		fclose($lock_file);
 		
 		$log_file = fopen($this->log_file_loc,'a');
+		
+		if($log_file == FALSE)
+		{
+			unlink($this->log_file_loc.".lock");
+			throw new Exception("IMSLog->add_log: Log file could not be opened");
+			return;
+		} 
 		
 		//check for empty inputs.
 		if($SID == "")
@@ -99,8 +107,14 @@ class IMSLog
             fwrite($lock_file,"Locked");
             fclose($lock_file);
 
-            $log_file = fopen($this->log_file_loc,'r');
+            $log_file = fopen($this->log_file_loc,'c+');
 
+			if($log_file == FALSE)
+			{
+				unlink($this->log_file_loc.".lock");
+				throw new Exception("IMSLog->read_log: Log file could not be opened");
+				return;
+			}
 
             while(!feof($log_file))
             {

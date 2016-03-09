@@ -29,6 +29,7 @@ $value = "";
 
 $statusMessage = "";
 $statusCode = "";
+$runLevel = "";
 $dataArray = NULL;
 $sortColumn = "";
 $sortDirection = "";
@@ -50,8 +51,8 @@ try
 	$log = new IMSLog();
 	$sql = new IMSSql();
 
+	$runLevel = $sql->verifySID($sessionID,"1"); //1 = Requires edit privileges.
 	$IMSBase->verifyData($recordID,"/^.+$/","recordID");
-	$IMSBase->verifyData($sessionID,"/^.+$/","SessionID");
 	$IMSBase->verifyData($field,"/^.+$/","field");
 	$IMSBase->verifyData($value,"/^.+$/","value");
 	$IMSBase->verifyData($sortColumn,"/^.*$/","sortColumn");
@@ -99,6 +100,7 @@ catch(Exception $e)
 //{
 	$statusArray[0] = $statusCode;
 	$statusArray[1] = $statusMessage;
+	$statusArray[2] = $runLevel;
 	$IMSBase->GenerateXMLResponse($sessionID,$statusArray,NULL,$dataArray,"CLASS_DATA","CLASS_ENTRY");
 //}	
 ?>

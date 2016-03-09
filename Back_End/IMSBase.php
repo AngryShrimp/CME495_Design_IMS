@@ -67,6 +67,15 @@ class IMSBase
 				$xml->startElement("STATUS_MESSAGE");
 					$xml->text($status_array[1]);		
 				$xml->endElement();
+				if(count($status_array) == 3)
+				{
+					$xml->startElement("RUN_LEVEL");
+						if($status_array[2] == "1")
+							$xml->text("Edit Mode");		
+						else
+							$xml->text("View Mode");
+					$xml->endElement();
+				}
 			$xml->endElement();			
 		
 			

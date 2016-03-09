@@ -118,10 +118,12 @@ function parseXMLResponse(xml)
   {
 	var statusCode = status[0].getElementsByTagName("STATUS_CODE")[0].childNodes[0].nodeValue;
 	var statusMessage = status[0].getElementsByTagName("STATUS_MESSAGE")[0].childNodes[0].nodeValue;
+	var runMode = status[0].getElementsByTagName("RUN_LEVEL")[0].childNodes[0].nodeValue;
   
 	document.getElementById("status_code").innerHTML = statusCode;
 	document.getElementById("status_message").innerHTML = statusMessage;
-  
+  	document.getElementById("id_main_RunLevelDisplay").innerHTML = runMode;
+
 	//check status code and throw and alert if a fail occurred.
 	if(statusCode != "0")
 	{

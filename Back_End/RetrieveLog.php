@@ -23,6 +23,7 @@ $logLevel = "";
 
 $statusMessage = "";
 $statusCode = "";
+$runLevel = "";
 
 
 try
@@ -30,18 +31,19 @@ try
 	if ($_SERVER["REQUEST_METHOD"] == "POST") 
 	{
 		$sessionID = $_POST["SID"];
-		$logLevel = $_POST["LogLevel"];  
+		$logLevel = $_POST["LogLevel"]; 
 	}
 	
 	$IMSBase = new IMSBase();
 	$log = new IMSLog();
+	$sql = new IMSSql();
 
+	$runLevel = $sql->verifySID($sessionID); //No special permission required.	
+	
 	$IMSBase->verifyData($logLevel,"/^.+$/");
-	$IMSBase->verifyData($sessionID,"/^.+$/");
-	
+		
 	$logArray = $log->read_log($logLevel);
-	
-	
+		
 	$statusCode = '0';
 	$statusMessage = 'RetrieveLog, successfully retrieved log data.';
 	$log->add_log($sessionID,'Debug',$statusMessage);
@@ -65,6 +67,7 @@ catch(Exception $e)
 //{
 	$statusArray[0] = $statusCode;
 	$statusArray[1] = $statusMessage;
+	$statusArray[2] = $runLevel;
 	$IMSBase->GenerateXMLResponse($sessionID,$statusArray,NULL,$logArray,"LOG","LOG_ENTRY");
 //}	
 ?>

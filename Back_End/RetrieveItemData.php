@@ -23,6 +23,7 @@ $partNumber = "";
 
 $statusMessage = "";
 $statusCode = "";
+$runLevel = "";
 $dataArray=NULL;
 
 
@@ -38,8 +39,9 @@ try
 	$log = new IMSLog();
 	$sql = new IMSSql();
 
+	$runLevel = $sql->verifySID($sessionID); //No special permission required.
+
 	$IMSBase->verifyData($partNumber,"/^.+$/");
-	$IMSBase->verifyData($sessionID,"/^.+$/");
 	
 	
 	$stmt = $sql->prepare("SELECT * FROM dbo.Inventory WHERE Name='$partNumber'");
@@ -92,6 +94,7 @@ catch(Exception $e)
 //{
 	$statusArray[0] = $statusCode;
 	$statusArray[1] = $statusMessage;
+	$statusArray[2] = $runLevel;
 	//$dataArray will be null unless it was filled by $stmt->fetch()
 	$IMSBase->GenerateXMLResponse($sessionID,$statusArray,$dataArray);
 //}	

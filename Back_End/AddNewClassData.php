@@ -34,6 +34,7 @@ $dataArray=NULL;
 
 $statusMessage = "";
 $statusCode = "";
+$runLevel = "";
 
 
 try
@@ -53,9 +54,9 @@ try
 	$IMSBase = new IMSBase();
 	$log = new IMSLog();
 	$sql = new IMSSql();
-
+	
+	$runLevel = $sql->verifySID($sessionID,"1"); //1 = Requires edit privileges.
 	$IMSBase->verifyData($classNumber,"/^.+$/");
-	$IMSBase->verifyData($sessionID,"/^.+$/");	
 	$IMSBase->verifyData($partNumber,"/^.+$/");	
 	$IMSBase->verifyData($quantity,"/^[0-9]+$/");	
 	$IMSBase->verifyData($date,"/^[0-9][0-9][0-9][0-9]-[0-9][0-9]-[0-9][0-9]$/");	
@@ -120,6 +121,7 @@ catch(Exception $e)
 //{
 	$statusArray[0] = $statusCode;
 	$statusArray[1] = $statusMessage;
+	$statusArray[2] = $runLevel;
 	$IMSBase->GenerateXMLResponse($sessionID,$statusArray,NULL,$dataArray,"CLASS_DATA","CLASS_ENTRY");
 //}	
 ?>

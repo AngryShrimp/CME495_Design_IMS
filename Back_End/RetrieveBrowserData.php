@@ -28,6 +28,7 @@ $filter = "";
 
 $statusMessage = "";
 $statusCode = "";
+$runLevel = "";
 $dataArray=NULL;
 
 
@@ -45,7 +46,7 @@ try
 	$log = new IMSLog();
 	$sql = new IMSSql();
 	
-	$IMSBase->verifyData($sessionID,"/^.+$/");
+	$runLevel = $sql->verifySID($sessionID); //No special premission required.
 	$IMSBase->verifyData($sortColumn,"/^.*$/");
 	if($sortColumn != "")
 		$IMSBase->verifyData($sortDirection,"/^(ASC|DESC)$/");
@@ -102,6 +103,7 @@ catch(Exception $e)
 //{
 	$statusArray[0] = $statusCode;
 	$statusArray[1] = $statusMessage;
+	$statusArray[2] = $runLevel;
 	//$dataArray will be null unless it was filled by $stmt->fetch()
 	$IMSBase->GenerateXMLResponse($sessionID,$statusArray,NULL,$dataArray,"BROWSER","BROWSER_ENTRY");
 //}	

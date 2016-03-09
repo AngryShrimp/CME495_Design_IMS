@@ -22,6 +22,7 @@ $partNumber = "";
 
 $statusMessage = "";
 $statusCode = "";
+$runLevel = "";
 
 
 try
@@ -37,7 +38,7 @@ try
 	$log = new IMSLog();
 	$sql = new IMSSql();
 
-	$IMSBase->verifyData($sessionID,"/^.+$/","SessionID");
+	$runLevel = $sql->verifySID($sessionID,"1"); //1 = Requires edit privileges.
 	$IMSBase->verifyData($partNumber,"/^.+$/","PartNumber");
 
 	if($sql->exists($partNumber,'dbo.Inventory') == TRUE)
@@ -74,6 +75,7 @@ catch(Exception $e)
 //{
 	$statusArray[0] = $statusCode;
 	$statusArray[1] = $statusMessage;
+	$statusArray[2] = $runLevel;
 	$IMSBase->GenerateXMLResponse($sessionID,$statusArray);
 //}	
 ?>

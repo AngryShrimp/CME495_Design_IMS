@@ -23,6 +23,7 @@ $filter = "";
 
 $statusMessage = "";
 $statusCode = "";
+$runLevel = "";
 $suggestionArray=NULL;
 
 
@@ -38,7 +39,7 @@ try
 	$log = new IMSLog();
 	$sql = new IMSSql();
 	
-	$IMSBase->verifyData($sessionID,"/^.+$/");
+	$runLevel = $sql->verifySID($sessionID); //No Special privileges required.
 	$IMSBase->verifyData($filter,"/^.+$/");
 	
 	
@@ -94,6 +95,7 @@ catch(Exception $e)
 //{
 	$statusArray[0] = $statusCode;
 	$statusArray[1] = $statusMessage;
+	$statusArray[2] = $runLevel;
 	$IMSBase->GenerateXMLResponse($sessionID,$statusArray,NULL,$suggestionArray,"QUERY_SUGGEST","SUGGESTION");
 //}	
 ?>

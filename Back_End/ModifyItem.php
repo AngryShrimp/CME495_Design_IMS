@@ -45,8 +45,9 @@ try
 	$log = new IMSLog();
 	$sql = new IMSSql();
 
+	
+	$runLevel = $sql->verifySID($sessionID,"1"); //1 = Requires edit privileges.
 	$IMSBase->verifyData($partNumber,"/^.+$/","PartNumber");
-	$IMSBase->verifyData($sessionID,"/^.+$/","SessionID");
 	$IMSBase->verifyData($field,"/^.+$/","field");
 	$IMSBase->verifyData($value,"/^.+$/","value");
 
@@ -85,6 +86,7 @@ catch(Exception $e)
 //{
 	$statusArray[0] = $statusCode;
 	$statusArray[1] = $statusMessage;
+	$statusArray[2] = $runLevel;
 	$IMSBase->GenerateXMLResponse($sessionID,$statusArray);
 //}	
 ?>

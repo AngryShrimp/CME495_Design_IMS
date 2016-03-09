@@ -22,6 +22,7 @@ $id = "";
 
 $statusMessage = "";
 $statusCode = "";
+$runLevel = "";
 $dataArray=NULL;
 
 
@@ -39,7 +40,7 @@ try
 	$log = new IMSLog();
 	$sql = new IMSSql();
 	
-	$IMSBase->verifyData($sessionID,"/^.+$/");	
+	$runLevel = $sql->verifySID($sessionID,"1"); //1 = Requires edit privileges.
 	$IMSBase->verifyData($id,"/^.+$/");	
 	
 		
@@ -79,6 +80,7 @@ catch(Exception $e)
 //{
 	$statusArray[0] = $statusCode;
 	$statusArray[1] = $statusMessage;
+	$statusArray[2] = $runLevel;
 	$IMSBase->GenerateXMLResponse($sessionID,$statusArray,NULL,$dataArray,"EMAIL_LIST","EMAIL_ENTRY");
 //}	
 ?>

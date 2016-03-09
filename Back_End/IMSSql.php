@@ -198,11 +198,7 @@ class IMSSql {
 			if($key == "update")
 			{
 				$runlevel = "1";
-			}
-			else if($key == "modify")
-			{
-				$runlevel = "2";
-			}
+			}			
 
 			$exp_date = date("Y-m-d H:i:s",time()+3600);
 			
@@ -217,7 +213,7 @@ class IMSSql {
 	}
 	
 	
-	public function getRunLevel($SID)
+	public function verifySID($SID,$runLevel = "0")
 	{
 		$stmt = $this->prepare("SELECT * FROM dbo.SID_List;");
 		$stmt->execute();	
@@ -229,9 +225,19 @@ class IMSSql {
 		{
 			if($data['SID'] == $SID)
 			{
-				return $data['LEVEL'];
+				if($data['LEVEL'] < $runLevel)
+				{
+					throw new Exception("verifySID: Missing permissions.");
+				}
+				else
+				{
+					return $data['LEVEL'];
+				}
 			}
 		}	
+		
+		//SID passed is not valid.
+		throw new Exception("verifySID: Invalid SID.");
 		
 		return "0";
 	}	

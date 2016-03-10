@@ -40,7 +40,7 @@ try
 	$sql = new IMSSql();
 	
 	$runLevel = $sql->verifySID($sessionID); //No Special privileges required.
-	$IMSBase->verifyData($filter,"/^.+$/");
+	$IMSBase->verifyData($filter,"/^.+$/","Filter");
 	
 	
 	$sqlQuery = "SELECT * FROM dbo.Inventory WHERE Name LIKE '%$filter%'";

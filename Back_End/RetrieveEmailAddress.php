@@ -37,7 +37,7 @@ try
 	$log = new IMSLog();
 	$sql = new IMSSql();
 
-	$runLevel = $sql->verifySID($sessionID); //No special premission required.
+	$runLevel = $sql->verifySID($sessionID); //No special permissions required.
 	
 	//build the SQL statement
 	$sqlQuery = "SELECT * FROM dbo.Emails;";

@@ -40,7 +40,7 @@ try
 
 	$runLevel = $sql->verifySID($sessionID); //No special permission required.	
 	
-	$IMSBase->verifyData($logLevel,"/^.+$/");
+	$IMSBase->verifyData($logLevel,"/^.+$/","Log Level");
 		
 	$logArray = $log->read_log($logLevel);
 		

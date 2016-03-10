@@ -48,9 +48,9 @@ try
 	$sql = new IMSSql();
 
 	$runLevel = $sql->verifySID($sessionID,"1"); //1 = Requires edit privileges.
-	$IMSBase->verifyData($recordID,"/^.+$/","recordID");
-	$IMSBase->verifyData($field,"/^.+$/","field");
-	$IMSBase->verifyData($value,"/^.+$/","value");
+	$IMSBase->verifyData($recordID,"/^.+$/","Record ID");
+	$IMSBase->verifyData($field,"/^.+$/","Record Field");
+	$IMSBase->verifyData($value,"/^.+$/","Record Value");
 
 	$sql->command("UPDATE dbo.Emails SET [$field]='$value' WHERE ID='$recordID';");	
 	

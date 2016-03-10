@@ -52,12 +52,12 @@ try
 	$sql = new IMSSql();
 
 	$runLevel = $sql->verifySID($sessionID,"1"); //1 = Requires edit privileges.
-	$IMSBase->verifyData($recordID,"/^.+$/","recordID");
-	$IMSBase->verifyData($field,"/^.+$/","field");
-	$IMSBase->verifyData($value,"/^.+$/","value");
-	$IMSBase->verifyData($sortColumn,"/^.*$/","sortColumn");
+	$IMSBase->verifyData($recordID,"/^.+$/","Record ID");
+	$IMSBase->verifyData($field,"/^.+$/","Record Field");
+	$IMSBase->verifyData($value,"/^.+$/","Record Value");
+	$IMSBase->verifyData($sortColumn,"/^.*$/","Sort Column");
 	if($sortColumn != "")
-		$IMSBase->verifyData($sortDirection,"/^(ASC|DESC)$/","sortDirection");
+		$IMSBase->verifyData($sortDirection,"/^(ASC|DESC)$/","Sort Direction");
 
 	$sql->command("UPDATE dbo.Class_Data SET [$field]='$value' WHERE ID='$recordID';");	
 	
@@ -77,7 +77,7 @@ try
 	$dataArray = $stmt->fetchAll(PDO::FETCH_ASSOC);
 	
 	$statusCode = '0';
-	$statusMessage = "Class Data Record($recordID) $field was updated with $value";
+	$statusMessage = "Class Data Record($recordID) - $field was updated with $value";
 	$log->add_log($sessionID,'Information',$statusMessage);
 	
 	

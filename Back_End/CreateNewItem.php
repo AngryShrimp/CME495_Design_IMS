@@ -39,7 +39,7 @@ try
 	$sql = new IMSSql();
 
 	$runLevel = $sql->verifySID($sessionID,"1"); //1 = Requires edit privileges.
-	$IMSBase->verifyData($partNumber,"/^.+$/","PartNumber");
+	$IMSBase->verifyData($partNumber,"/^.+$/","Part Number");
 
 	if($sql->exists($partNumber,'dbo.Inventory') == TRUE)
 	{

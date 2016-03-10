@@ -47,9 +47,9 @@ try
 
 	
 	$runLevel = $sql->verifySID($sessionID,"1"); //1 = Requires edit privileges.
-	$IMSBase->verifyData($partNumber,"/^.+$/","PartNumber");
-	$IMSBase->verifyData($field,"/^.+$/","field");
-	$IMSBase->verifyData($value,"/^.+$/","value");
+	$IMSBase->verifyData($partNumber,"/^.+$/","Part Number");
+	$IMSBase->verifyData($field,"/^.+$/","Item Field");
+	$IMSBase->verifyData($value,"/^.+$/","Item Value");
 
 	if($sql->exists($partNumber,'dbo.Inventory') == FALSE)
 	{

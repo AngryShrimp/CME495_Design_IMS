@@ -41,7 +41,7 @@ try
 
 	$runLevel = $sql->verifySID($sessionID); //No special permission required.
 
-	$IMSBase->verifyData($partNumber,"/^.+$/");
+	$IMSBase->verifyData($partNumber,"/^.+$/","Part Number");
 	
 	
 	$stmt = $sql->prepare("SELECT * FROM dbo.Inventory WHERE Name='$partNumber'");

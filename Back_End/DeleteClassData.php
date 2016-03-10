@@ -47,10 +47,10 @@ try
 	$sql = new IMSSql();
 	
 	$runLevel = $sql->verifySID($sessionID,"1"); //1 = Requires edit privileges.
-	$IMSBase->verifyData($id,"/^.+$/");	
-	$IMSBase->verifyData($sortColumn,"/^.*$/");
+	$IMSBase->verifyData($id,"/^.+$/","Record ID");	
+	$IMSBase->verifyData($sortColumn,"/^.*$/","Sort Column");
 	if($sortColumn != "")
-		$IMSBase->verifyData($sortDirection,"/^(ASC|DESC)$/");
+		$IMSBase->verifyData($sortDirection,"/^(ASC|DESC)$/","Sort Direction");
 		
 		
 	//Delete record

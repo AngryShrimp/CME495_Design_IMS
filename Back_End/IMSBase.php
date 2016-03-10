@@ -36,8 +36,7 @@ class IMSBase
 		{
 			return;
 		}
-		
-		throw new Exception("String ($data) did not match RegEx ($RegEx)($optMessage)");
+		throw new Exceptoin("Input $optMessage did not match expected value. ($data != $RegEx)");
 	}
 
 

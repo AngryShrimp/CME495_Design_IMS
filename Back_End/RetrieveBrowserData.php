@@ -46,10 +46,10 @@ try
 	$log = new IMSLog();
 	$sql = new IMSSql();
 	
-	$runLevel = $sql->verifySID($sessionID); //No special premission required.
-	$IMSBase->verifyData($sortColumn,"/^.*$/");
+	$runLevel = $sql->verifySID($sessionID); //No special permissions required.
+	$IMSBase->verifyData($sortColumn,"/^.*$/","Sort Column");
 	if($sortColumn != "")
-		$IMSBase->verifyData($sortDirection,"/^(ASC|DESC)$/");
+		$IMSBase->verifyData($sortDirection,"/^(ASC|DESC)$/","Sort Direction");
 	$IMSBase->verifyData($filter,"/^.*$/");
 	
 	

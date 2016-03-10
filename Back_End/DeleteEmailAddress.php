@@ -41,7 +41,7 @@ try
 	$sql = new IMSSql();
 	
 	$runLevel = $sql->verifySID($sessionID,"1"); //1 = Requires edit privileges.
-	$IMSBase->verifyData($id,"/^.+$/");	
+	$IMSBase->verifyData($id,"/^.+$/","Record ID");	
 	
 		
 	//Delete record

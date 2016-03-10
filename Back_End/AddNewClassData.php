@@ -56,15 +56,13 @@ try
 	$sql = new IMSSql();
 	
 	$runLevel = $sql->verifySID($sessionID,"1"); //1 = Requires edit privileges.
-	$IMSBase->verifyData($classNumber,"/^.+$/");
-	$IMSBase->verifyData($partNumber,"/^.+$/");	
-	$IMSBase->verifyData($quantity,"/^[0-9]+$/");	
-	$IMSBase->verifyData($date,"/^[0-9][0-9][0-9][0-9]-[0-9][0-9]-[0-9][0-9]$/");	
-	$IMSBase->verifyData($sortColumn,"/^.*$/");
+	$IMSBase->verifyData($classNumber,"/^.+$/","Class");
+	$IMSBase->verifyData($partNumber,"/^.+$/","Part Number");	
+	$IMSBase->verifyData($quantity,"/^[0-9]+$/","Quantity");	
+	$IMSBase->verifyData($date,"/^[0-9][0-9][0-9][0-9]-[0-9][0-9]-[0-9][0-9]$/", "Date");
+	$IMSBase->verifyData($sortColumn,"/^.*$/","Sort Column");
 	if($sortColumn != "")
-		$IMSBase->verifyData($sortDirection,"/^(ASC|DESC)$/");
-
-	//Add date verification?
+		$IMSBase->verifyData($sortDirection,"/^(ASC|DESC)$/","Sort Direction");
 
 	
 	if($sql->exists($partNumber,'dbo.Inventory') == FALSE)

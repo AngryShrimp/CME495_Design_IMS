@@ -200,6 +200,11 @@ function parseXMLResponse(xml)
   if(log.length > 0)
   {
     var log_entry = log[0].getElementsByTagName("LOG_ENTRY");
+	var tableLogHeader = "";
+	var tableLogData = "";
+	var tableItemLogHeader = "";
+	var tableItemLogData = "";
+	
     //check for null data
     if(log_entry == null)
     {
@@ -215,21 +220,25 @@ function parseXMLResponse(xml)
 
     /*Add sort stuff here*/
 
-    tableLog = "<table class=\"w3-table w3-bordered w3-border w3-striped w3-hoverable\" style=\"table-layout:fixed; width=100%;\"><tr>" +
-            "<col width=\"250\">"+
+    tableLogHeader = "<table class=\"w3-table w3-bordered w3-border w3-striped w3-hoverable\" style=\"table-layout:fixed; width=100%;\"><tr>" +
+            "<col width=\"10%\"><col width=\"12%\"><col width=\"15%\"><col width=\"10%\"><col width=\"20%\">"+
             "<th class=\"w3-border\" onclick=\"\">"+logHeaderLabelDate+"</th>" +
             "<th class=\"w3-border\" onclick=\"\">"+logHeaderLabelSID+"</th>" + 
             "<th class=\"w3-border\" onclick=\"\">"+logHeaderLabelPN+"</th>" + 
             "<th class=\"w3-border\" onclick=\"\">"+logHeaderLabelLevel+"</th>" + 
-            "<th class=\"w3-border\" onclick=\"\">"+logHeaderLabelDescription+"</th>";
+            "<th class=\"w3-border\" onclick=\"\">"+logHeaderLabelDescription+"</th></table>";
+		
 			
-			
-	tableItemLog = tableLog;
+	tableItemLogHeader = tableLogHeader;
 	var tableRow = "";
-			   
+	   
+	tableLogData = "<table class=\"w3-table w3-bordered w3-border w3-striped w3-hoverable\" style=\"table-layout:fixed; width=100%;\">" + 
+					"<col width=\"10%\"><col width=\"12%\"><col width=\"15%\"><col width=\"10%\"><col width=\"20%\">";
+	tableItemLogData = tableLogData;
+	
+
     for( i = 0; i < log_entry.length; i++)
     {
-      document.getElementById("log").innerHTML = i;
 
       tableRow = "<tr>" + 
 				  "<td class=\"w3-border\" style=\"word-wrap: break-word\">" + log_entry[i].getElementsByTagName("Date")[0].childNodes[0].nodeValue + "</td>" +
@@ -239,7 +248,7 @@ function parseXMLResponse(xml)
                   "<td class=\"w3-border\" style=\"word-wrap: break-word\">" + log_entry[i].getElementsByTagName("Description")[0].childNodes[0].nodeValue + "</td>" +
                   "</tr>";
  
-	  tableLog += tableRow;
+	  tableLogData += tableRow;
  
       var ItemViewPN = document.getElementById("id_ivm_itemNumber").value;
 	  if(ItemViewPN != "")
@@ -247,15 +256,19 @@ function parseXMLResponse(xml)
 		var xmlPN = log_entry[i].getElementsByTagName("Item")[0].childNodes[0].nodeValue;
 		if(ItemViewPN == xmlPN)
 		{
-		  tableItemLog += tableRow;
+		  tableItemLogData += tableRow;
 		}
-	  }
-				  
+	  }				  
     }
-    tableLog += "</table>";
-	tableItemLog += "</table>";
-    document.getElementById("log").innerHTML = tableLog;
-	document.getElementById("id_ivm_table").innerHTML = tableItemLog;
+
+    tableLogData += "</table>";
+	tableItemLogData += "</table>";
+
+    document.getElementById("id_main_logHeader").innerHTML = tableLogHeader;
+    document.getElementById("id_main_logData").innerHTML = tableLogData;
+	
+	document.getElementById("id_ivm_tableHeader").innerHTML = tableItemLogHeader;
+	document.getElementById("id_ivm_tableData").innerHTML = tableItemLogData;
 
 
   }
@@ -265,6 +278,8 @@ function parseXMLResponse(xml)
   if(browser.length > 0) //Browser section present
   { 
     var browser_entry = browser[0].getElementsByTagName("BROWSER_ENTRY");
+	var tableBrowserData = "";
+	var tableBrowserHeader = "";
 
     //check for null data
     if(browser_entry == null)
@@ -274,7 +289,7 @@ function parseXMLResponse(xml)
     }
 
     var browserHeaderLabelName = "Name";
-    var browserHeaderLabelQuantity = "Quantity";
+    var browserHeaderLabelQuantity = "Qty";
     var browserHeaderLabelType = "Part Type";
     var browserHeaderLabelValue = "Value";
     var browserHeaderLabelLocation = "Location";
@@ -284,8 +299,8 @@ function parseXMLResponse(xml)
 
     /*Add Sort stuff here*/
     
-    tableBrowser = "<table class=\"w3-table w3-bordered w3-border w3-striped w3-hoverable\" style=\"table-layout:fixed; width=100%;\"><tr>" +
-            "<col width=\"150\">"+
+    tableBrowserHeader = "<table class=\"w3-table w3-bordered w3-border w3-striped w3-hoverable\" style=\"table-layout:fixed; width=100%;\"><tr>" +
+            "<col width=\"12%\"><col width=\"6%\"><col width=\"12%\"><col width=\"10%\"><col width=\"11%\"><col width=\"11%\"><col width=\"13%\"><col width=\"25%\">"+
             "<th class=\"w3-border\" onclick=\"\">"+browserHeaderLabelName+"</th>" +
             "<th class=\"w3-border\" onclick=\"\">"+browserHeaderLabelQuantity+"</th>" + 
             "<th class=\"w3-border\" onclick=\"\">"+browserHeaderLabelType+"</th>" + 
@@ -293,12 +308,15 @@ function parseXMLResponse(xml)
             "<th class=\"w3-border\" onclick=\"\">"+browserHeaderLabelLocation+"</th>" + 
             "<th class=\"w3-border\" onclick=\"\">"+browserHeaderLabelPartNumber+"</th>" + 
             "<th class=\"w3-border\" onclick=\"\">"+browserHeaderLabelOrderingThreshold+"</th>" + 
-            "<th class=\"w3-border\" onclick=\"\">"+browserHeaderLabelDescription+"</th></tr>";
+            "<th class=\"w3-border\" onclick=\"\">"+browserHeaderLabelDescription+"</th></tr></table>";
+
+	tableBrowserData = "<table class=\"w3-table w3-bordered w3-border w3-striped w3-hoverable\" style=\"table-layout:fixed; width=100%;\">" +
+			            "<col width=\"12%\"><col width=\"6%\"><col width=\"12%\"><col width=\"10%\"><col width=\"11%\"><col width=\"11%\"><col width=\"13%\"><col width=\"25%\">";
 
     for( i = 0; i < browser_entry.length; i++)
     {
 
-      tableBrowser += "<tr>" + 
+      tableBrowserData += "<tr>" + 
                         "<td class=\"w3-border\" style=\"word-wrap: break-word\">" + browser_entry[i].getElementsByTagName("Name")[0].childNodes[0].nodeValue + "</td>" +
                         "<td class=\"w3-border\" style=\"word-wrap: break-word\">" + browser_entry[i].getElementsByTagName("Quantity")[0].childNodes[0].nodeValue + "</td>" +
                         "<td class=\"w3-border\" style=\"word-wrap: break-word\">" + browser_entry[i].getElementsByTagName("Type")[0].childNodes[0].nodeValue + "</td>" +
@@ -309,9 +327,9 @@ function parseXMLResponse(xml)
                         "<td class=\"w3-border\" style=\"word-wrap: break-word\">" + browser_entry[i].getElementsByTagName("Description")[0].childNodes[0].nodeValue + "</td>" +
                         "</tr>";
     }
-
-    tableBrowser += "</table>"
-    document.getElementById("browser").innerHTML = tableBrowser;	
+    tableBrowserData += "</table>"
+    document.getElementById("id_main_browserHeader").innerHTML = tableBrowserHeader;	
+    document.getElementById("id_main_browserData").innerHTML = tableBrowserData;	
   } 
   
 

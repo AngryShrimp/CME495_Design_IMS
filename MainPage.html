@@ -21,9 +21,16 @@ table td:nth-child(7)
 }
 #table-scroll 
 {
- 	height:175px;
+ 	height:250px;
  	overflow:auto;  
  	margin-top:20px;
+}
+#table-scroll2
+{
+ 	height:250px;
+ 	overflow:auto;  
+ 	margin-top:20px;
+ 	width:100%
 }
 #table-wrapper table 
 {
@@ -64,7 +71,7 @@ th
   <a onclick="IMSError('Test Error Title','Test Error Message')">Test Error Message</a> 
   <a>Alerts</a>
   <a onclick="document.getElementById('ClassDataModal').style.display='block'">Class Data</a> 
-  <a href="ShoppingList.html">Shopping List</a> 
+  <a onclick="document.getElementById('ShoppingListModal').style.display='block'">Shopping List</a> 
   <a onclick="document.getElementById('EmailListModal').style.display='block'">Email List</a> 
   <br> 
   <div style="padding-left:5%">Quick Update:</div>
@@ -365,6 +372,94 @@ th
     </div>
   </div>
 </div>
+
+
+<!-- Shopping List Modal Dialog Box -->
+<script src="Front_End/ShoppingList.js"></script>
+<div id="ShoppingListModal" class="w3-modal">
+  <div class="w3-modal-content w3-blue" style="width:95%">
+    <div class="w3-container">
+		<header class="w3-container w3-blue">
+		<span onclick="document.getElementById('ShoppingListModal').style.display='none'" 
+      class="w3-closebtn">&times;</span>
+	  <h3>Shopping List</h3>
+	  <div class="w3-container" style="width:95%">
+	<h2>Complete Purchase List (Threshold Violations + Manual Entries)</h2>
+</div>
+
+<div class="w3-container w3-striped" style="width:95%">
+  <div class="w3-responsive w3-white w3-bordered" id="table-scroll">
+    <table class="w3-table w3-bordered w3-border w3-striped w3-hoverable" style="table-layout:fixed; width:100%; overflow-y:scroll;" id="PurchaseListData">
+    </table>
+  </div>
+</div>
+
+<div class="w3-container" style="width:95%">
+	<br>
+	<h2>Manual Purchase List</h2>
+</div>
+
+<div class="w3-container w3-striped" style="width:95%">
+	<div class="w3-responsive w3-white w3-bordered" id="table-scroll2">
+		<table class="w3-table w3-bordered w3-border w3-striped w3-hoverable" style="table-layout:fixed; width:100%; overflow-y:scroll;" id="ManualPurchaseData">
+			<tr><td>Table is Empty</td></tr>
+		</table>  		
+	</div>
+	<p></p>
+	<button class="w3-btn w3-light-green w3-border w3-round-large" type="button" onclick="document.getElementById('AddShpItemModal').style.display='block'">Add Item</button>
+	<button class="w3-btn w3-red w3-border w3-round-large" type="button" onclick="RemoveEntryAndRefresh()">Delete Selected</button> 	
+</div>
+	  	</header>
+		<footer class="w3-container w3-blue w3-row">
+		<p/>
+		</footer> 
+	</div>
+</div>
+</div>
+
+
+<!-- Add Manual Purchase Item Modal Dialog Box -->
+<div id="AddShpItemModal" class="w3-modal">
+  <div class="w3-modal-content w3-blue" style="width:95%">
+    <div class="w3-container">
+	<header class="w3-container w3-blue">
+      <span onclick="document.getElementById('AddShpItemModal').style.display='none'" 
+      class="w3-closebtn">&times;</span>
+	  <h3>Add Item to Purchase List</h3>
+	</header>
+	<div id="id_shp_sortInfo" style="display: none;">None</div>
+	<div id="id_shp_table" class="w3-responsive w3-white" style="max-height: 50vh;">
+	</div>
+	
+	<div class="w3-container">
+		<a>ID:</a>
+		<a id="id_cdm_idDisplay">New</a>
+	</div>
+	<form class="w3-container">
+		<div class="w3-container w3-quarter">
+		<input class="w3-input w3-border w3-text-black" type="text" id="id_shp_SupplierNumber" placeholder="Eg. C3P0-01">
+		<label>Supplier Part Number</label>
+	</div>
+	<div class="w3-container w3-quarter">
+		<input class="w3-input w3-border w3-text-black" type="text" id="id_shp_ItemLink" placeholder="Eg. www.digikey.com/item/itemNumber.html">
+		<label>Item Link</label>
+	</div>
+	<div class="w3-container w3-quarter">
+		<input class="w3-input w3-border w3-text-black" type="text" id="id_shp_Quantity" placeholder="Eg. 12">
+		<label>Quantity Remaining</label>
+	</div>
+	
+	<p/>	
+	<button class="w3-btn w3-light-green w3-border w3-round-large" type="button" onclick="shp_addClassDataEntryAndClose()">Add Purchase Item</button>
+	<p/>
+	</form>  
+	<footer class="w3-container w3-blue w3-row">
+		<p/>
+	</footer>  
+    </div>
+  </div>
+</div>
+
 
 <!-- Email List Modal Dialog Box -->
 <script src="Front_End/EmailList.js"></script>

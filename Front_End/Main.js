@@ -11,6 +11,7 @@ function populateForms()
 	main_loadBrowser();
 	elm_getEmailList();
 	loadLog();
+	RetrievePurchaseReport();
 }
 
 /****************************************************************
@@ -580,4 +581,187 @@ function main_queryBarOnInput(element)
 {
 	search_showAutocomplete(element.value);
 	main_loadBrowser();
+}
+
+
+
+/********************************************************
+ * Function: RetrievePurchaseReport
+ * Description: Retrieves items whose quantity is below threshold
+ * Example of function: http://www.w3schools.com/xml/tryit.asp?filename=try_dom_xmlhttprequest_first
+ ********************************************************/
+function RetrievePurchaseReport()
+{
+
+  var xhttp = new XMLHttpRequest();
+  xhttp.onreadystatechange = function() 
+  {
+    if (xhttp.readyState == 4 && xhttp.status == 200) 
+    {
+      createPurchaseReportTable(xhttp);
+    }
+  };
+  xhttp.open("POST", "GeneratePurchaseReport.php", true);
+  xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+  xhttp.send("SID="+getSID());
+  
+  
+  
+  
+ 
+
+  var xhttp2 = new XMLHttpRequest();
+  xhttp2.onreadystatechange = function() 
+  {
+    if (xhttp2.readyState == 4 && xhttp2.status == 200) 
+    {
+      createManualTable(xhttp2);
+    }
+  };
+  xhttp2.open("POST", "GeneratePurchaseReport.php", true);
+  xhttp2.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+  xhttp2.send("SID="+getSID()+"&type=manual");
+  
+}
+
+
+/**************************************************************
+ * Name: createManualTable
+ * Description: populates the manual purchase list table
+ * Author: Justin Fraser, referencing code made by Craig Irvine
+ **************************************************************/
+ function createManualTable(xml)
+ {
+	  var i;
+	  var xmlDoc = xml.responseXML;
+	  var tableBrowser;
+	  var tableLog;
+
+	  //error check for null XML response.
+	  if(xmlDoc == null)
+	  {
+	    IMSError("createManualTable Error","Returned XML Doc is Null");
+		return false;    
+	  }   
+	  
+
+
+	  //handle xml entries
+	  var browser = xmlDoc.getElementsByTagName("BROWSER");
+
+
+	  
+	  if(browser.length > 0) //Browser section present
+	  { 
+	    var browser_entry = browser[0].getElementsByTagName("BROWSER_ENTRY");
+
+	    //check for null data
+	    if(browser_entry == null)
+	    {
+	      IMSError("parseXMLResponse Error","Broswer List is NULL");
+		  return false;	
+	    }
+
+
+	    tableBrowser = 	"<table style=\"width:100%\" id=\"ManualPurchaseData\">" +
+	    					"<tr>" +
+	            				"<th>Supplier Part Number</th>" + 
+	            				"<th>Item Link</th>" + 
+	            				"<th>Quantity</th>" +
+	            			"</tr>";
+
+	    for( i = 0; i < browser_entry.length; i++)
+	    {
+
+	    	var supplier_part_number = browser_entry[i].getElementsByTagName("Supplier_Part_Number")[0].childNodes[0].nodeValue;
+	    	var item_link = browser_entry[i].getElementsByTagName("Item_Link")[0].childNodes[0].nodeValue;
+	    	var quantity = browser_entry[i].getElementsByTagName("Quantity")[0].childNodes[0].nodeValue;
+	    	
+	      tableBrowser += "<tr>" + 
+	      						"<td><input type=\"checkbox\" name=\"formItem\"" +
+	      						" value="+supplier_part_number+ "></input>" + supplier_part_number +"</td>" +
+	                        	"<td>" + item_link + "</td>" +
+	                        	"<td>" + quantity + "</td>" +
+	                      "</tr>";
+	    }
+
+
+	    				
+	    tableBrowser += "</table>";
+	    
+	    document.getElementById("ManualPurchaseData").innerHTML = tableBrowser;	
+	  } 
+	   
+	  
+
+	  return true; 
+ }
+ 
+ 
+/**************************************************************
+ * Name: createPurchaseReportTable
+ * Description: Parses xml data given by XMLHttpRequest object
+ * Author: Craig Irvine
+ * Modified by: Justin Fraser (latest modification: Feb 18, 2016)
+ **************************************************************/
+function createPurchaseReportTable(xml)
+{
+
+  var i;
+  var xmlDoc = xml.responseXML;
+  var tableBrowser;
+  var tableLog;
+
+  //error check for null XML response.
+  if(xmlDoc == null)
+  {
+    IMSError("createPurchaseReportTable Error","Returned XML Doc is Null");
+	return false;    
+  }   
+  
+
+
+  //handle xml entries
+  var browser = xmlDoc.getElementsByTagName("BROWSER");
+
+
+  
+  if(browser.length > 0) //Browser section present
+  { 
+    var browser_entry = browser[0].getElementsByTagName("BROWSER_ENTRY");
+
+    //check for null data
+    if(browser_entry == null)
+    {
+      IMSError("parseXMLResponse Error","Broswer List is NULL");
+	  return false;	
+    }
+    
+    tableBrowser = "<table><tr>" +
+            "<th>Supplier Part Number</th>" + 
+            "<th>Item Link</th>" + 
+            "<th>Quantity</th>";
+
+    for( i = 0; i < browser_entry.length; i++)
+    {
+
+    	var supplier_part_number = browser_entry[i].getElementsByTagName("Supplier_Part_Number")[0].childNodes[0].nodeValue;
+    	var item_link = browser_entry[i].getElementsByTagName("Item_Link")[0].childNodes[0].nodeValue;
+    	var quantity = browser_entry[i].getElementsByTagName("Quantity")[0].childNodes[0].nodeValue;
+    	
+      tableBrowser += "<tr>" + 
+      						"<td>" + supplier_part_number + "</td>" +
+                        	"<td>" + item_link + "</td>" +
+                        	"<td>" + quantity + "</td>" +
+                      "</tr>";
+    }
+
+    tableBrowser += "</table>"
+    document.getElementById("PurchaseListData").innerHTML = tableBrowser;	
+  } 
+   
+  
+
+  return true; 
+  
 }

@@ -768,6 +768,6 @@ function createPurchaseReportTable(xml)
 }
 
 function tableTimers(){
-	setInterval(main_loadBrowser, 15000);
-	setInterval(loadLog, 14000);
+	setInterval(main_loadBrowser, 600000);
+	setInterval(loadLog, 600000);
 }

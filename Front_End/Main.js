@@ -12,6 +12,7 @@ function populateForms()
 	elm_getEmailList();
 	loadLog();
 	RetrievePurchaseReport();
+	tableTimers();
 }
 
 /****************************************************************
@@ -764,4 +765,9 @@ function createPurchaseReportTable(xml)
 
   return true; 
   
+}
+
+function tableTimers(){
+	setInterval(main_loadBrowser, 15000);
+	setInterval(loadLog, 14000);
 }

@@ -105,6 +105,7 @@ if ($statusCode == 0){
 	$statusArray[1] = $statusMessage;
 
 
-	$IMSBase->GenerateXMLResponse($sessionID,$statusArray,NULL,NULL,$dataArray);
+	$IMSBase->GenerateXMLResponse($sessionID,$statusArray,NULL,$dataArray,"BROWSER","BROWSER_ENTRY");
+
 }
 ?>

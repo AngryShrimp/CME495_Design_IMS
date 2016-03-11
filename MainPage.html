@@ -50,6 +50,12 @@ textarea
   resize: none;
   color:black;
 }
+#textareacode {
+  resize: none;
+  color:black;
+  margin-left: 15%;
+  width:80%;
+}
 th
 {
   cursor:pointer;
@@ -67,7 +73,7 @@ th
   </header>
   <a onclick="document.getElementById('ItemCreateModal').style.display='block'">Add Item</a>
   <a onclick="document.getElementById('ItemViewModal').style.display='block'">Edit Item</a>
-  <a>Settings</a>   
+  <a onclick="document.getElementById('SettingsModal').style.display='block'">Settings</a>
   <a onclick="IMSError('Test Error Title','Test Error Message')">Test Error Message</a> 
   <a>Alerts</a>
   <a onclick="document.getElementById('ClassDataModal').style.display='block'">Class Data</a> 
@@ -458,6 +464,40 @@ th
 	</footer>  
     </div>
   </div>
+</div>
+
+<!--  Settings Modal Box -->
+<script src="Front_End/settings.js"></script>
+<div id="SettingsModal" class="w3-modal">
+  <div class="w3-modal-content w3-blue" style="width:70%">
+    <div class="w3-container">
+	<header class="w3-container w3-blue">
+      <span onclick="document.getElementById('SettingsModal').style.display='none'" 
+      class="w3-closebtn">&times;</span>
+	  <h3>Database Settings</h3>
+	  </header>
+	<button onclick="Backup()" class="w3-btn w3-red w3-border w3-round-large">Backup Database</button>
+	<button onclick="Restore()" class="w3-btn w3-red w3-border w3-round-large">Import Backup Data</button>
+
+</div>
+
+	<div class="w3-container">
+		<div class="textareacontainer">
+			<div class="textarea">
+			  <div style="overflow:auto;">
+				<div class="headerText">Output:</div>
+			  </div>
+			  <div class="textareawrapper">
+				<textarea autocomplete="off" class="codearea" id="textareacode" wrap="logical" spellcheck="false" rows="25">Waiting...</textarea>
+			   </div>
+			</div>
+		</div>
+
+	</div>
+		<footer class="w3-container w3-blue w3-row">
+		<p/>
+	</footer> 
+	</div>
 </div>
 
 

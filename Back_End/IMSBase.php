@@ -29,14 +29,14 @@ class IMSBase
 
 		foreach(str_split($data) as $char)
 			if(in_array($char,$invalid_char_array))
-				throw new Exception("Invalid character string ($data)($optMessage)");
+				throw new Exception("Invalid character string ($data)($optMessage)",1);
 		
 		
 		if(preg_match($RegEx,$data) == TRUE)
 		{
 			return;
 		}
-		throw new Exceptoin("Input $optMessage did not match expected value. ($data != $RegEx)");
+		throw new Exceptoin("Input $optMessage did not match expected value. ($data != $RegEx)",1);
 	}
 
 
@@ -141,29 +141,29 @@ class IMSBase
 		}
 		else
 		{
-			throw new Exception("IMSBase->sendEmail: Could not find IMS_Settings.ini");
+			throw new Exception("IMSBase->sendEmail: Could not find IMS_Settings.ini",1);
 		}
 		
 		
 		if($host == "")
 		{
-			throw new Exception("IMSBase->sendEmail: SMTP Host Name Missing");
+			throw new Exception("IMSBase->sendEmail: SMTP Host Name Missing",1);
 		}
 		if($username == "")
 		{
-			throw new Exception("IMSBase->sendEmail: SMTP User Name Missing");
+			throw new Exception("IMSBase->sendEmail: SMTP User Name Missing",1);
 		}
 		if($password == "")
 		{
-			throw new Exception("IMSBase->sendEmail: SMTP Password Missing");
+			throw new Exception("IMSBase->sendEmail: SMTP Password Missing",1);
 		}
 		if($fromemail == "")
 		{
-			throw new Exception("IMSBase->sendEmail: SMTP From Email Missing");
+			throw new Exception("IMSBase->sendEmail: SMTP From Email Missing",1);
 		}
 		if($fromname == "")
 		{
-			throw new Exception("IMSBase->sendEmail: SMTP From Name Missing");
+			throw new Exception("IMSBase->sendEmail: SMTP From Name Missing",1);
 		}	
 	
 	

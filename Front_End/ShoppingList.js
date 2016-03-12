@@ -26,27 +26,6 @@ function RemoveEntry(){
 	  
 	  return;
 }
-/****************************************************************
-Function:  sendBackendRequest()
-Description: Sets up and sends a XMLHttpRequest in POST mode to 
-a specified PHP script.
-*****************************************************************/
-function sendBackendRequest(PHPscript,postOptions)
-{
-  var xhttp = new XMLHttpRequest();
-  xhttp.onreadystatechange = function() 
-  {
-    if (xhttp.readyState == 4 && xhttp.status == 200) 
-    {
-      parseXMLResponse(xhttp);
-    }
-  };
-  xhttp.open("POST", PHPscript, true);
-  xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-  xhttp.send(postOptions);
-  
-  return;
-}
 
 
 /****************************************************************

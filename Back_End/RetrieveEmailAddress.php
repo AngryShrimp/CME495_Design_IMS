@@ -33,16 +33,18 @@ try
 
 	}
 	
+
+	
 	$IMSBase = new IMSBase();
 	$log = new IMSLog();
 	$sql = new IMSSql();
 
 	$runLevel = $sql->verifySID($sessionID); //No special permissions required.
-	
+
 	//build the SQL statement
 	$sqlQuery = "SELECT * FROM dbo.Emails;";
 
-	
+
 	$stmt = $sql->prepare($sqlQuery);
 	$stmt->execute();
 	
@@ -64,7 +66,7 @@ catch(PDOException $e)
 }
 catch(Exception $e)
 {
-	$statusCode = '1';
+	$statusCode = $e->getCode();
 	$statusMessage = 'RetrieveEmailAddress Error: '. $e->getMessage();
 	$log->add_log($sessionID,'Error',$statusMessage);
 

@@ -34,13 +34,13 @@ class IMSLog
 		{
 			if(!mkdir(dirname($this->log_file_loc)))
 			{
-				throw new Exception("Could not make log directory. ($this->log_file_loc)");
+				throw new Exception("Could not make log directory. ($this->log_file_loc)",1);
 			}
 		}
 		
 		if(!is_writable($path['dirname']))
 		{
-			throw new Exception("Log directory ($this->log_file_loc) is not writeable.");
+			throw new Exception("Log directory ($this->log_file_loc) is not writeable.",1);
 		}	
 		
 
@@ -64,7 +64,7 @@ class IMSLog
 		if($log_file == FALSE)
 		{
 			unlink($this->log_file_loc.".lock");
-			throw new Exception("IMSLog->add_log: Log file could not be opened");
+			throw new Exception("IMSLog->add_log: Log file could not be opened",1);
 			return;
 		} 
 		
@@ -112,7 +112,7 @@ class IMSLog
 			if($log_file == FALSE)
 			{
 				unlink($this->log_file_loc.".lock");
-				throw new Exception("IMSLog->read_log: Log file could not be opened");
+				throw new Exception("IMSLog->read_log: Log file could not be opened",1);
 				return;
 			}
 
@@ -158,7 +158,7 @@ class IMSLog
 			$wait_counter++;
 			if($wait_counter > 20) //two second time out.
 			{
-				throw new Exception("Logging time-out waiting for lock");
+				throw new Exception("Logging time-out waiting for lock",1);
 			}
 			time_nanosleep(0, 100000000); //sleep for a 10th of a second.
 		}		

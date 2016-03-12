@@ -44,12 +44,12 @@ catch(PDOException $e)
 }
 catch(Exception $e)
 {
-	$statusCode = '1';
+	$statusCode = $e->getCode();
 	$statusMessage = 'GenerateSID Error: '. $e->getMessage();
 	//$log->add_log($sessionID,'Error',$statusMessage);
 }
 
-	setcookie("", $SID, time() + (3600), "/"); // 3600 = 1 hour
+	setcookie("SID", $SID, time() + (3600), "/"); // 3600 = 1 hour
 	$log->add_log($SID,"Information","Client connected from $ipaddress at $date.");
 	header('Location: MainPage.html');
 	

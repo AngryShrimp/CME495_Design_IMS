@@ -58,7 +58,7 @@ catch(PDOException $e)
 }
 catch(Exception $e)
 {
-	$statusCode = '1';
+	$statusCode = $e->getCode();
 	$statusMessage = 'RetrieveLog Error: '. $e->getMessage();
 	$log->add_log($sessionID,'Error',$statusMessage);
 

@@ -225,9 +225,12 @@ class IMSSql {
 		{
 			if($data['SID'] == $SID)
 			{
+				//we found the SID, renew it.
+				$this->renewSID();			
+			
 				if($data['LEVEL'] < $runLevel)
 				{
-					throw new Exception("verifySID: Missing permissions.");
+					throw new Exception("verifySID: SID($SID) Missing permissions.",1);
 				}
 				else
 				{
@@ -237,10 +240,50 @@ class IMSSql {
 		}	
 		
 		//SID passed is not valid.
-		throw new Exception("verifySID: Invalid SID.");
+		throw new Exception("verifySID: Invalid SID. ($SID)",2);
 		
 		return "0";
-	}	
+	}
+	
+	public function renewSID()
+	{
+
+		try
+		{
+
+			if(!isset($_COOKIE["SID"]))
+			{
+
+				throw new Exception("renewSID: SID missing from cookie",2);
+			}	
+			
+			$SID = $_COOKIE["SID"];
+		
+			$stmt = $this->prepare("SELECT * FROM dbo.SID_List;");
+			$stmt->execute();	
+			
+			$dataArray = $stmt->fetchAll(PDO::FETCH_ASSOC); 	
+			
+			foreach($dataArray as $entry)
+			{
+				if($entry["SID"] == $SID)
+				{
+					$exp_date = date("Y-m-d H:i:s",time()+3600);			
+					$this->command("UPDATE dbo.SID_List SET EXPIRE='$exp_date' WHERE SID='$SID';");
+					return;				
+				}			
+			}
+			
+			throw new Exception("renewSID: Expected SID not present in SID List.",2);		
+			
+		}
+		catch (PDOException $e)
+		{
+			throw $e;
+		}
+		return;
+		
+	}
 }
 
 

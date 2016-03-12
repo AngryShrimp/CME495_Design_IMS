@@ -69,7 +69,7 @@ catch(PDOException $e)
 }
 catch(Exception $e)
 {
-	$statusCode = '1';
+	$statusCode = $e->getCode();
 	$statusMessage = 'AddEmailAddress Error: '. $e->getMessage();
 	$log->add_log($sessionID,'Error',$statusMessage);
 

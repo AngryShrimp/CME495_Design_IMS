@@ -64,8 +64,8 @@ catch(PDOException $e)
 }
 catch(Exception $e)
 {
-	$statusCode = 1;
-	$statusMessage = 'GeneratePurchaseReport SQLError: '. $e->getMessage();
+	$statusCode = $e->getCode();
+	$statusMessage = 'GeneratePurchaseReport Error: '. $e->getMessage();
 	$log->add_log($sessionID,'Error',$statusMessage);
         echo "Error: " . $e->getMessage();
 

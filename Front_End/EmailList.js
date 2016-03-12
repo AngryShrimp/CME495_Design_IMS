@@ -5,7 +5,7 @@ list for display.
 *****************************************************************/
 function elm_getEmailList()
 {
-  sendBackendRequest("RetrieveEmailAddress.php","SID="+getSID());	
+  sendBackendRequest("Back_End/RetrieveEmailAddress.php","SID="+getSID());	
 }
 
 /****************************************************************

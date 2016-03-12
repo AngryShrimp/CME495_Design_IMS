@@ -13,6 +13,7 @@ function populateForms()
 	loadLog();
 	RetrievePurchaseReport();
 	tableTimers();
+
 }
 
 /****************************************************************
@@ -21,13 +22,13 @@ Description: Gets a SID from the server and creates a local cookie.
 *****************************************************************/
 function setSID()
 {  
-  var current_sid = document.cookie;
+  var current_sid = getSID();
   if(current_sid == "")
   {
 	window.location = "default.php";
   } 
 
-  document.getElementById("id_main_SIDDisplay").innerHTML = document.cookie;
+  document.getElementById("id_main_SIDDisplay").innerHTML = current_sid;
   
   return;
   
@@ -35,7 +36,30 @@ function setSID()
 
 function getSID()
 {
-  return document.cookie;
+
+  var name = "SID=";
+  var ca = document.cookie.split(';');
+  for(var i=0; i<ca.length; i++) 
+  {  
+	var c = ca[i];
+	while (c.charAt(0)==' ') 
+		c = c.substring(1);
+	if (c.indexOf(name) == 0) 
+		return c.substring(name.length,c.length);
+  }
+
+  return "";
+}
+
+function renewSID()
+{
+	var SID = getSID();	
+	
+	var d = new Date();
+    d.setTime(d.getTime() + (3600)); //expire time
+    var expires = "expires="+d.toUTCString();
+    document.cookie = "SID=" + SID + "; " + expires;
+	
 }
 
 /****************************************************************
@@ -55,7 +79,6 @@ function main_loadBrowser()
 	filter = "&Filter=" + searchBarVal;
   }
 
-  
   sendBackendRequest("Back_End/RetrieveBrowserData.php","SID="+getSID()+filter);  
   
   return;
@@ -63,7 +86,9 @@ function main_loadBrowser()
 
 function loadLog()
 {  
+
   sendBackendRequest("Back_End/RetrieveLog.php","SID="+getSID()+"&LogLevel=All");  
+
 }
 
 /****************************************************************
@@ -76,6 +101,16 @@ function sendBackendRequest(PHPscript,postOptions)
   var xhttp = new XMLHttpRequest();
   xhttp.onreadystatechange = function() 
   {
+    if(xhttp.status == 404)
+	{
+	  IMSError("sendBackendRequest Error","404 Error returned for: "+PHPscript + "?" + postOptions);
+	}
+	
+	if(xhttp.status == 500)
+	{
+	  IMSError("sendBackendRequest Error","500 Error returned for: "+PHPscript + "?" + postOptions);
+	}
+  
     if (xhttp.readyState == 4 && xhttp.status == 200) 
     {
       parseXMLResponse(xhttp);
@@ -84,6 +119,8 @@ function sendBackendRequest(PHPscript,postOptions)
   xhttp.open("POST", PHPscript, true);
   xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
   xhttp.send(postOptions);
+  
+  renewSID(); 
   
   return;
 }
@@ -115,7 +152,6 @@ function parseXMLResponse(xml)
   var classData = xmlDoc.getElementsByTagName("CLASS_DATA");
   var emailList = xmlDoc.getElementsByTagName("EMAIL_LIST");
 
-
   if(status.length > 0)
   {
 	var statusCode = status[0].getElementsByTagName("STATUS_CODE")[0].childNodes[0].nodeValue;
@@ -126,14 +162,19 @@ function parseXMLResponse(xml)
 	document.getElementById("status_message").innerHTML = statusMessage;
   	document.getElementById("id_main_RunLevelDisplay").innerHTML = runMode;
 
-	//check status code and throw and alert if a fail occurred.
-	if(statusCode != "0")
+	
+	if(statusCode == "2")
+	{
+	  IMSError("parseXMLResponse Error","SID Invalid or Missing, refreshing in 5 seconds\n" + statusMessage);
+	  setTimeout(function(){window.location = "default.php";}, 2000);
+	  return false;
+
+	}	
+	if(statusCode == "1")
 	{
 	  IMSError("parseXMLResponse Error","Server Error with message:" + statusMessage);
 	  return false;
-	}
-	
-  
+	}  
   }
   else //Bad XML Response format if STATUS is missing
   {

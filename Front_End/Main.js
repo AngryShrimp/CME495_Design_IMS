@@ -339,22 +339,29 @@ function parseXMLResponse(xml)
     var browserHeaderLabelPartNumber = "Supplier Part Number";
     var browserHeaderLabelOrderingThreshold = "Ordering Threshold";
     var browserHeaderLabelDescription = "Description";
+    var browserHeaderLabelConsumableFlag = "C";
+    var browserHeaderLabelEquipmentFlag = "E";
+    var browserHeaderLabelLabpartFlag = "L";
+
 
     /*Add Sort stuff here*/
     
-    tableBrowserHeader = "<table class=\"w3-table w3-bordered w3-border w3-striped w3-hoverable\" style=\"table-layout:fixed; width=100%;\"><tr>" +
-            "<col width=\"12%\"><col width=\"6%\"><col width=\"12%\"><col width=\"10%\"><col width=\"11%\"><col width=\"11%\"><col width=\"13%\"><col width=\"25%\">"+
-            "<th class=\"w3-border\" onclick=\"\">"+browserHeaderLabelName+"</th>" +
+    tableBrowserHeader = "<table class=\"w3-table w3-bordered w3-border w3-striped w3-hoverable\" style=\"table-layout:fixed; width=100%;\">" +
+			"<col width=\"12%\"><col width=\"6%\"><col width=\"12%\"><col width=\"10%\"><col width=\"11%\"><col width=\"11%\"><col width=\"13%\"><col width=\"18%\"><col width=\"2%\"><col width=\"2%\"><col width=\"2%\">" +
+            "<tr><th class=\"w3-border\" onclick=\"\">"+browserHeaderLabelName+"</th>" +
             "<th class=\"w3-border\" onclick=\"\">"+browserHeaderLabelQuantity+"</th>" + 
             "<th class=\"w3-border\" onclick=\"\">"+browserHeaderLabelType+"</th>" + 
             "<th class=\"w3-border\" onclick=\"\">"+browserHeaderLabelValue+"</th>" +
             "<th class=\"w3-border\" onclick=\"\">"+browserHeaderLabelLocation+"</th>" + 
             "<th class=\"w3-border\" onclick=\"\">"+browserHeaderLabelPartNumber+"</th>" + 
             "<th class=\"w3-border\" onclick=\"\">"+browserHeaderLabelOrderingThreshold+"</th>" + 
-            "<th class=\"w3-border\" onclick=\"\">"+browserHeaderLabelDescription+"</th></tr></table>";
+            "<th class=\"w3-border\" onclick=\"\">"+browserHeaderLabelDescription+"</th>" + 
+			"<th class=\"w3-border\" onclick=\"\">"+browserHeaderLabelConsumableFlag+"</th>" +
+			"<th class=\"w3-border\" onclick=\"\">"+browserHeaderLabelEquipmentFlag+"</th>" +
+			"<th class=\"w3-border\" onclick=\"\">"+browserHeaderLabelLabpartFlag+"</th></tr></table>";
 
 	tableBrowserData = "<table class=\"w3-table w3-bordered w3-border w3-striped w3-hoverable\" style=\"table-layout:fixed; width=100%;\">" +
-			            "<col width=\"12%\"><col width=\"6%\"><col width=\"12%\"><col width=\"10%\"><col width=\"11%\"><col width=\"11%\"><col width=\"13%\"><col width=\"25%\">";
+			            "<col width=\"12%\"><col width=\"6%\"><col width=\"12%\"><col width=\"10%\"><col width=\"11%\"><col width=\"11%\"><col width=\"13%\"><col width=\"18%\"><col width=\"2%\"><col width=\"2%\"><col width=\"2%\">";
 
     for( i = 0; i < browser_entry.length; i++)
     {
@@ -368,6 +375,9 @@ function parseXMLResponse(xml)
                         "<td class=\"w3-border\" style=\"word-wrap: break-word\">" + browser_entry[i].getElementsByTagName("Supplier_Part_Number")[0].childNodes[0].nodeValue + "</td>" +
                         "<td class=\"w3-border\" style=\"word-wrap: break-word\">" + browser_entry[i].getElementsByTagName("Ordering_Threshold")[0].childNodes[0].nodeValue + "</td>" +
                         "<td class=\"w3-border\" style=\"word-wrap: break-word\">" + browser_entry[i].getElementsByTagName("Description")[0].childNodes[0].nodeValue + "</td>" +
+                        "<td class=\"w3-border\" style=\"word-wrap: break-word\">" + browser_entry[i].getElementsByTagName("Consumable_Flag")[0].childNodes[0].nodeValue + "</td>" +
+                        "<td class=\"w3-border\" style=\"word-wrap: break-word\">" + browser_entry[i].getElementsByTagName("Equipment_Flag")[0].childNodes[0].nodeValue + "</td>" +
+                        "<td class=\"w3-border\" style=\"word-wrap: break-word\">" + browser_entry[i].getElementsByTagName("Lab_Part_Flag")[0].childNodes[0].nodeValue + "</td>" +
                         "</tr>";
     }
     tableBrowserData += "</table>"

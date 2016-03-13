@@ -52,8 +52,5 @@ catch(Exception $e)
 	setcookie("SID", $SID, time() + (3600), "/"); // 3600 = 1 hour
 	$log->add_log($SID,"Information","Client connected from $ipaddress at $date.");
 	header('Location: MainPage.html');
-	
-
-
 
 ?>

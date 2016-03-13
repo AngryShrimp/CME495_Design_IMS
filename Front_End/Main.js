@@ -56,7 +56,7 @@ function renewSID()
 	var SID = getSID();	
 	
 	var d = new Date();
-    d.setTime(d.getTime() + (3600)); //expire time
+    d.setTime(d.getTime() + (3600*1000)); //expire time
     var expires = "expires="+d.toUTCString();
     document.cookie = "SID=" + SID + "; " + expires;
 	
@@ -234,8 +234,21 @@ function parseXMLResponse(xml)
 	document.getElementById("id_ivm_value").value = quickAccess[0].getElementsByTagName("Value")[0].childNodes[0].nodeValue;
 	document.getElementById("id_ivm_supplierName").value = quickAccess[0].getElementsByTagName("Suppliers_Name")[0].childNodes[0].nodeValue;
 	document.getElementById("id_ivm_link").value = quickAccess[0].getElementsByTagName("Item_Link")[0].childNodes[0].nodeValue;
-
 	
+	if(quickAccess[0].getElementsByTagName("Consumable_Flag")[0].childNodes[0].nodeValue == "1")
+		document.getElementById("id_ivm_flagConsumable").checked = true;
+	else
+		document.getElementById("id_ivm_flagConsumable").checked = false;
+
+	if(quickAccess[0].getElementsByTagName("Equipment_Flag")[0].childNodes[0].nodeValue == "1")
+		document.getElementById("id_ivm_flagEquipment").checked = true;
+	else
+		document.getElementById("id_ivm_flagEquipment").checked = false;
+		
+	if(quickAccess[0].getElementsByTagName("Lab_Part_Flag")[0].childNodes[0].nodeValue == "1")
+		document.getElementById("id_ivm_flagLabPart").checked = true;
+	else
+		document.getElementById("id_ivm_flagLabPart").checked = false;	
   }  
   
 

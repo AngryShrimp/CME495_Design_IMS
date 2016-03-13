@@ -72,6 +72,10 @@ function createNewItem()
   var supplierName = document.getElementById("id_cvm_supplierName").value;
   var supplierPN = document.getElementById("id_cvm_supplierPN").value;
   var link = document.getElementById("id_cvm_link").value;
+  var flagConsumable = document.getElementById("id_cvm_flagConsumable").checked;
+  var flagEquipment = document.getElementById("id_cvm_flagEquipment").checked;
+  var flagLabPart = document.getElementById("id_cvm_flagLabPart").checked;
+
 	
   //Create new Item record
   var xhttp = new XMLHttpRequest();
@@ -93,18 +97,14 @@ function createNewItem()
   {
 	alert("Part Number Creation Error");
 	return;
-  }
-	
-  
+  }  
 
   if(qty != "")
   {  
     xhttp.open("POST", "Back_End/ModifyItem.php", false);
     xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");  
 	xhttp.send("SID="+getSID()+"&PartNumber="+partNumber+"&Field=Quantity&Value="+qty);
-  }
-  
-  
+  }  
   
   if(threshold != "")
   {  
@@ -162,5 +162,28 @@ function createNewItem()
     xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
 	xhttp.send("SID="+getSID()+"&PartNumber="+partNumber+"&Field=Item_Link&Value="+link);
   }
+  
+  if(flagConsumable != 0)
+  {
+    xhttp.open("POST", "Back_End/ModifyItem.php", false);
+    xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+	xhttp.send("SID="+getSID()+"&PartNumber="+partNumber+"&Field=Consumable_Flag&Value="+flagConsumable);  
+  }
+  
+  if(flagEquipment != 0)
+  {
+    xhttp.open("POST", "Back_End/ModifyItem.php", false);
+    xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+	xhttp.send("SID="+getSID()+"&PartNumber="+partNumber+"&Field=Equipment_Flag&Value="+flagEquipment);  
+  }
+  
+  if(flagLabPart != 0)
+  {
+    xhttp.open("POST", "Back_End/ModifyItem.php", false);
+    xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+	xhttp.send("SID="+getSID()+"&PartNumber="+partNumber+"&Field=Lab_Part_Flag&Value="+flagLabPart);  
+  }
+  
+  return;
   
 }

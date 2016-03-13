@@ -143,85 +143,115 @@ th
       class="w3-closebtn">&times;</span>
 	  <h3>Add Item</h3>
 	 </header>
-      <form class="w3-container">
-	  
-	    <div class="w3-container w3-half">
-		  <select class="w3-select w3-border" name="option" id="id_cvm_type" onchange="cdm_autoPN()">
-			<option value="" disabled selected>Select Type</option>
-			<option value="Capacitor">Capacitor</option>
-			<option value="Resistor">Resistor</option>
-			<option value="Inductor">Inductor</option>
-			<option value="Equipment">Equipment</option>
-			<option value="Transistor">Transistor</option>
-			<option value="Transformer">Transformer</option>
-			<option value="Other">Other</option>
-		  </select>
-		  <label>Type</label>
-		</div>
-		
-		<div class="w3-container w3-half">		
-		  <input class="w3-input w3-border w3-text-black" type="text" id="id_cvm_value" oninput="cdm_autoPN()">
-		  <label>Value</label>
-		  <p/>
-		</div>
-		
-		<div class="w3-container">
-		  <input class="w3-input w3-border w3-text-black" type="text" id="id_cvm_desc">
-		  <label>Description</label>
-		  <p>
-		</div>	
+      <form class="w3-container w3-responsive w3-white w3-border">
+		<table class="w3-table w3-bordered w3-border w3-striped w3-small" style="table-layout:fixed; width=100%;">	  
+		<col width="20%"/><col width="80%"/>
+			<tr class="w3-border">
+			<th>Type</th>
+			<td class="w3-container">		
+			  <select class="w3-select w3-border" name="option" id="id_cvm_type" onchange="cdm_autoPN()">
+				<option value="" disabled selected>Select Type</option>
+				<option value="Capacitor">Capacitor</option>
+				<option value="Resistor">Resistor</option>
+				<option value="Inductor">Inductor</option>
+				<option value="Equipment">Equipment</option>
+				<option value="Transistor">Transistor</option>
+				<option value="Transformer">Transformer</option>
+				<option value="Other">Other</option>
+			  </select>		
+			</td>
+			</tr>
+			
+			<tr class="w3-border">
+			<th>Value</th>
+			<td class="w3-container">		
+			  <input class="w3-input w3-border w3-text-black" type="text" id="id_cvm_value" oninput="cdm_autoPN()" placeholder="###">
+			</td>
+			</tr>
+			
+			<tr class="w3-border">
+			<th>Description</th>
+			<td class="w3-container">
+			  <input class="w3-input w3-border w3-text-black" type="text" id="id_cvm_desc" placeholder="Part Description">
+			</td>
+			</tr>
 
-		<div class="w3-container w3-half">
-		  <input class="w3-input w3-border w3-text-black" type="text" id="id_cvm_supplierPN">
-		  <label>Supplier Part Number</label>
-		  <p>
-		</div>		
+			
+			<tr class="w3-border">
+			<th>Supplier Part Number</th>
+			<td class="w3-container">
+			  <input class="w3-input w3-border w3-text-black" type="text" id="id_cvm_supplierPN" placeholder="Part Number">
+			</td>
+			</tr>
 
-		<div class="w3-container w3-half">
-		  <input class="w3-input w3-border w3-text-black" type="text" id="id_cvm_supplierName">
-		  <label>Supplier Name</label>
-		  <p>
-		</div>
-		
-		<div class="w3-container">
-		  <input class="w3-input w3-border w3-text-black" type="text" id="id_cvm_link">
-		  <label>Document URL</label>
-		  <p>
-		</div>
+			<tr class="w3-border">
+			<th>Supplier Name</th>
+			<td class="w3-container">
+			  <input class="w3-input w3-border w3-text-black" type="text" id="id_cvm_supplierName" placeholder="Digikey">
+			</td>
+			</tr>
+			
+			<tr class="w3-border">
+			<th>Document URL</th>
+			<td class="w3-container">
+			  <input class="w3-input w3-border w3-text-black" type="text" id="id_cvm_link" placeholder="www.someURL.com">
+			</td>
+			</tr>
 
-		<div class="w3-container w3-quarter">
-		  <input class="w3-input w3-border w3-text-black" type="text" id="id_cvm_qty">
-		  <label>Quantity</label>
-		  <p>
-		</div>
-		
-		<div class="w3-container w3-quarter">
-		  <input class="w3-input w3-border w3-text-black" type="text" id="id_cvm_thresh">
-		  <label>Threshold</label>
-		  <p>
-		</div>
-		
-		<div class="w3-container w3-half">
-		  <input class="w3-input w3-border w3-text-black" type="text" id="id_cvm_location">
-		  <label>Location</label>
-		  <p>
-		</div>
-		
-		<div class="w3-container">
-		  <input class="w3-input w3-border w3-text-black" type="text" id="id_cvm_itemNumber">
-		  <label>Item Number</label>
-		  <p>
-		</div>
-		
-		
+			<tr class="w3-border">
+			<th>Quantity</th>
+			<td class="w3-container">
+			  <input class="w3-input w3-border w3-text-black" type="text" id="id_cvm_qty" placeholder="###">
+			</td>
+			</tr>
+			
+			<tr class="w3-border">
+			<th>Threshold</th>
+			<td class="w3-container">
+			  <input class="w3-input w3-border w3-text-black" type="text" id="id_cvm_thresh" placeholder="###">
+			</td>
+			</tr>
+			
+			<tr class="w3-border">
+			<th>Location</th>
+			<td class="w3-container">
+			  <input class="w3-input w3-border w3-text-black" type="text" id="id_cvm_location" placeholder="B12D22">
+			</td>
+			</tr>
+			
+			<tr class="w3-border">
+			<th>Item Number</th>
+			<td class="w3-container">
+			  <input class="w3-input w3-border w3-text-black" type="text" id="id_cvm_itemNumber" placeholder="A###-01">		  
+			</td>
+			</tr>	
+			
+			<tr class="w3-border">
+			<th>Flags</th>
+			<td class="w3-container">
+			  <div = class="w3-container w3-third">
+			  <label>Consumable</label>
+			  <input class="w3-check w3-border w3-text-black" type="checkbox" id="id_cvm_flagConsumable">		  
+			  </div>
+			  <div = class="w3-container w3-third">
+  			  <label>Equipment</label>
+			  <input class="w3-check w3-border w3-text-black" type="checkbox" id="id_cvm_flagEquipment">		  
+			  </div>
+			  <div = class="w3-container w3-third">
+  			  <label>Lab Part</label>
+			  <input class="w3-check w3-border w3-text-black" type="checkbox" id="id_cvm_flagLabPart">		  
+			  </div>
+			</td>
+			</tr>				
+		  </table>
+		</form>
+		<p/>
 		<button class="w3-btn w3-light-green w3-border w3-round-large" type="button" onclick="createNewItem()">Create Item</button>
-		<p>
+		<p/>
 		
 		<footer class="w3-container w3-blue w3-row">
 		  <p></p>
-		</footer>
-		
-	  </form>
+		</footer>	  
     </div>
   </div>
 </div>
@@ -237,15 +267,20 @@ th
       class="w3-closebtn">&times;</span>
 	  <h3>Edit Item</h3>
 	 </header>
-      <form class="w3-container">
-	  
-	    <div class="w3-container">
+      <form class="w3-container w3-responsive w3-white w3-border">
+		<table class="w3-table w3-bordered w3-border w3-striped w3-small" style="table-layout:fixed; width=100%;">	  
+		<col width="20%"/><col width="80%"/>
+	  	
+		<tr class="w3-border">
+		<th>Item Number</th>
+	    <td class="w3-container">
 		  <input class="w3-input w3-border w3-text-black" type="text" id="id_ivm_itemNumber" disabled>
-		  <label>Item Number</label>
-		  <p>
-		</div>	
+		</td>	
+		</tr>
 		
-	    <div class="w3-container w3-half">
+		<tr class="w3-border">
+		<th>Type</th>
+	    <td class="w3-container">
 		  <select class="w3-select w3-border" name="option" id="id_ivm_type">
 			<option value="" disabled selected>Select Type</option>
 			<option value="Capacitor">Capacitor</option>
@@ -256,64 +291,96 @@ th
 			<option value="Transformer">Transformer</option>
 			<option value="Other">Other</option>
 		  </select>
-		  <label>Type</label>
-		</div>
+		</td>
+		</tr>
 		
-		<div class="w3-container w3-half">
+		<tr class="w3-border">
+		<th>Value</th>
+		<td class="w3-container">
 		  <input class="w3-input w3-border w3-text-black" type="text" id="id_ivm_value" onchange="ivm_modifyItem(this.id,'Value')">
-		  <label>Value</label>
-		  <p>
-		</div>
+		</td>
+		</tr>
 		
-		<div class="w3-container">
+		<tr class="w3-border">
+		<th>Description</th>
+		<td class="w3-container">
 		  <input class="w3-input w3-border w3-text-black" type="text" id="id_ivm_desc" onchange="ivm_modifyItem(this.id,'Description')">
-		  <label>Description</label>
-		  <p>
-		</div>	
+		</td>	
+		</tr>
 
-		<div class="w3-container w3-half">
+		<tr class="w3-border">
+		<th>Supplier Part Number</th>
+		<td class="w3-container">
 		  <input class="w3-input w3-border w3-text-black" type="text" id="id_ivm_supplierPN" onchange="ivm_modifyItem(this.id,'Supplier_Part_Number')">
-		  <label>Supplier Part Number</label>
-		  <p>
-		</div>		
+		</td>	
+		</tr>
 
-		<div class="w3-container w3-half">
+		<tr class="w3-border">
+		<th>Supplier Name</th>
+		<td class="w3-container">
 		  <input class="w3-input w3-border w3-text-black" type="text" id="id_ivm_supplierName" onchange="ivm_modifyItem(this.id,'Suppliers_Name')">
-		  <label>Supplier Name</label>
-		  <p>
-		</div>
+		</td>
+		</tr>
 		
-		<div class="w3-container">
+		<tr class="w3-border">
+		<th>Document URL</th>
+		<td class="w3-container">
 		  <input class="w3-input w3-border w3-text-black" type="text" id="id_ivm_link" onchange="ivm_modifyItem(this.id,'Item_Link')">
-		  <label>Document URL</label>		  <p>
-		</div>
+		</td>
+		</tr>
 
-		<div class="w3-container w3-quarter">
+		<tr class="w3-border">
+		<th>Quantity</th>
+		<td class="w3-container">
 		  <input class="w3-input w3-border w3-text-black" type="text" id="id_ivm_qty" onchange="ivm_modifyItem(this.id,'Quantity')">
-		  <label>Quantity</label>		
-		</div>
+		</td>
+		</tr>
 		
-		<div class="w3-container w3-quarter">
-		  <input class="w3-input w3-border w3-text-black" type="text" id="id_ivm_thresh" onchange="ivm_modifyItem(this.id,'Ordering_Threshold')">
-		  <label>Threshold</label>		  
-		</div>
+		<tr class="w3-border">
+		<th>Threshold</th>
+		<td class="w3-container">
+		  <input class="w3-input w3-border w3-text-black" type="text" id="id_ivm_thresh" onchange="ivm_modifyItem(this.id,'Ordering_Threshold')">	  
+		</td>
+		</tr>
 		
-		<div class="w3-container w3-half">
+		<tr class="w3-border">
+		<th>Location</th>
+		<td class="w3-container">
 		  <input class="w3-input w3-border w3-text-black" type="text" id="id_ivm_location" onchange="ivm_modifyItem(this.id,'Location')">
-		  <label>Location</label>		 
-		</div>		
-			
-		<div class="w3-container">
-		<p/>
-		</div>
+		</td>	
+		</tr>
 		
-		<div id="id_ivm_tableHeader" class="w3-responsive w3-white w3-border" style="max-height: 6vh; overflow-y:scroll;"></div>		
-		<div id="id_ivm_tableData" class="w3-responsive w3-white w3-border" style="max-height: 30vh; overflow-y:scroll;"></div>	
-		<footer class="w3-container w3-blue w3-row">
-		  <p></p>
-		</footer>
+		<tr class="w3-border">
+		<th>Flags</th>
+		<td class="w3-container">
+		  <div = class="w3-container w3-third">
+		  <label>Consumable</label>
+		  <input class="w3-check w3-border w3-text-black" type="checkbox" id="id_ivm_flagConsumable" onchange="ivm_modifyItem(this.id,'Consumable_Flag')">		  
+		  </div>
+		  <div = class="w3-container w3-third">
+		  <label>Equipment</label>
+		  <input class="w3-check w3-border w3-text-black" type="checkbox" id="id_ivm_flagEquipment" onchange="ivm_modifyItem(this.id,'Equipment_Flag')">		  
+		  </div>
+		  <div = class="w3-container w3-third">
+		  <label>Lab Part</label>
+		  <input class="w3-check w3-border w3-text-black" type="checkbox" id="id_ivm_flagLabPart" onchange="ivm_modifyItem(this.id,'Lab_Part_Flag')">		  
+		  </div>
+		</td>
+		</tr>
 		
+		</table>
 	  </form>
+	  
+	  <div class="w3-container">
+	  <p/>
+	  </div>
+		
+		
+	  <div id="id_ivm_tableHeader" class="w3-responsive w3-white w3-border" style="max-height: 6vh; overflow-y:scroll;"></div>		
+	  <div id="id_ivm_tableData" class="w3-responsive w3-white w3-border" style="max-height: 30vh; overflow-y:scroll;"></div>	
+	  <footer class="w3-container w3-blue w3-row">
+	    <p/>
+	  </footer>		
     </div>
   </div>
 </div>

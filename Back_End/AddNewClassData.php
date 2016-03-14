@@ -76,6 +76,9 @@ try
 		//add new item
 		$sql->command("INSERT INTO dbo.Class_Data (Class,Part,Quantity,Date) VALUES ('$classNumber','$partNumber',$quantity,'$date');");
 		
+		//set flag in dbo.Inventory
+		$sql->command("UPDATE dbo.Inventory SET [Lab_Part_Flag]='1' WHERE Name='$partNumber';");
+		
 		
 		//retrieve new table.
 		$sqlQuery = "SELECT * FROM dbo.Class_Data";

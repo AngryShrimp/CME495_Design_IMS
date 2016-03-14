@@ -51,7 +51,17 @@ try
 	$IMSBase->verifyData($sortColumn,"/^.*$/","Sort Column");
 	if($sortColumn != "")
 		$IMSBase->verifyData($sortDirection,"/^(ASC|DESC)$/","Sort Direction");
-		
+	
+	
+	//get part number from ID
+	$sqlQuery = "SELECT [Part] FROM dbo.Class_Data WHERE Id=$id";
+	
+	$stmt = $sql->prepare($sqlQuery);
+	$stmt->execute();	
+	$dataArray = $stmt->fetchAll(PDO::FETCH_ASSOC);
+	$partNumber = $dataArray[0]['Part'];
+	
+	$sql->command("UPDATE dbo.Inventory SET [Lab_Part_Flag]='0' WHERE Name='$partNumber';");	
 		
 	//Delete record
 	$sql->command("DELETE FROM dbo.Class_Data WHERE Id=$id;");

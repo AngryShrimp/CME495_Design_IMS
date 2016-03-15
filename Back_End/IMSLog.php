@@ -13,6 +13,7 @@
 class IMSLog
 {
 	private $log_file_loc;
+	public $opt_debug = true;  //default, log debug entries
 	
 	public function __construct($input_loc = "")
 	{
@@ -51,6 +52,10 @@ class IMSLog
 	
 	public function add_log($SID,$Level,$Message,$ItemNum = "N/A")
 	{
+	
+		//prevent debug messages from being written if option not set.
+		if(($this->opt_debug == false) && ($Level=="Debug"))
+			return;
 
 
 		$this->waitForLock();
@@ -156,7 +161,7 @@ class IMSLog
 		while(file_exists($this->log_file_loc.".lock"))
 		{
 			$wait_counter++;
-			if($wait_counter > 20) //two second time out.
+			if($wait_counter > 100) //10 second time out.
 			{
 				throw new Exception("Logging time-out waiting for lock",1);
 			}

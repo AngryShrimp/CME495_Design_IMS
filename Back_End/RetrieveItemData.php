@@ -38,6 +38,15 @@ try
 	$IMSBase = new IMSBase();
 	$log = new IMSLog();
 	$sql = new IMSSql();
+	
+	//Set IMSLog options
+	$opt_debugLog = $sql->getOption('Debug');
+	if($opt_debugLog === false)
+		$log->add_log($sessionID,'Warning','RetrieveBroswerData Warning: Debug Option missing or invalid.');
+	else if($opt_debugLog == '0')
+		$log->opt_debug = false;	
+	else 
+		$log->opt_debug = true;
 
 	$runLevel = $sql->verifySID($sessionID); //No special permission required.
 

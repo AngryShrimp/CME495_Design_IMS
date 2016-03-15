@@ -21,6 +21,7 @@ function ivm_modifyItem(id,field)
 		value = "0";  
 	
   sendBackendRequest("Back_End/ModifyItem.php","SID="+getSID()+"&PartNumber="+ itemNumber + "&Field="+field + "&Value=" + value);
+  main_loadLog(); //refresh the log
   return;
 
 }

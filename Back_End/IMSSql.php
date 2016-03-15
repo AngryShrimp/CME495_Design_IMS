@@ -44,8 +44,6 @@ class IMSSql {
 		
 	}
 
-	//TODO: Add connection checks in all functions.
-
 	private function connect() {
 
 		try {
@@ -77,45 +75,47 @@ class IMSSql {
 	}
 	
 
-        /*
-         * @Function: retrieveOptions
-         * @Description: Retrieves the options row from the database
-         * @Output: Options in XML format
-         * @author: Justin Fraser
-         */
-        public function retrieveOptions()
-        {
-            
-                try {
-                    
-                                            
-                        $cmd = 'SELECT Remote_Server_Enabled, Backup_Frequency, Automated_Backups_Enabled, Thresholds_Enabled FROM dbo.Options';
-                        
-                        
-                        $XMLData = "<?xml version='1.0' encoding='UTF-8'?>\n";
-                        $XMLData .= "<Options>\n";
-                        
-                        foreach ($this->conn->query($cmd) as $row){                 
-                        
+	/*
+	 * @Function: retrieveOptions
+	 * @Description: Retrieves the options row from the database
+	 * @Output: Options in XML format
+	 * @author: Justin Fraser
+	 */
+	public function retrieveOptions()
+	{
+		
+		try {
+			
+									
+				$cmd = 'SELECT Remote_Server_Enabled, Backup_Frequency, Automated_Backups_Enabled, Thresholds_Enabled FROM dbo.Options';
+				
+				
+				$XMLData = "<?xml version='1.0' encoding='UTF-8'?>\n";
+				$XMLData .= "<Options>\n";
+				
+				foreach ($this->conn->query($cmd) as $row){                 
+				
 
-                        $XMLData .= "<Remote_Server_Enabled>".$row['Remote_Server_Enabled']."</Remote_Server_Enabled>\n";                        
-                        $XMLData .= "<Backup_Frequency>".$row['Backup_Frequency']."</Backup_Frequency>\n";
-                        $XMLData .= "<Automated_Backups_Enabled>".$row['Automated_Backups_Enabled']."</Automated_Backups_Enabled>\n";
-                        $XMLData .= "<Thresholds_Enabled>".$row['Thresholds_Enabled']."</Thresholds_Enabled>\n";                       
-                        
-                        }
-                        $XMLData .= "</Options>";
-                        
-                        $xml=simplexml_load_string($XMLData) or die("Error: Cannot create object");
-                        print_r($xml);
-                        
-                        
-                } catch (Exception $e) {
-                        
-                        echo "Exception in Retrieve Options in IMSSql.php";
-                        throw $e;
-                }
-        }
+				$XMLData .= "<Remote_Server_Enabled>".$row['Remote_Server_Enabled']."</Remote_Server_Enabled>\n";                        
+				$XMLData .= "<Backup_Frequency>".$row['Backup_Frequency']."</Backup_Frequency>\n";
+				$XMLData .= "<Automated_Backups_Enabled>".$row['Automated_Backups_Enabled']."</Automated_Backups_Enabled>\n";
+				$XMLData .= "<Thresholds_Enabled>".$row['Thresholds_Enabled']."</Thresholds_Enabled>\n";                       
+				
+				}
+				$XMLData .= "</Options>";
+				
+				$xml=simplexml_load_string($XMLData) or die("Error: Cannot create object");
+				print_r($xml);
+				
+				
+		} catch (Exception $e) {
+				
+				echo "Exception in Retrieve Options in IMSSql.php";
+				throw $e;
+		}
+	}
+	
+	
 	public function exists($partNumber,$table)
 	{
 		try{
@@ -139,14 +139,14 @@ class IMSSql {
 	}
 	
         
-        /*
-         * @Function: IdExists
-         * @Description: Finds any existing values in a table that uses Id
-         * as a primary key.
-         * @output: true if rows exist in table, false otherwise
-         * @author: Justin Fraser
-         */
-        	public function IdExists($table)
+	/*
+	 * @Function: IdExists
+	 * @Description: Finds any existing values in a table that uses Id
+	 * as a primary key.
+	 * @output: true if rows exist in table, false otherwise
+	 * @author: Justin Fraser
+	 */
+		public function IdExists($table)
 	{
 		try{
 			$stmt = $this->conn->prepare("SELECT * FROM $table WHERE Id LIKE '%'");
@@ -164,8 +164,7 @@ class IMSSql {
 		{
 			//rethrow the exception
 			throw $e;
-		}
-	
+		}	
 	}
         
         
@@ -284,6 +283,30 @@ class IMSSql {
 		return;
 		
 	}
+	
+	public function getOption($option)
+	{
+		try
+		{
+			$stmt = $this->prepare("SELECT [Value] FROM dbo.options WHERE [Option]='$option';");
+			$stmt->execute();	
+				
+			$dataArray = $stmt->fetchAll(PDO::FETCH_ASSOC); 
+			
+			if(count($dataArray) != 1)
+			{
+				return false;
+			}
+			
+			return $dataArray[0]['Value'];
+		}
+		catch (PDOException $e)
+		{
+			return false;
+		}
+	
+	}
+	
 }
 
 

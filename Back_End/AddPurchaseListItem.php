@@ -21,6 +21,8 @@ $sessionID = "";
 
 $statusMessage = "";
 $statusCode = 0;
+$runLevel = "";
+
 
 $supplierNumber = "";
 $itemLink = "";
@@ -29,19 +31,29 @@ $quantity = "";
 
 try
 {
-        if ($_SERVER["REQUEST_METHOD"] == "POST") 
-        {
+	if ($_SERVER["REQUEST_METHOD"] == "POST") 
+	{
 		$sessionID = $_POST["SID"];
 		$supplierNumber = $_POST["SN"];
 		$itemLink = $_POST["IL"];
 		$quantity = $_POST["QN"];		
-        }
+	}
 	
 	$IMSBase = new IMSBase();
 	$log = new IMSLog();
 	$sql = new IMSSql();
+	
+	//Set IMSLog options
+	$opt_debugLog = $sql->getOption('Debug');
+	if($opt_debugLog === false)
+		$log->add_log($sessionID,'Warning','RetrieveBroswerData Warning: Debug Option missing or invalid.');
+	else if($opt_debugLog == '0')
+		$log->opt_debug = false;	
+	else 
+		$log->opt_debug = true;
+	
 
-	$IMSBase->verifyData($sessionID,"/^.+$/");
+	$runLevel = $sql->verifySID($sessionID,"1"); //1 = Requires edit privileges.
         
 	$sqlQuery = "INSERT INTO dbo.Purchase_List (Supplier_Part_Number, Item_Link, Quantity) VALUES ('" . 
 					$supplierNumber . "','" .
@@ -78,6 +90,7 @@ if ($statusCode == 0){
     
         $statusArray[0] = $statusCode;
 		$statusArray[1] = $statusMessage;
+		$statusArray[2] = $runLevel;
         
         
 		$IMSBase->GenerateXMLResponse($sessionID,$statusArray);

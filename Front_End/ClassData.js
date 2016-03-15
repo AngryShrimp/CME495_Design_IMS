@@ -104,6 +104,7 @@ function cdm_deleteClassDataEntry()
 		}	
 		
 		sendBackendRequest("Back_End/DeleteClassData.php","SID="+getSID()+"&ID="+id+sortCommand);
+		main_loadLog(); //refresh the log
 	}
 	else
 	{
@@ -140,7 +141,8 @@ function cdm_deleteSelClassDataEntry()
 			sendBackendRequest("Back_End/DeleteClassData.php","SID="+getSID()+"&ID="+idListSplit[i]+sortCommand);
 		}
 		document.getElementById("id_cdm_deletionList").innerHTML = "None";
-		
+		main_loadLog(); //refresh the log
+
 	}
 	else
 	{
@@ -183,6 +185,8 @@ function cdm_addClassDataEntry()
   document.getElementById("id_cdm_qtyInput").value = "";
   document.getElementById("id_cdm_dateInput").value = "";	
   document.getElementById("id_cdm_partList").innerHTML = "";
+  
+  main_loadLog(); //refresh the log
   
   return;
 }
@@ -241,6 +245,8 @@ function cdm_modifyClassDataEntry()
 			sendBackendRequest("Back_End/ModifyClassData.php","SID="+getSID() + "&ID="+id+"&Field=Date&Value="+date_new+sortCommand);
 			document.getElementById("id_cdm_dateInputOrginal").innerHTML = date_new;
 		}
+		
+		main_loadLog(); //refresh the log
 
 	}
 	else

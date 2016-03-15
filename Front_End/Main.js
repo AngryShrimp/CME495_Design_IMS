@@ -10,7 +10,7 @@ function populateForms()
 	cdm_getClassData();
 	main_loadBrowser();
 	elm_getEmailList();
-	loadLog();
+	main_loadLog();
 	RetrievePurchaseReport();
 	tableTimers();
 
@@ -84,11 +84,13 @@ function main_loadBrowser()
   return;
 }
 
-function loadLog()
+function main_loadLog()
 {  
 
-  sendBackendRequest("Back_End/RetrieveLog.php","SID="+getSID()+"&LogLevel=All");  
+  //Timeout is to delay the log read/refresh until other actions have been performed.
+  setTimeout(function(){sendBackendRequest("Back_End/RetrieveLog.php","SID="+getSID()+"&LogLevel=All");}, 25);
 
+  return;
 }
 
 /****************************************************************
@@ -602,7 +604,11 @@ Description: Requests data for a single item number.
 *****************************************************************/
 function main_getQuickUpdateData(partNumber)
 {
+
+
+
   sendBackendRequest("Back_End/RetrieveItemData.php","SID="+getSID()+"&PartNumber="+ partNumber);
+  main_loadLog();
   
   return;
 }
@@ -841,5 +847,5 @@ function createPurchaseReportTable(xml)
 
 function tableTimers(){
 	setInterval(main_loadBrowser, 600000);
-	setInterval(loadLog, 600000);
+	setInterval(main_loadLog, 600000);
 }

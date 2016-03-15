@@ -249,10 +249,10 @@ th
 </div>
 
 
-<!-- Modal Dialog box for Viewing Editing Single Item -->
+<!-- Modal Dialog box for Viewing/Editing Single Item -->
 <script src="Front_End/ItemView.js"></script>
 <div id="ItemViewModal" class="w3-modal">
-	<div class="w3-modal-content w3-blue  w3-animate-top" style="width:95%">
+	<div class="w3-modal-content w3-blue w3-animate-top" style="width:95%; max-height:100%;">
 		<div class="w3-container">
 		<header class="w3-container w3-blue">     
 			<span onclick="document.getElementById('ItemViewModal').style.display='none'" 
@@ -369,7 +369,7 @@ th
 				
 				
 			<div id="id_ivm_tableHeader" class="w3-responsive w3-white w3-border" style="max-height: 6vh; overflow-y:scroll;"></div>      
-			<div id="id_ivm_tableData" class="w3-responsive w3-white w3-border" style="max-height: 30vh; overflow-y:scroll;"></div>   
+			<div id="id_ivm_tableData" class="w3-responsive w3-white w3-border" style="max-height: 20vh; overflow-y:scroll;"></div>   
 			<footer class="w3-container w3-blue w3-row">
 				<p/>
 			</footer>     
@@ -598,13 +598,13 @@ th
 
 <!-- Log Browser Modal -->
 <div id="LogModal" class="w3-modal">
-	<div class="w3-modal-content w3-blue  w3-animate-top" style="width:70%">
+	<div class="w3-modal-content w3-blue  w3-animate-top" style="width:95%">
 		<div class="w3-container">
 			<header class="w3-container w3-blue">
 				<span onclick="document.getElementById('LogModal').style.display='none'" class="w3-closebtn">&times;</span>
 				<h3 id="id_iem_title">Log Browser</h3>
 			</header>
-			<button class="w3-btn w3-light-green w3-border w3-round-large" type="button" onclick="loadLog()">Refresh</button>
+			<button class="w3-btn w3-light-green w3-border w3-round-large" type="button" onclick="main_loadLog()">Refresh</button>
 			<br><br>
 			<div id="id_main_logHeader" class="w3-responsive w3-white w3-border" style="max-height: 8vh; overflow-y:scroll;"></div>
 			<div id="id_main_logData" class="w3-responsive w3-white w3-border" style="max-height: 55vh; overflow-y:scroll;"></div>

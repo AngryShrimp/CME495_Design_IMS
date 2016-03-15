@@ -184,6 +184,7 @@ function createNewItem()
 	xhttp.send("SID="+getSID()+"&PartNumber="+partNumber+"&Field=Lab_Part_Flag&Value="+flagLabPart);  
   }
   
+  main_loadLog(); //refresh the log
   return;
   
 }

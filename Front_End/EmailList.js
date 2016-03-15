@@ -42,6 +42,8 @@ function elm_modifyEmailEntry()
 		{
 			sendBackendRequest("Back_End/ModifyEmailAddress.php","SID="+getSID()+"&ID="+id+"&Field=Recipients&Value="+email_new);
 			document.getElementById("id_elm_emailAddressOriginal").innerHTML = email_new;
+            main_loadLog(); //refresh the log
+
 		}		
 	}
 	else
@@ -68,6 +70,8 @@ function elm_addEmailEntry()
   document.getElementById("id_elm_emailAddress").value = "";
   document.getElementById("id_elm_emailAddressOriginal").innerHTML = "";
   
+  main_loadLog(); //refresh the log
+
   return;
 }
 
@@ -78,6 +82,7 @@ Description: Deletes a selected email address from the database.
 function elm_deleteEmailAddress(id)
 {		
   sendBackendRequest("Back_End/DeleteEmailAddress.php","SID="+getSID()+"&ID="+id);
-	
+  main_loadLog(); //refresh the log
+  
   return;
 }

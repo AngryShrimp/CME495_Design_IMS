@@ -378,9 +378,10 @@ function parseXMLResponse(xml)
 
     for( i = 0; i < browser_entry.length; i++)
     {
+	  var partNumber = browser_entry[i].getElementsByTagName("Name")[0].childNodes[0].nodeValue;
 
-      tableBrowserData += "<tr>" + 
-                        "<td class=\"w3-border\" style=\"word-wrap: break-word\">" + browser_entry[i].getElementsByTagName("Name")[0].childNodes[0].nodeValue + "</td>" +
+      tableBrowserData += "<tr onclick=\"main_getQuickUpdateData('"+partNumber+"')\" ondblclick=\"main_loadItemEdit()\">" + 
+                        "<td class=\"w3-border\" style=\"word-wrap: break-word\">" + partNumber + "</td>" +
                         "<td class=\"w3-border\" style=\"word-wrap: break-word\">" + browser_entry[i].getElementsByTagName("Quantity")[0].childNodes[0].nodeValue + "</td>" +
                         "<td class=\"w3-border\" style=\"word-wrap: break-word\">" + browser_entry[i].getElementsByTagName("Type")[0].childNodes[0].nodeValue + "</td>" +
                         "<td class=\"w3-border\" style=\"word-wrap: break-word\">" + browser_entry[i].getElementsByTagName("Value")[0].childNodes[0].nodeValue + "</td>" +
@@ -575,6 +576,13 @@ function parseXMLResponse(xml)
 }
 
 
+function main_loadItemEdit()
+{
+	document.getElementById('ItemViewModal').style.display='block';
+	return;
+}
+
+
 /****************************************************************
 Function:  IMSError()
 Description: Launches an error modal dialog box. 
@@ -589,10 +597,10 @@ function IMSError(title,message)
 }
 
 /****************************************************************
-Function:  getQuickUpdateData()
+Function:  main_getQuickUpdateData()
 Description: Requests data for a single item number.
 *****************************************************************/
-function getQuickUpdateData(partNumber)
+function main_getQuickUpdateData(partNumber)
 {
   sendBackendRequest("Back_End/RetrieveItemData.php","SID="+getSID()+"&PartNumber="+ partNumber);
   
@@ -628,7 +636,7 @@ function search_showAutocomplete(partialStr)
 	  //Remove datalists and launch item load functions.
 	  document.getElementById("id_cdm_partList").innerHTML = "";
       document.getElementById("id_search_queryList").innerHTML = "";
-	  getQuickUpdateData(val);
+	  main_getQuickUpdateData(val);
 	  return;
 	}
   }

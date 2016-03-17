@@ -87,7 +87,7 @@ try
 		$dataArray = $stmt->fetch(PDO::FETCH_ASSOC);
 		$statusCode = '0';
 		$statusMessage = "RetriveItem: Part Number ,$partNumber, data has been retrieved.";
-		$log->add_log($sessionID,'Information',$statusMessage);
+		$log->add_log($sessionID,'Debug',$statusMessage);
 		
 		
 	}        

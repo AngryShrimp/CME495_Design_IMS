@@ -79,7 +79,8 @@ function main_loadBrowser()
 	filter = "&Filter=" + searchBarVal;
   }
 
-  sendBackendRequest("Back_End/RetrieveBrowserData.php","SID="+getSID()+filter);  
+  //Timeout is to delay the browser read/refresh until other actions have been performed.
+  setTimeout(function(){sendBackendRequest("Back_End/RetrieveBrowserData.php","SID="+getSID()+filter)},250);  
   
   return;
 }
@@ -88,7 +89,7 @@ function main_loadLog()
 {  
 
   //Timeout is to delay the log read/refresh until other actions have been performed.
-  setTimeout(function(){sendBackendRequest("Back_End/RetrieveLog.php","SID="+getSID()+"&LogLevel=All");}, 25);
+  setTimeout(function(){sendBackendRequest("Back_End/RetrieveLog.php","SID="+getSID()+"&LogLevel=All");}, 250);
 
   return;
 }

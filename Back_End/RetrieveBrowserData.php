@@ -50,19 +50,11 @@ try
 	$opt_debugLog = $sql->getOption('Debug');
 	if($opt_debugLog === false)
 		$log->add_log($sessionID,'Warning','RetrieveBroswerData Warning: Debug Option missing or invalid.');
-	else if($opt_debugLog == '0')
-		$log->opt_debug = false;	
-	else 
-		$log->opt_debug = true;
-	
-	//Set IMSLog options
-	$opt_debugLog = $sql->getOption('Debug');
-	if($opt_debugLog === false)
-		$log->add_log($sessionID,'Warning','RetrieveBroswerData Warning: Debug Option missing or invalid.');
-	else if($opt_debugLog == '0')
+	else if($opt_debugLog == 'False')
 		$log->opt_debug = false;	
 	else 
 		$log->opt_debug = true;	
+
 	
 	$runLevel = $sql->verifySID($sessionID); //No special permissions required.
 	$IMSBase->verifyData($sortColumn,"/^.*$/","Sort Column");

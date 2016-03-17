@@ -298,7 +298,7 @@ class IMSSql {
 				return false;
 			}
 			
-			return $dataArray[0]['Value'];
+			return trim($dataArray[0]['Value']);
 		}
 		catch (PDOException $e)
 		{

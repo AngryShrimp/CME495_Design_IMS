@@ -8,11 +8,30 @@ $date = "";
 $message = "";
 $SID = "";
 $key = "";
+$timeout = 3600; //default is 1 hour (3600 seconds)
  
 try 
 {
 	$log = new IMSLog();
 	$sql = new IMSSql();	
+	
+	//Set IMSLog options
+	$opt_debugLog = $sql->getOption('Debug');
+	if($opt_debugLog === false)
+		$log->add_log($sessionID,'Warning','Default Warning: Debug Option missing or invalid.');
+	else if($opt_debugLog == 'False')
+		$log->opt_debug = false;	
+	else 
+		$log->opt_debug = true;	
+		
+	//Get Credential Time out Option
+	$opt_timeout = $sql->getOption('Credential_Expiry_Time_Seconds');
+	$log->add_log($sessionID,'Warning',"Default Warning: $opt_timeout");
+
+	if($opt_timeout === false)
+		$log->add_log($sessionID,'Warning','Default Warning: Credential_Expiry_Time_Seconds Option missing or invalid.');
+	else 
+		$timeout = intval($opt_timeout);
 	
 
 	if ($_SERVER["REQUEST_METHOD"] == "GET") 
@@ -49,7 +68,7 @@ catch(Exception $e)
 	//$log->add_log($sessionID,'Error',$statusMessage);
 }
 
-	setcookie("SID", $SID, time() + (3600), "/"); // 3600 = 1 hour
+	setcookie("SID", $SID, time() + ($timeout), "/");
 	$log->add_log($SID,"Information","Client connected from $ipaddress at $date.");
 	header('Location: MainPage.html');
 

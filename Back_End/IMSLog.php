@@ -12,12 +12,11 @@
 
 class IMSLog
 {
-	private $log_file_loc;
+	public $log_file_loc;
 	public $opt_debug = true;  //default, log debug entries
 	
 	public function __construct($input_loc = "")
-	{
-	
+	{	
 		if(!($input_loc == ""))
 		{
 			$this->log_file_loc = $input_loc;
@@ -33,7 +32,7 @@ class IMSLog
 		$path = pathinfo($this->log_file_loc);
 		if(!file_exists($path['dirname']))
 		{
-			if(!mkdir(dirname($this->log_file_loc)))
+			if(!mkdir(dirname($this->log_file_loc,0777,true)))
 			{
 				throw new Exception("Could not make log directory. ($this->log_file_loc)",1);
 			}
@@ -43,11 +42,40 @@ class IMSLog
 		{
 			throw new Exception("Log directory ($this->log_file_loc) is not writeable.",1);
 		}	
-		
-
 	}
 	
-	
+	/*******************************************************************
+	 * Function: set_log_location()
+	 * Description: Sets the log file location after objection creation.
+	 *
+	 * Input: $file_location - A string containing a path to the log file
+	 *			location.
+	 *
+	 * Returned Value: None.
+	 *				   Throws Exception on error.
+	 ********************************************************************/
+	public function set_log_location($file_location)
+	{
+		$file_location = $file_location."IMSLog.csv";
+		//Check that log folder exists and check write permissions.
+		$path = pathinfo($file_location);
+		if(!file_exists($path['dirname']))
+		{
+			if(!mkdir($path['dirname'],0777,true))
+			{
+				throw new Exception("Could not make log directory. Reverting to default. ($file_location)",1);
+			}
+		}
+		
+		if(!is_writable($path['dirname']))
+		{
+			throw new Exception("Log directory ($file_location) is not writeable. Reverting to default.",1);
+		}
+
+		$this->log_file_loc = $file_location;
+
+		return;			
+	}
 	
 	
 	public function add_log($SID,$Level,$Message,$ItemNum = "N/A")

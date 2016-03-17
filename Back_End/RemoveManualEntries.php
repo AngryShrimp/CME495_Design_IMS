@@ -41,11 +41,17 @@ try
 	//Set IMSLog options
 	$opt_debugLog = $sql->getOption('Debug');
 	if($opt_debugLog === false)
-		$log->add_log($sessionID,'Warning','RetrieveBroswerData Warning: Debug Option missing or invalid.');
+		$log->add_log($sessionID,'Warning','RemoveManualEntries Warning: Debug Option missing or invalid.');
 	else if($opt_debugLog == 'False')
 		$log->opt_debug = false;	
 	else 
 		$log->opt_debug = true;
+		
+	$opt_logLoc = $sql->getOption('Log_File_Location');	
+	if($opt_logLoc === false)
+		$log->add_log($sessionID,'Warning','RemoveManualEntries Warning: Log_File_Location Option missing or invalid.');
+	else 
+		$log->set_log_location($opt_logLoc);
 	
 	if ($_SERVER["REQUEST_METHOD"] == "POST"){
 		$aItem = $_POST['itemList'];
@@ -90,7 +96,7 @@ try
 catch(PDOException $e)
 {
 	$statusCode = 1;
-	$statusMessage = 'AddPurchaseListItem SQLError: '.$e->getMessage();
+	$statusMessage = 'RemoveManualEntries SQLError: '.$e->getMessage();
 	$log->add_log($sessionID,'Error',$statusMessage);
         echo "Error: " . $e->getMessage();
 	
@@ -98,7 +104,7 @@ catch(PDOException $e)
 catch(Exception $e)
 {
 	$statusCode = $e->getCode();
-	$statusMessage = 'AddPurchaseListItem SQLError: '. $e->getMessage();
+	$statusMessage = 'RemoveManualEntries SQLError: '. $e->getMessage();
 	$log->add_log($sessionID,'Error',$statusMessage);
         echo "Error: " . $e->getMessage();
 

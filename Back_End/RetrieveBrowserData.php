@@ -54,6 +54,12 @@ try
 		$log->opt_debug = false;	
 	else 
 		$log->opt_debug = true;	
+		
+	$opt_logLoc = $sql->getOption('Log_File_Location');	
+	if($opt_logLoc === false)
+		$log->add_log($sessionID,'Warning','RetrieveBroswerData Warning: Log_File_Location Option missing or invalid.');
+	else 
+		$log->set_log_location($opt_logLoc);
 
 	
 	$runLevel = $sql->verifySID($sessionID); //No special permissions required.

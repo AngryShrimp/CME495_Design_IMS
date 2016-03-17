@@ -8,13 +8,17 @@
  *	Date: 08 January 2016
  *
  ***********************************************************************/
-require_once "vendor/autoload.php";
- 
- 
+require_once "vendor/autoload.php"; //loads PHPMailer for use in sendEmail() 
  
 class IMSBase
 {
-	
+
+	//Settings for sendEmail function, need to be set before calling.
+	public $email_host = "";
+	public $email_username = "";
+	public $email_password = "";
+	public $email_fromemail = "";
+	public $email_fromname = "";
 
 
 
@@ -117,51 +121,41 @@ class IMSBase
 		
 	}
 	
-	
+	/******************************************************************
+	 * Function: sendEmail()
+	 * Description: Sends an html formatted email to all addresses contained
+	 * in the $to_array.
+	 *
+	 *	Inputs: $to_array - An array containing the email address to send to.
+	 *			$subject - A string containing the subject of the email.
+	 *			$message - A html formatted string containing the message body.
+	 *
+	 *	Returned Value: Returns nothing on seccuess. 
+	 *					Throws a phpmailerException() on PHPMailer error.
+	 *					Throws a Exception() on all other errors.	 
+	 *
+	 * Notes: Class variables email_host,email_username,email_password,email_fromemail,
+	 *			and email_fromname must be set before calling function. 
+	 *******************************************************************/
 	public function sendEmail($to_array,$subject,$message)
-	{
-		$php_options_file_loc = $_SERVER['DOCUMENT_ROOT']."\Back_End\IMS_Settings.ini";
-		
-	
-		$host = "";
-		$username = "";
-		$password = "";
-		$fromemail = "";
-		$fromname = "";
-		
-		if(file_exists(php_options_file_loc))
-		{
-			$options_file = parse_ini_file(php_options_file_loc,TRUE);	
-			
-			$host = $options_file["EMAIL_SETTINGS"]["EMAIL_HOST"];
-			$username = $options_file["EMAIL_SETTINGS"]["EMAIL_USER"];
-			$password = $options_file["EMAIL_SETTINGS"]["EMAIL_PASS"];
-			$fromemail = $options_file["EMAIL_SETTINGS"]["EMAIL_FROMEMAIL"];
-			$fromname = $options_file["EMAIL_SETTINGS"]["EMAIL_FROMNAME"];
-		}
-		else
-		{
-			throw new Exception("IMSBase->sendEmail: Could not find IMS_Settings.ini",1);
-		}
-		
-		
-		if($host == "")
+	{		
+		if($this->email_host == "")
 		{
 			throw new Exception("IMSBase->sendEmail: SMTP Host Name Missing",1);
 		}
-		if($username == "")
+		if($this->email_username == "")
 		{
 			throw new Exception("IMSBase->sendEmail: SMTP User Name Missing",1);
 		}
-		if($password == "")
+		if($this->email_password == "")
 		{
 			throw new Exception("IMSBase->sendEmail: SMTP Password Missing",1);
 		}
-		if($fromemail == "")
+		if($this->email_fromemail == "")
 		{
 			throw new Exception("IMSBase->sendEmail: SMTP From Email Missing",1);
 		}
-		if($fromname == "")
+		if($this->email_fromname == "")
 		{
 			throw new Exception("IMSBase->sendEmail: SMTP From Name Missing",1);
 		}	
@@ -171,17 +165,17 @@ class IMSBase
 		
 		$mail->SMTPDebug = 0;
 		$mail->isSMTP();
-		$mail->Host = $host;		
+		$mail->Host = $this->email_host;		
 		$mail->SMTPAuth=true;
-		$mail->Username = $username;                 
-		$mail->Password = $password;
+		$mail->Username = $this->email_username;                 
+		$mail->Password = $this->email_password;
 		$mail->SMTPSecure = "tls";
 		$mail->Port = 587;
 		
 		
 		
-		$mail->From = $fromemail;
-		$mail->FromName = $fromname;
+		$mail->From = $this->email_fromemail;
+		$mail->FromName = $this->email_fromname;
 		
 		
 		foreach($to_array as $to)
@@ -194,15 +188,12 @@ class IMSBase
 		
 		$mail->Subject = $subject;
 		$mail->Body = $message;
-		$mail->AltBody = "Plain Text Email";	
+		$mail->AltBody = "If you can't read this email, please use the Shopping List page on the IMS page.";	
 	
 		$mail->send();
 		
-		echo "mail sent";
-		
+		return;
 	}
-	
-	
 
 }
 ?>

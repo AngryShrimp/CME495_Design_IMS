@@ -27,6 +27,7 @@ $data = "";
 
 $statusMessage = "";
 $statusCode = 0;
+$runlevel = "";
 
 
 try
@@ -46,21 +47,27 @@ try
 	//Set IMSLog options
 	$opt_debugLog = $sql->getOption('Debug');
 	if($opt_debugLog === false)
-		$log->add_log($sessionID,'Warning','RetrieveBroswerData Warning: Debug Option missing or invalid.');
+		$log->add_log($sessionID,'Warning','ModifyOption Warning: Debug Option missing or invalid.');
 	else if($opt_debugLog == 'False')
 		$log->opt_debug = false;	
 	else 
 		$log->opt_debug = true;
+		
+	$opt_logLoc = $sql->getOption('Log_File_Location');	
+	if($opt_logLoc === false)
+		$log->add_log($sessionID,'Warning','ModifyOption Warning: Log_File_Location Option missing or invalid.');
+	else 
+		$log->set_log_location($opt_logLoc);
 
+	$runLevel = $sql->verifySID($sessionID,"1"); //1 = Requires edit privileges.
 	$IMSBase->verifyData($option,"/^.+$/");
-	$IMSBase->verifyData($sessionID,"/^.+$/");
-        $IMSBase->verifyData($data,"/^.+$/");	
-                
-        
-        if ($sql->IdExists('dbo.Options') == FALSE)
-                $sql->command("INSERT INTO dbo.Options ($option) VALUES ($data)");
-        else
-                $sql->command("UPDATE dbo.Options SET $option=$data WHERE Id LIKE '%'");		
+	$IMSBase->verifyData($data,"/^.+$/");	
+			
+	
+	if ($sql->IdExists('dbo.Options') == FALSE)
+		$sql->command("INSERT INTO dbo.Options ($option) VALUES ($data)");
+	else
+		$sql->command("UPDATE dbo.Options SET $option=$data WHERE Id LIKE '%'");		
 		
 	
 }
@@ -69,7 +76,7 @@ catch(PDOException $e)
 	$statusCode = 1;
 	$statusMessage = 'ModifyOption SQLError: '.$e->getMessage();
 	$log->add_log($sessionID,'Error',$statusMessage);
-        echo "Error: " . $e->getMessage();
+    echo "Error: " . $e->getMessage();
 	
 }
 catch(Exception $e)
@@ -77,7 +84,7 @@ catch(Exception $e)
 	$statusCode = $e->getCode();
 	$statusMessage = 'ModifyOption Error: '. $e->getMessage();
 	$log->add_log($sessionID,'Error',$statusMessage);
-        echo "Error: " . $e->getMessage();
+    echo "Error: " . $e->getMessage();
 
 }
 
@@ -85,11 +92,12 @@ if ($statusCode == 0){
         $statusMessage = "Option $option changed successfully.";
 	$log->add_log($sessionID,'Info',$statusMessage);
     
-        $statusArray[0] = $statusCode;
+    $statusArray[0] = $statusCode;
 	$statusArray[1] = $statusMessage;
+	$statusArray[2] = $runLevel;
         
         
-        echo "Script execution successful\n\n\n";
+    echo "Script execution successful\n\n\n";
 	$IMSBase->GenerateXMLResponse($sessionID,$statusArray);
 }
 ?>

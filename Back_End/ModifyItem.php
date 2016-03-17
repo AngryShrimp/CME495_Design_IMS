@@ -48,11 +48,17 @@ try
 	//Set IMSLog options
 	$opt_debugLog = $sql->getOption('Debug');
 	if($opt_debugLog === false)
-		$log->add_log($sessionID,'Warning','RetrieveBroswerData Warning: Debug Option missing or invalid.');
+		$log->add_log($sessionID,'Warning','ModifyItem Warning: Debug Option missing or invalid.');
 	else if($opt_debugLog == 'False')
 		$log->opt_debug = false;	
 	else 
 		$log->opt_debug = true;
+		
+	$opt_logLoc = $sql->getOption('Log_File_Location');	
+	if($opt_logLoc === false)
+		$log->add_log($sessionID,'Warning','ModifyItem Warning: Log_File_Location Option missing or invalid.');
+	else 
+		$log->set_log_location($opt_logLoc);
 
 	
 	$runLevel = $sql->verifySID($sessionID,"1"); //1 = Requires edit privileges.

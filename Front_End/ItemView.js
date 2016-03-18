@@ -11,8 +11,8 @@ function ivm_modifyItem(id,field)
   {
 	return;
   }
-
-  if(document.getElementById(id).type == "text")  
+  
+  if((document.getElementById(id).type == "text") || (document.getElementById(id).type == "select-one"))
 	value = document.getElementById(id).value;		
   else if(document.getElementById(id).type == "checkbox")
   	if(document.getElementById(id).checked == true)

@@ -70,18 +70,28 @@ from the front end elements.
 function main_loadBrowser()
 {
 
+
   var filter = "";
-  
   var searchBarVal = document.getElementById("id_search_bar").value;
-  
+  var brw_currentSort = document.getElementById("id_brw_sortInfo").innerHTML;
   if(searchBarVal != "")
   {
-	filter = "&Filter=" + searchBarVal;
+    filter = "&Filter=" + searchBarVal;
   }
-
-  //Timeout is to delay the browser read/refresh until other actions have been performed.
-  setTimeout(function(){sendBackendRequest("Back_End/RetrieveBrowserData.php","SID="+getSID()+filter)},250);  
-  
+  //Table is sorted, so use the sort Info to decide
+  if(brw_currentSort != "None")
+  {
+    var brw_currentSortSplit = brw_currentSort.split(":");
+    var brw_currentSortCol = brw_currentSortSplit[0];
+    var brw_currentSortDir = brw_currentSortSplit[1];
+    setTimeout(function(){sendBackendRequest("Back_End/RetrieveBrowserData.php","SID="+getSID()+filter + "&SortColumn=" + brw_currentSortCol + "&SortDirection=" + brw_currentSortDir)},250);  
+  }
+  //No sorting info
+  else
+  {
+    //Timeout is to delay the browser read/refresh until other actions have been performed.
+    setTimeout(function(){sendBackendRequest("Back_End/RetrieveBrowserData.php","SID="+getSID()+filter)},250);  
+  }  
   return;
 }
 
@@ -134,10 +144,15 @@ Description: Sorts the browser table based on clicked header.
 *****************************************************************/
 function brw_tableSort(column)
 { 
-
+  var filter = "";
+  var searchBarVal = document.getElementById("id_search_bar").value;
   var brw_sortDir = "ASC";
-  
   var brw_currentSort = document.getElementById("id_brw_sortInfo").innerHTML;
+
+  if(searchBarVal != "")
+  {
+    filter = "&Filter=" + searchBarVal;
+  }
   
   if(brw_currentSort != "None")
   {
@@ -159,7 +174,7 @@ function brw_tableSort(column)
   
   }
 
-  sendBackendRequest("Back_End/RetrieveBrowserData.php","SID="+ getSID() + "&SortColumn=" + column + "&SortDirection=" + brw_sortDir);
+  sendBackendRequest("Back_End/RetrieveBrowserData.php","SID="+ getSID() + "&SortColumn=" + column + "&SortDirection=" + brw_sortDir + filter);
   
   document.getElementById("id_brw_sortInfo").innerHTML = column + ":"+ brw_sortDir;  
 }

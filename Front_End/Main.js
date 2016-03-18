@@ -128,6 +128,41 @@ function sendBackendRequest(PHPscript,postOptions)
   return;
 }
 
+/****************************************************************
+Function:  brw_tableSort()
+Description: Sorts the browser table based on clicked header.
+*****************************************************************/
+function brw_tableSort(column)
+{ 
+
+  var brw_sortDir = "ASC";
+  
+  var brw_currentSort = document.getElementById("id_brw_sortInfo").innerHTML;
+  
+  if(brw_currentSort != "None")
+  {
+    var brw_currentSortSplit = brw_currentSort.split(":");
+    var brw_currentSortCol = brw_currentSortSplit[0];
+    var brw_currentSortDir = brw_currentSortSplit[1];
+  
+    if(brw_currentSortCol == column)
+    {
+      if(brw_currentSortDir == "ASC")
+        brw_sortDir = "DESC";
+      else
+        brw_sortDir = "ASC";
+    }
+    else
+    {
+      brw_sortDir = "ASC";
+    }
+  
+  }
+
+  sendBackendRequest("Back_End/RetrieveBrowserData.php","SID="+ getSID() + "&SortColumn=" + column + "&SortDirection=" + brw_sortDir);
+  
+  document.getElementById("id_brw_sortInfo").innerHTML = column + ":"+ brw_sortDir;  
+}
 
 function parseXMLResponse(xml)
 {
@@ -255,7 +290,9 @@ function parseXMLResponse(xml)
   }  
   
 
-  
+  /*************
+  Log Table Data
+  **************/
   if(log.length > 0)
   {
     var log_entry = log[0].getElementsByTagName("LOG_ENTRY");
@@ -333,12 +370,14 @@ function parseXMLResponse(xml)
   }
   
 
-  
+  /*****************
+  Browser Table Data
+  ******************/
   if(browser.length > 0) //Browser section present
   { 
     var browser_entry = browser[0].getElementsByTagName("BROWSER_ENTRY");
-	var tableBrowserData = "";
-	var tableBrowserHeader = "";
+	  var tableBrowserData = "";
+    var tableBrowserHeader = "";
 
     //check for null data
     if(browser_entry == null)
@@ -348,7 +387,7 @@ function parseXMLResponse(xml)
     }
 
     var browserHeaderLabelName = "Name";
-    var browserHeaderLabelQuantity = "Qty";
+    var browserHeaderLabelQuantity = "Quantity";
     var browserHeaderLabelType = "Part Type";
     var browserHeaderLabelValue = "Value";
     var browserHeaderLabelLocation = "Location";
@@ -359,25 +398,153 @@ function parseXMLResponse(xml)
     var browserHeaderLabelEquipmentFlag = "E";
     var browserHeaderLabelLabpartFlag = "L";
 
+    var brw_currentSort = document.getElementById("id_brw_sortInfo").innerHTML;
+    
+    if(brw_currentSort != "None")
+    {
+      var brw_currentSortSplit = brw_currentSort.split(":");
+      var brw_currentSortCol = brw_currentSortSplit[0];
+      var brw_currentSortDir = brw_currentSortSplit[1];
 
-    /*Add Sort stuff here*/
+      if(brw_currentSortCol == "Name")
+      {
+        if(brw_currentSortDir == "ASC")
+        {
+          browserHeaderLabelName = "Name&#9650;"; //Arrow up
+        }
+        else
+        {
+          browserHeaderLabelName = "Name&#9660;";//Arrow Down
+        } 
+      }
+      if(brw_currentSortCol == "Quantity")
+      {
+        if(brw_currentSortDir == "ASC")
+        {
+          browserHeaderLabelQuantity = "Quantity&#9650;"; //Arrow up
+        }
+        else
+        {
+          browserHeaderLabelQuantity = "Quantity&#9660;";//Arrow Down
+        } 
+      }
+      if(brw_currentSortCol == "Type")
+      {
+        if(brw_currentSortDir == "ASC")
+        {
+          browserHeaderLabelType = "Part Type&#9650;"; //Arrow up
+        }
+        else
+        {
+          browserHeaderLabelType = "Part Type&#9660;";//Arrow Down
+        } 
+      }
+      if(brw_currentSortCol == "Value")
+      {
+        if(brw_currentSortDir == "ASC")
+        {
+          browserHeaderLabelValue = "Value&#9650;"; //Arrow up
+        }
+        else
+        {
+          browserHeaderLabelValue = "Value&#9660;";//Arrow Down
+        } 
+      }
+      if(brw_currentSortCol == "Location")
+      {
+        if(brw_currentSortDir == "ASC")
+        {
+          browserHeaderLabelLocation = "Location&#9650;"; //Arrow up
+        }
+        else
+        {
+          browserHeaderLabelLocation = "Location&#9660;";//Arrow Down
+        } 
+      }
+      if(brw_currentSortCol == "Supplier_Part_Number")
+      {
+        if(brw_currentSortDir == "ASC")
+        {
+          browserHeaderLabelPartNumber = "Supplier Part Number&#9650;"; //Arrow up
+        }
+        else
+        {
+          browserHeaderLabelPartNumber = "Supplier Part Number&#9660;";//Arrow Down
+        } 
+      }
+      if(brw_currentSortCol == "Ordering_Threshold")
+      {
+        if(brw_currentSortDir == "ASC")
+        {
+          browserHeaderLabelOrderingThreshold = "Ordering Threshold&#9650;"; //Arrow up
+        }
+        else
+        {
+          browserHeaderLabelOrderingThreshold = "Ordering Threshold&#9660;";//Arrow Down
+        } 
+      }
+      if(brw_currentSortCol == "Description")
+      {
+        if(brw_currentSortDir == "ASC")
+        {
+          browserHeaderLabelDescription = "Description&#9650;"; //Arrow up
+        }
+        else
+        {
+          browserHeaderLabelDescription = "Description&#9660;";//Arrow Down
+        } 
+      }
+      if(brw_currentSortCol == "Consumable_Flag")
+      {
+        if(brw_currentSortDir == "ASC")
+        {
+          browserHeaderLabelConsumableFlag = "C &#9650;"; //Arrow up
+        }
+        else
+        {
+          browserHeaderLabelConsumableFlag = "C &#9660;";//Arrow Down
+        } 
+      }
+      if(brw_currentSortCol == "Equipment_Flag")
+      {
+        if(brw_currentSortDir == "ASC")
+        {
+          browserHeaderLabelEquipmentFlag = "E &#9650;"; //Arrow up
+        }
+        else
+        {
+          browserHeaderLabelEquipmentFlag = "E &#9660;";//Arrow Down
+        } 
+      }
+      if(brw_currentSortCol == "Lab_Part_Flag")
+      {
+        if(brw_currentSortDir == "ASC")
+        {
+          browserHeaderLabelLabpartFlag = "L &#9650;"; //Arrow up
+        }
+        else
+        {
+          browserHeaderLabelLabpartFlag = "L &#9660;";//Arrow Down
+        } 
+      }
+    }
     
     tableBrowserHeader = "<table class=\"w3-table w3-bordered w3-border w3-striped w3-hoverable\" style=\"table-layout:fixed; width=100%;\">" +
-			"<col width=\"12%\"><col width=\"6%\"><col width=\"12%\"><col width=\"10%\"><col width=\"11%\"><col width=\"11%\"><col width=\"13%\"><col width=\"18%\"><col width=\"2%\"><col width=\"2%\"><col width=\"2%\">" +
-            "<tr><th class=\"w3-border\" onclick=\"\">"+browserHeaderLabelName+"</th>" +
-            "<th class=\"w3-border\" onclick=\"\">"+browserHeaderLabelQuantity+"</th>" + 
-            "<th class=\"w3-border\" onclick=\"\">"+browserHeaderLabelType+"</th>" + 
-            "<th class=\"w3-border\" onclick=\"\">"+browserHeaderLabelValue+"</th>" +
-            "<th class=\"w3-border\" onclick=\"\">"+browserHeaderLabelLocation+"</th>" + 
-            "<th class=\"w3-border\" onclick=\"\">"+browserHeaderLabelPartNumber+"</th>" + 
-            "<th class=\"w3-border\" onclick=\"\">"+browserHeaderLabelOrderingThreshold+"</th>" + 
-            "<th class=\"w3-border\" onclick=\"\">"+browserHeaderLabelDescription+"</th>" + 
-			"<th class=\"w3-border\" onclick=\"\">"+browserHeaderLabelConsumableFlag+"</th>" +
-			"<th class=\"w3-border\" onclick=\"\">"+browserHeaderLabelEquipmentFlag+"</th>" +
-			"<th class=\"w3-border\" onclick=\"\">"+browserHeaderLabelLabpartFlag+"</th></tr></table>";
+			"<col width=\"10%\"><col width=\"8%\"><col width=\"12%\"><col width=\"10%\"><col width=\"11%\"><col width=\"11%\"><col width=\"13%\"><col width=\"18%\"><col width=\"2%\"><col width=\"2%\"><col width=\"2%\">" +
+            "<tr><th class=\"w3-border\" onclick=\"brw_tableSort('Name')\">"+browserHeaderLabelName+"</th>" +
+            "<th class=\"w3-border\" onclick=\"brw_tableSort('Quantity')\">"+browserHeaderLabelQuantity+"</th>" + 
+            "<th class=\"w3-border\" onclick=\"brw_tableSort('Type')\">"+browserHeaderLabelType+"</th>" + 
+            "<th class=\"w3-border\" onclick=\"brw_tableSort('Value')\">"+browserHeaderLabelValue+"</th>" +
+            "<th class=\"w3-border\" onclick=\"brw_tableSort('Location')\">"+browserHeaderLabelLocation+"</th>" + 
+            "<th class=\"w3-border\" onclick=\"brw_tableSort('Supplier_Part_Number')\">"+browserHeaderLabelPartNumber+"</th>" + 
+            "<th class=\"w3-border\" onclick=\"brw_tableSort('Ordering_Threshold')\">"+browserHeaderLabelOrderingThreshold+"</th>" + 
+            "<th class=\"w3-border\" onclick=\"brw_tableSort('Description')\">"+browserHeaderLabelDescription+"</th>" + 
+			      "<th class=\"w3-border\" onclick=\"brw_tableSort('Consumable_Flag')\">"+browserHeaderLabelConsumableFlag+"</th>" +
+			      "<th class=\"w3-border\" onclick=\"brw_tableSort('Equipment_Flag')\">"+browserHeaderLabelEquipmentFlag+"</th>" +
+			      "<th class=\"w3-border\" onclick=\"brw_tableSort('Lab_Part_Flag')\">"+browserHeaderLabelLabpartFlag+"</th></tr></table>";
 
 	tableBrowserData = "<table class=\"w3-table w3-bordered w3-border w3-striped w3-hoverable\" style=\"table-layout:fixed; width=100%;\">" +
-			            "<col width=\"12%\"><col width=\"6%\"><col width=\"12%\"><col width=\"10%\"><col width=\"11%\"><col width=\"11%\"><col width=\"13%\"><col width=\"18%\"><col width=\"2%\"><col width=\"2%\"><col width=\"2%\">";
+			            "<col width=\"10%\"><col width=\"8%\"><col width=\"12%\"><col width=\"10%\"><col width=\"11%\"><col width=\"11%\"><col width=\"13%\"><col width=\"18%\"><col width=\"2%\"><col width=\"2%\"><col width=\"2%\">";
 
     for( i = 0; i < browser_entry.length; i++)
     {
@@ -403,7 +570,9 @@ function parseXMLResponse(xml)
   } 
   
 
-  
+  /***************
+  Email Table Data
+  ****************/
   if(emailList.length > 0)
   { 
     var email_entry = emailList[0].getElementsByTagName("EMAIL_ENTRY");
@@ -448,6 +617,10 @@ function parseXMLResponse(xml)
 
   }  
   
+
+  /***************
+  Class Table Data
+  ****************/
   if(classData.length > 0)
   { 
 

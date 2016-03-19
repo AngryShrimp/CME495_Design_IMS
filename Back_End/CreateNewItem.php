@@ -24,6 +24,8 @@ $statusMessage = "";
 $statusCode = "";
 $runLevel = "";
 
+$partNumberChange = NULL;
+
 
 try
 {
@@ -57,20 +59,34 @@ try
 	$runLevel = $sql->verifySID($sessionID,"1"); //1 = Requires edit privileges.
 	$IMSBase->verifyData($partNumber,"/^.+$/","Part Number");
 
-	if($sql->exists($partNumber,'dbo.Inventory') == TRUE)
+	
+	while($sql->exists($partNumber,'dbo.Inventory') == TRUE)
 	{
-		$statusCode = '1';
-		$statusMessage = "CreateNewItem Error: $partNumber already exits in database.";
-		$log->add_log($sessionID,'Information',$statusMessage);
-	}
-	else
-	{
-		$sql->command('INSERT INTO dbo.Inventory (Name) VALUES (\''.$partNumber.'\');');
+		$oldPN = $partNumber;
+		//Check for revision code at end of part number
+		$revisionCode = substr($partNumber,-3);
+		if(preg_match("/^-[0-9][0-9]$/",$revisionCode))
+		{
+			$intRev = intval(substr($revisionCode,-2));
+			$intRev=$intRev+1;
+			$newRevStr = str_pad($intRev,2,"0",STR_PAD_LEFT);		
+			$partNumber = substr($partNumber,0,strlen($partNumber)-3)."-".$newRevStr;		
+		}
+		else //add revision code to end of number
+		{
+			$partNumber = $partNumber."-01";
+		}				
 		
-		$statusCode = '0';
-		$statusMessage = 'Item ('.$partNumber.') created successfully. ';
-		$log->add_log($sessionID,'Information',$statusMessage,$partNumber);
+		$log->add_log($sessionID,'Warning',"CreateNewItem.php: Part number $oldPN existed, replaced with $partNumber.");
+		$partNumberChange[0]['Part'] = $partNumber;
+		
 	}
+	
+	$sql->command('INSERT INTO dbo.Inventory (Name) VALUES (\''.$partNumber.'\');');	
+	$statusCode = '0';
+	$statusMessage = 'Item ('.$partNumber.') created successfully. ';
+	$log->add_log($sessionID,'Information',$statusMessage,$partNumber);
+
 	
 }
 catch(PDOException $e)
@@ -92,6 +108,6 @@ catch(Exception $e)
 	$statusArray[0] = $statusCode;
 	$statusArray[1] = $statusMessage;
 	$statusArray[2] = $runLevel;
-	$IMSBase->GenerateXMLResponse($sessionID,$statusArray);
+	$IMSBase->GenerateXMLResponse($sessionID,$statusArray,NULL,$partNumberChange,"CREATEITEM","CHANGE");
 //}	
 ?>

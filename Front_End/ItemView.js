@@ -20,6 +20,9 @@ function ivm_modifyItem(id,field)
 	else
 		value = "0";  
 	
+  if(value == "")
+	value = " ";
+	
   sendBackendRequest("Back_End/ModifyItem.php","SID="+getSID()+"&PartNumber="+ itemNumber + "&Field="+field + "&Value=" + value);
   main_loadLog(); //refresh the log
   return;

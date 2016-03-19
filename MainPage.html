@@ -73,7 +73,7 @@ th
 	</header>
 	<a onclick="document.getElementById('ItemCreateModal').style.display='block'">Add Item</a>
 	<a onclick="document.getElementById('SettingsModal').style.display='block'">Settings</a>
-	<a onclick="document.getElementById('LogModal').style.display='block'; loadLog()">Log</a>
+	<a onclick="document.getElementById('LogModal').style.display='block'; main_loadLog()">Log</a>
 	<a>Alerts</a>
 	<a onclick="document.getElementById('ClassDataModal').style.display='block'">Class Data</a> 
 	<a onclick="document.getElementById('ShoppingListModal').style.display='block'">Shopping List</a> 
@@ -130,7 +130,7 @@ th
 	<div class="w3-modal-content w3-blue  w3-animate-top" style="width:95%">
 		<div class="w3-container">
 		<header class="w3-container w3-blue">     
-			<span onclick="document.getElementById('ItemCreateModal').style.display='none'" 
+			<span onclick="document.getElementById('ItemCreateModal').style.display='none';main_loadBrowser();" 
 			class="w3-closebtn">&times;</span>
 			<h3>Add Item</h3>
 		 </header>
@@ -148,6 +148,7 @@ th
 								<option value="Equipment">Equipment</option>
 								<option value="Transistor">Transistor</option>
 								<option value="Transformer">Transformer</option>
+								<option value="Integrated Circuit">Integrated Circuit</option>
 								<option value="Other">Other</option>
 							</select>     
 						</td>
@@ -239,11 +240,15 @@ th
 				<p/>
 				<button class="w3-btn w3-light-green w3-border w3-round-large" type="button" onclick="createNewItem()">Create Item</button>
 				<p/>
-				
+				<h4>Add Item Batch</h4>
+				<input class="w3-btn" id="file" type="file" />
+				<div class="w3-progress-container" id="id_cvm_addBatchProgressBarCont">
+				  <div id="id_cvm_addBatchProgressBar" class="w3-progressbar w3-green" style="width:0%"></div>
+				</div>
 				<footer class="w3-container w3-blue w3-row">
 					<p></p>
 				</footer>     
-		</div>
+		</div>		
 	</div>
 </div>
 
@@ -254,7 +259,7 @@ th
 	<div class="w3-modal-content w3-blue w3-animate-top" style="width:95%; max-height:100%;">
 		<div class="w3-container">
 		<header class="w3-container w3-blue">     
-			<span onclick="document.getElementById('ItemViewModal').style.display='none'" 
+			<span onclick="document.getElementById('ItemViewModal').style.display='none';main_loadBrowser();" 
 			class="w3-closebtn">&times;</span>
 			<h3>Edit Item</h3>
 		 </header>
@@ -281,6 +286,7 @@ th
 						<option value="Equipment">Equipment</option>
 						<option value="Transistor">Transistor</option>
 						<option value="Transformer">Transformer</option>
+						<option value="Integrated Circuit">Integrated Circuit</option>
 						<option value="Other">Other</option>
 					</select>
 				</td>
@@ -317,7 +323,7 @@ th
 				<tr class="w3-border">
 				<th>Document URL</th>
 				<td class="w3-container">
-					<input class="w3-input w3-border w3-text-black" type="text" id="id_ivm_link" onchange="ivm_modifyItem(this.id,'Item_Link')">
+					<input class="w3-input w3-border w3-text-black" type="text" id="id_ivm_link" onchange="ivm_modifyItem(this.id,'Item_Link')" ondblclick="window.open(this.value,'_blank')">
 				</td>
 				</tr>
 

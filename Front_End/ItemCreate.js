@@ -29,6 +29,9 @@ function cdm_autoPN()
 	  case "Transformer":
 		partNumber = "T";
 		break;
+	  case "Integrated Circuit":
+		partNumber = "IC";
+		break;
 	  default:
 		partNumber = "O";
 		break;
@@ -38,7 +41,12 @@ function cdm_autoPN()
   
   if(document.getElementById("id_cvm_value").value != "")
   {
-	partNumber += document.getElementById("id_cvm_value").value;
+	var value = document.getElementById("id_cvm_value").value;
+	while(value.length < 3)
+	{
+		value="0".concat(value);
+	}  
+	partNumber += value;
   }
   else
   {
@@ -95,9 +103,12 @@ function createNewItem()
   
   if(returnVal == false)
   {
-	alert("Part Number Creation Error");
+	IMSError("createNewItem","Part Number Creation Error");
 	return;
   }  
+  
+  //re-get the part number incase it was changed by CreateNewItem.php.
+  partNumber = document.getElementById("id_cvm_itemNumber").value;
 
   if(qty != "")
   {  
@@ -188,3 +199,114 @@ function createNewItem()
   return;
   
 }
+
+
+function cvm_setupAddItemBatch()
+{
+	//File browser/read code
+	var filesInput = document.getElementById("file");
+	filesInput.addEventListener("change", function (event) 
+	{
+		var files = event.target.files;
+		var file = files[0];
+		var reader = new FileReader();
+		reader.addEventListener("load", function (event) 
+		{
+			var textFile = event.target;
+			cvm_addItemBatch(textFile.result);
+		});
+		reader.readAsText(file);
+	});
+}
+
+
+function cvm_addItemBatch(fileText)
+{
+
+	var fileLines = fileText.split('\n');
+	
+	//check for edit privileges. Not very secure but back-end does a check as well.
+	//This check just prevents a tonne of back-end errors.
+	var permissionString = document.getElementById("id_main_RunLevelDisplay").innerHTML;
+	if(permissionString != "Edit Mode")
+	{
+		IMSError("cvm_addItemBatch Error","Missing Permissions for Batch Item Add");
+		return;
+	}
+	
+	//verify file format is correct.
+	if(fileLines[0].replace(/\s/g,'') != "Name,Quantity,Ordering Threshold,Part Type,Value,Location,Supplier Name,Supplier Part Number,Link,Description,C,E,L".replace(/\s/g,''))
+	{
+		IMSError("cvm_addItemBatch Error","Input file not in correct format.");
+		return;	
+	}	
+	
+	document.getElementById("id_cvm_addBatchProgressBar").style.width = '0%';		
+	document.getElementById("id_cvm_addBatchProgressBar").innerHTML = '';
+	
+	for(i = 1;i<fileLines.length;i++)
+	{
+		itemDataSplit = fileLines[i].split(',');
+		
+		if(itemDataSplit.length != 13)
+		{
+			continue;
+		}
+		
+		//Fill in form data
+		//type
+		var sel = document.getElementById('id_cvm_type');
+		var opts = sel.options;
+		
+		for(var opt, j = 0; opt = opts[j]; j++) 
+		{
+			sel.selectedIndex = j;
+			if(opt.value == itemDataSplit[3]) 
+			{
+				break;
+			}	
+		}
+
+		//Value
+		document.getElementById("id_cvm_value").value = itemDataSplit[4];	
+		//description
+		document.getElementById("id_cvm_desc").value = itemDataSplit[9];
+		//Supplier Part Number
+		document.getElementById("id_cvm_supplierPN").value = itemDataSplit[7];
+		//Supplier Name
+		document.getElementById("id_cvm_supplierName").value = itemDataSplit[6];
+		//Link
+		document.getElementById("id_cvm_link").value = itemDataSplit[8];
+		//Quantity
+		document.getElementById("id_cvm_qty").value = itemDataSplit[1];
+		//Threshold
+		document.getElementById("id_cvm_thresh").value = itemDataSplit[2];
+		//Location
+		document.getElementById("id_cvm_location").value = itemDataSplit[5];
+		//Flags
+		document.getElementById("id_cvm_flagConsumable").checked = itemDataSplit[10];
+		document.getElementById("id_cvm_flagEquipment").checked = itemDataSplit[11];
+		
+		//Part Number
+		//If part number is blank then run autoPN
+		if(itemDataSplit[0] == "")
+		{
+			cdm_autoPN();
+		}
+		else
+			document.getElementById("id_cvm_itemNumber").value = itemDataSplit[0];
+
+		
+		//create the item
+		createNewItem();
+
+		var progress = (i/fileLines.length)*100;
+		document.getElementById("id_cvm_addBatchProgressBar").style.width = progress +'%';			
+	}
+	document.getElementById("id_cvm_addBatchProgressBar").style.width = '100%';		
+	document.getElementById("id_cvm_addBatchProgressBar").innerHTML = 'Done';	
+	
+	return;
+
+}
+

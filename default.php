@@ -18,7 +18,7 @@ try
 	//Set IMSLog options
 	$opt_debugLog = $sql->getOption('Debug');
 	if($opt_debugLog === false)
-		$log->add_log($sessionID,'Warning','Default Warning: Debug Option missing or invalid.');
+		$log->add_log("UNKNOWN",'Warning','Default Warning: Debug Option missing or invalid.');
 	else if($opt_debugLog == 'False')
 		$log->opt_debug = false;	
 	else 
@@ -26,10 +26,10 @@ try
 		
 	//Get Credential Time out Option
 	$opt_timeout = $sql->getOption('Credential_Expiry_Time_Seconds');
-	$log->add_log($sessionID,'Warning',"Default Warning: $opt_timeout");
+	$log->add_log("UNKNOWN",'Warning',"Default Warning: $opt_timeout");
 
 	if($opt_timeout === false)
-		$log->add_log($sessionID,'Warning','Default Warning: Credential_Expiry_Time_Seconds Option missing or invalid.');
+		$log->add_log("UNKNOWN",'Warning','Default Warning: Credential_Expiry_Time_Seconds Option missing or invalid.');
 	else 
 		$timeout = intval($opt_timeout);
 	
@@ -59,7 +59,7 @@ catch(PDOException $e)
 {
 	$statusCode = '1';
 	$statusMessage = 'GenerateSID Error: '. $e->getMessage();
-	$log->add_log($sessionID,'Error',$statusMessage);
+	$log->add_log("UNKNOWN",'Error',$statusMessage);
 }
 catch(Exception $e)
 {

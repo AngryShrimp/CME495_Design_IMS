@@ -13,6 +13,8 @@ function populateForms()
 	main_loadLog();
 	RetrievePurchaseReport();
 	tableTimers();
+	cvm_setupAddItemBatch();
+
 
 }
 
@@ -204,6 +206,7 @@ function parseXMLResponse(xml)
   var quickAccess = xmlDoc.getElementsByTagName("QACCESS");
   var classData = xmlDoc.getElementsByTagName("CLASS_DATA");
   var emailList = xmlDoc.getElementsByTagName("EMAIL_LIST");
+  var createItemChange = xmlDoc.getElementsByTagName("CREATEITEM");
 
   if(status.length > 0)
   {
@@ -234,7 +237,15 @@ function parseXMLResponse(xml)
     IMSError("parseXMLResponse Error","Bad XML Response Format");
 	return false;	
   }
-
+  
+  
+  if(createItemChange.length > 0)
+  {
+	var change = createItemChange[0].getElementsByTagName("CHANGE");
+  
+	alert(change[0].getElementsByTagName("Part")[0].childNodes[0].nodeValue);
+	document.getElementById("id_cvm_itemNumber").value = change[0].getElementsByTagName("Part")[0].childNodes[0].nodeValue;
+  }
   
   if(autoComplete.length > 0)
   {

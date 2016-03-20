@@ -67,6 +67,8 @@ function renewSID()
 Function:  main_loadBrowser()
 Description: Requests an update to the item browser using settings
 from the front end elements.
+Author: Keenan Johnstone
+Modified: Craig Irvine
 *****************************************************************/
 function main_loadBrowser()
 {
@@ -95,7 +97,13 @@ function main_loadBrowser()
   }  
   return;
 }
-
+/****************************************************************
+Function:  main_loadLog()
+Description: Requests an update to the log table using settings
+from the front end elements.
+Author: Keenan Johnstone
+Modified: Craig Irvine
+*****************************************************************/
 function main_loadLog()
 {  
 
@@ -142,6 +150,7 @@ function sendBackendRequest(PHPscript,postOptions)
 /****************************************************************
 Function:  brw_tableSort()
 Description: Sorts the browser table based on clicked header.
+Author: Keenan Johnstone
 *****************************************************************/
 function brw_tableSort(column)
 { 
@@ -180,6 +189,53 @@ function brw_tableSort(column)
   document.getElementById("id_brw_sortInfo").innerHTML = column + ":"+ brw_sortDir;  
 }
 
+/****************************************************************
+Function:  quick_modify()
+Description: Modifies a field for the currently loaded item. In
+The quick update bar on the side.
+Author: Keenan Johnstone
+*****************************************************************/
+function quick_modifyItem()
+{
+  
+  var quantity = document.getElementById("id_qa_Quantity").value;
+  var description = document.getElementById("id_qa_Description").value;
+  var itemNumber = document.getElementById("id_qa_ID").value;
+
+  if(itemNumber == "")
+  {
+    //Nothing there? do nothing!
+    return;
+  }
+
+  //Check that the values aren't missing and replace them with safe values
+  if(quantity == "")
+  {
+    IMSError("Quick Update Error","Cannot have an empty Quantity field");
+    return;
+  }
+
+  if(description == "")
+  {
+    IMSError("Quick Update Error","Cannot have an empty Description field");
+    return;
+  }
+
+  //Replace any newlines with spaces
+  description = description.replace(/(?:\r\n|\r|\n)/g, ' ');
+  quantity = quantity.replace(/(?:\r\n|\r|\n)/g, ' ');
+
+  sendBackendRequest("Back_End/ModifyItem.php","SID="+getSID()+"&PartNumber=" + itemNumber + "&Field=Quantity&Value=" + quantity);
+  sendBackendRequest("Back_End/ModifyItem.php","SID="+getSID()+"&PartNumber=" + itemNumber + "&Field=Description&Value=" + description);
+  return;
+}
+
+/****************************************************************
+Function:  parseXMLResponse()
+Description: Requests an update to the item browser using settings
+from the front end elements.
+Author: Keenan Johnstone, Craig Irvine
+*****************************************************************/
 function parseXMLResponse(xml)
 {
 

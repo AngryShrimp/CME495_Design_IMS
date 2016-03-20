@@ -79,10 +79,10 @@ th
 	<a onclick="document.getElementById('EmailListModal').style.display='block'" style="cursor:pointer;">Notification Settings</a> 
 	<br> 
 	<div style="padding-left:5%">Quick Update:</div>
-	<span style="padding-left:5%"><textarea type="text" rows="1" style="width: 13vw;" maxlength="18" id="id_qa_ID" name="quickID" placeholder="PartID"></textarea></span>
+	<span style="padding-left:5%"><textarea type="text" rows="1" style="width: 13vw;" maxlength="18" id="id_qa_ID" name="quickID" placeholder="PartID" disabled></textarea></span>
 	<span style="padding-left:5%"><textarea type="text" rows="1" style="width: 13vw;" maxlength="18" id="id_qa_Quantity" name="quickQuantity" placeholder="Quantity"></textarea></span> 
 	<span style="padding-left:5%"><textarea type="text" rows="6" style="width: 13vw;" maxlength="115" id="id_qa_Description" name="quickDescription" placeholder="Description"></textarea></span> 
-	<span style="padding-left:5%"><button class="w3-btn w3-light-green w3-border w3-round-large" type='button'>Update</button></span>
+	<span style="padding-left:5%"><button class="w3-btn w3-light-green w3-border w3-round-large" type='button' onclick="quick_modifyItem(); main_loadBrowser()">Update</button></span>
 </nav>
 
 <div class="w3-container w3-blue" style="margin-left:15%; hight:10vh">

@@ -71,13 +71,12 @@ th
 <nav class="w3-sidenav w3-blue" style="width:15%">
 	<header class="w3-container">
 	</header>
-	<a onclick="document.getElementById('ItemCreateModal').style.display='block'">Add Item</a>
-	<a onclick="document.getElementById('SettingsModal').style.display='block'">Settings</a>
-	<a onclick="document.getElementById('LogModal').style.display='block'; main_loadLog()">Log</a>
-	<a>Alerts</a>
-	<a onclick="document.getElementById('ClassDataModal').style.display='block'">Class Data</a> 
-	<a onclick="document.getElementById('ShoppingListModal').style.display='block'">Shopping List</a> 
-	<a onclick="document.getElementById('EmailListModal').style.display='block'">Email List</a> 
+	<a onclick="document.getElementById('ItemCreateModal').style.display='block'" style="cursor:pointer;">Add Item</a>
+	<a onclick="document.getElementById('SettingsModal').style.display='block'" style="cursor:pointer;">Settings</a>
+	<a onclick="document.getElementById('LogModal').style.display='block'; main_loadLog()" style="cursor:pointer;">Log</a>
+	<a onclick="document.getElementById('ClassDataModal').style.display='block'" style="cursor:pointer;">Class Data</a> 
+	<a onclick="document.getElementById('ShoppingListModal').style.display='block'" style="cursor:pointer;">Purchase List</a> 
+	<a onclick="document.getElementById('EmailListModal').style.display='block'" style="cursor:pointer;">Notification Settings</a> 
 	<br> 
 	<div style="padding-left:5%">Quick Update:</div>
 	<span style="padding-left:5%"><textarea type="text" rows="1" style="width: 13vw;" maxlength="18" id="id_qa_ID" name="quickID" placeholder="PartID"></textarea></span>
@@ -97,8 +96,7 @@ th
 		<form>
 		<font size="3">Search:</font><br>
 		<input list="id_search_queryList" class="w3-input w3-border w3-text-black" type="text" id="id_search_bar" name="search" oninput="main_queryBarOnInput(this)">
-		<datalist id="id_search_queryList">
-		</datalist>
+		<datalist id="id_search_queryList"/>
 		</form>
 	</div>
 </form>
@@ -106,9 +104,6 @@ th
 
 <div class="w3-container" style="margin-left:15%; hight:80vh">
 	<h2>Browser</h2>
-	<!-- <span style="padding-left:2px"></span>
-	<button class="w3-btn w3-blue w3-border w3-round-large" type="button" onclick="main_loadBrowser()">Refresh</button>
-	<br><br> -->
 	<div id="id_brw_sortInfo" style="display: none;">None</div>
 	<div id="id_main_browserHeader" class="w3-responsive w3-white w3-border w3-small" style="overflow-y:scroll;"></div>
 	<div id="id_main_browserData" class="w3-responsive w3-white w3-border w3-small" style="max-height: 50vh; overflow-y:scroll;"></div>

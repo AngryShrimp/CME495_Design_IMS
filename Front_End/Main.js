@@ -6,16 +6,16 @@ SID from the server
 *****************************************************************/
 function populateForms()
 {
-	setSID();
-	cdm_getClassData();
-	main_loadBrowser();
-	elm_getEmailList();
-	main_loadLog();
-	RetrievePurchaseReport();
-	tableTimers();
-	cvm_setupAddItemBatch();
-
-
+	if(setSID())
+	{
+		cdm_getClassData();
+		main_loadBrowser();
+		elm_getEmailList();
+		main_loadLog();
+		RetrievePurchaseReport();
+		tableTimers();
+		cvm_setupAddItemBatch();
+	}
 }
 
 /****************************************************************
@@ -28,12 +28,11 @@ function setSID()
   if(current_sid == "")
   {
 	window.location = "default.php";
+	return false;
   } 
 
-  document.getElementById("id_main_SIDDisplay").innerHTML = current_sid;
-  
-  return;
-  
+  document.getElementById("id_main_SIDDisplay").innerHTML = current_sid;  
+  return true;  
 }
 
 function getSID()
@@ -413,13 +412,15 @@ function parseXMLResponse(xml)
     }
 
     var browserHeaderLabelName = "Name";
-    var browserHeaderLabelQuantity = "Quantity";
+    var browserHeaderLabelQuantity = "Qty";
     var browserHeaderLabelType = "Part Type";
     var browserHeaderLabelValue = "Value";
     var browserHeaderLabelLocation = "Location";
+    var browserHeaderLabelSupplierName = "Supplier Name";
     var browserHeaderLabelPartNumber = "Supplier Part Number";
     var browserHeaderLabelOrderingThreshold = "Ordering Threshold";
     var browserHeaderLabelDescription = "Description";
+    var browserHeaderLabelURL = "URL";
     var browserHeaderLabelConsumableFlag = "C";
     var browserHeaderLabelEquipmentFlag = "E";
     var browserHeaderLabelLabpartFlag = "L";
@@ -447,11 +448,11 @@ function parseXMLResponse(xml)
       {
         if(brw_currentSortDir == "ASC")
         {
-          browserHeaderLabelQuantity = "Quantity&#9650;"; //Arrow up
+          browserHeaderLabelQuantity = "Qty&#9650;"; //Arrow up
         }
         else
         {
-          browserHeaderLabelQuantity = "Quantity&#9660;";//Arrow Down
+          browserHeaderLabelQuantity = "Qty&#9660;";//Arrow Down
         } 
       }
       if(brw_currentSortCol == "Type")
@@ -487,6 +488,17 @@ function parseXMLResponse(xml)
           browserHeaderLabelLocation = "Location&#9660;";//Arrow Down
         } 
       }
+	  if(brw_currentSortCol == "Suppliers_Name")
+      {
+        if(brw_currentSortDir == "ASC")
+        {
+          browserHeaderLabelName = "Supplier Name&#9650;"; //Arrow up
+        }
+        else
+        {
+          browserHeaderLabelName = "Supplier Name&#9660;";//Arrow Down
+        } 
+      }
       if(brw_currentSortCol == "Supplier_Part_Number")
       {
         if(brw_currentSortDir == "ASC")
@@ -518,6 +530,17 @@ function parseXMLResponse(xml)
         else
         {
           browserHeaderLabelDescription = "Description&#9660;";//Arrow Down
+        } 
+      }
+	  if(brw_currentSortCol == "Item_Link")
+      {
+        if(brw_currentSortDir == "ASC")
+        {
+          browserHeaderLabelURL = "URL&#9650;"; //Arrow up
+        }
+        else
+        {
+          browserHeaderLabelURL = "URL&#9660;";//Arrow Down
         } 
       }
       if(brw_currentSortCol == "Consumable_Flag")
@@ -554,23 +577,27 @@ function parseXMLResponse(xml)
         } 
       }
     }
+	
+	var colWidths = "<col width=\"7%\"><col width=\"5%\"><col width=\"7%\"><col width=\"6%\"><col width=\"6%\"><col width=\"6%\"><col width=\"6%\"><col width=\"6%\"><col width=\"10%\"><col width=\"10%\"><col width=\"2%\"><col width=\"2%\"><col width=\"2%\">";
     
     tableBrowserHeader = "<table class=\"w3-table w3-bordered w3-border w3-striped w3-hoverable\" style=\"table-layout:fixed; width=100%;\">" +
-			"<col width=\"10%\"><col width=\"8%\"><col width=\"12%\"><col width=\"10%\"><col width=\"11%\"><col width=\"11%\"><col width=\"13%\"><col width=\"18%\"><col width=\"2%\"><col width=\"2%\"><col width=\"2%\">" +
+			colWidths +
             "<tr><th class=\"w3-border\" onclick=\"brw_tableSort('Name')\">"+browserHeaderLabelName+"</th>" +
             "<th class=\"w3-border\" onclick=\"brw_tableSort('Quantity')\">"+browserHeaderLabelQuantity+"</th>" + 
             "<th class=\"w3-border\" onclick=\"brw_tableSort('Type')\">"+browserHeaderLabelType+"</th>" + 
             "<th class=\"w3-border\" onclick=\"brw_tableSort('Value')\">"+browserHeaderLabelValue+"</th>" +
             "<th class=\"w3-border\" onclick=\"brw_tableSort('Location')\">"+browserHeaderLabelLocation+"</th>" + 
+            "<th class=\"w3-border\" onclick=\"brw_tableSort('Suppliers_Name')\">"+browserHeaderLabelName+"</th>" + 
             "<th class=\"w3-border\" onclick=\"brw_tableSort('Supplier_Part_Number')\">"+browserHeaderLabelPartNumber+"</th>" + 
             "<th class=\"w3-border\" onclick=\"brw_tableSort('Ordering_Threshold')\">"+browserHeaderLabelOrderingThreshold+"</th>" + 
             "<th class=\"w3-border\" onclick=\"brw_tableSort('Description')\">"+browserHeaderLabelDescription+"</th>" + 
-			      "<th class=\"w3-border\" onclick=\"brw_tableSort('Consumable_Flag')\">"+browserHeaderLabelConsumableFlag+"</th>" +
-			      "<th class=\"w3-border\" onclick=\"brw_tableSort('Equipment_Flag')\">"+browserHeaderLabelEquipmentFlag+"</th>" +
-			      "<th class=\"w3-border\" onclick=\"brw_tableSort('Lab_Part_Flag')\">"+browserHeaderLabelLabpartFlag+"</th></tr></table>";
+            "<th class=\"w3-border\" onclick=\"brw_tableSort('Item_Link')\">"+browserHeaderLabelURL+"</th>" + 		
+		    "<th class=\"w3-border\" onclick=\"brw_tableSort('Consumable_Flag')\">"+browserHeaderLabelConsumableFlag+"</th>" +
+		    "<th class=\"w3-border\" onclick=\"brw_tableSort('Equipment_Flag')\">"+browserHeaderLabelEquipmentFlag+"</th>" +
+		    "<th class=\"w3-border\" onclick=\"brw_tableSort('Lab_Part_Flag')\">"+browserHeaderLabelLabpartFlag+"</th></tr></table>";
 
 	tableBrowserData = "<table class=\"w3-table w3-bordered w3-border w3-striped w3-hoverable\" style=\"table-layout:fixed; width=100%;\">" +
-			            "<col width=\"10%\"><col width=\"8%\"><col width=\"12%\"><col width=\"10%\"><col width=\"11%\"><col width=\"11%\"><col width=\"13%\"><col width=\"18%\"><col width=\"2%\"><col width=\"2%\"><col width=\"2%\">";
+			           colWidths;
 
     for( i = 0; i < browser_entry.length; i++)
     {
@@ -582,9 +609,13 @@ function parseXMLResponse(xml)
                         "<td class=\"w3-border\" style=\"word-wrap: break-word\">" + browser_entry[i].getElementsByTagName("Type")[0].childNodes[0].nodeValue + "</td>" +
                         "<td class=\"w3-border\" style=\"word-wrap: break-word\">" + browser_entry[i].getElementsByTagName("Value")[0].childNodes[0].nodeValue + "</td>" +
                         "<td class=\"w3-border\" style=\"word-wrap: break-word\">" + browser_entry[i].getElementsByTagName("Location")[0].childNodes[0].nodeValue + "</td>" +                        
+                        "<td class=\"w3-border\" style=\"word-wrap: break-word\">" + browser_entry[i].getElementsByTagName("Suppliers_Name")[0].childNodes[0].nodeValue + "</td>" +
                         "<td class=\"w3-border\" style=\"word-wrap: break-word\">" + browser_entry[i].getElementsByTagName("Supplier_Part_Number")[0].childNodes[0].nodeValue + "</td>" +
                         "<td class=\"w3-border\" style=\"word-wrap: break-word\">" + browser_entry[i].getElementsByTagName("Ordering_Threshold")[0].childNodes[0].nodeValue + "</td>" +
                         "<td class=\"w3-border\" style=\"word-wrap: break-word\">" + browser_entry[i].getElementsByTagName("Description")[0].childNodes[0].nodeValue + "</td>" +
+                        "<td class=\"w3-border\" style=\"overflow:hidden; width:10%\"><a href=\"" +
+						browser_entry[i].getElementsByTagName("Item_Link")[0].childNodes[0].nodeValue +"\" target=\"_blank\">" + 
+						browser_entry[i].getElementsByTagName("Item_Link")[0].childNodes[0].nodeValue + "</a></td>" +
                         "<td class=\"w3-border\" style=\"word-wrap: break-word\">" + browser_entry[i].getElementsByTagName("Consumable_Flag")[0].childNodes[0].nodeValue + "</td>" +
                         "<td class=\"w3-border\" style=\"word-wrap: break-word\">" + browser_entry[i].getElementsByTagName("Equipment_Flag")[0].childNodes[0].nodeValue + "</td>" +
                         "<td class=\"w3-border\" style=\"word-wrap: break-word\">" + browser_entry[i].getElementsByTagName("Lab_Part_Flag")[0].childNodes[0].nodeValue + "</td>" +

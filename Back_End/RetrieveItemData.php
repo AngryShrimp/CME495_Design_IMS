@@ -69,7 +69,7 @@ try
 	{
 
 		$statusCode = '1';
-		$statusMessage = "RetriveItem: Part Number,$partNumber, does not exist in database.";
+		$statusMessage = "RetrieveItem: Part Number,$partNumber, does not exist in database.";
 		$log->add_log($sessionID,'Warning',$statusMessage);
 
 	}
@@ -77,7 +77,7 @@ try
 	{
 
 		$statusCode = '1';
-		$statusMessage = "RetriveItem: Part Number,$partNumber, has multiple instances in database.";
+		$statusMessage = "RetrieveItem: Part Number,$partNumber, has multiple instances in database.";
 		$log->add_log($sessionID,'Warning',$statusMessage);
 		
 	}
@@ -86,7 +86,7 @@ try
 	
 		$dataArray = $stmt->fetch(PDO::FETCH_ASSOC);
 		$statusCode = '0';
-		$statusMessage = "RetriveItem: Part Number ,$partNumber, data has been retrieved.";
+		$statusMessage = "RetrieveItem: Part Number ,$partNumber, data has been retrieved.";
 		$log->add_log($sessionID,'Debug',$statusMessage);
 		
 		
@@ -95,14 +95,14 @@ try
 catch(PDOException $e)
 {
 	$statusCode = '1';
-	$statusMessage = 'CreateNewItem SQLError: '.$e->getMessage();
+	$statusMessage = 'RetrieveItem SQLError: '.$e->getMessage();
 	$log->add_log($sessionID,'Error',$statusMessage);
 	
 }
 catch(Exception $e)
 {
 	$statusCode = $e->getCode();
-	$statusMessage = 'CreateNewItem Error: '. $e->getMessage();
+	$statusMessage = 'RetrieveItem Error: '. $e->getMessage();
 	$log->add_log($sessionID,'Error',$statusMessage);
 
 }	

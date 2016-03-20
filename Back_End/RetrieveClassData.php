@@ -88,14 +88,14 @@ try
 catch(PDOException $e)
 {
 	$statusCode = '1';
-	$statusMessage = 'CreateNewItem SQLError: '.$e->getMessage();
+	$statusMessage = 'RetrieveClassData SQLError: '.$e->getMessage();
 	$log->add_log($sessionID,'Error',$statusMessage);
 	
 }
 catch(Exception $e)
 {
 	$statusCode = $e->getCode();
-	$statusMessage = 'CreateNewItem Error: '. $e->getMessage();
+	$statusMessage = 'RetrieveClassData Error: '. $e->getMessage();
 	$log->add_log($sessionID,'Error',$statusMessage);
 
 }	

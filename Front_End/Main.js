@@ -190,12 +190,12 @@ function brw_tableSort(column)
 }
 
 /****************************************************************
-Function:  quick_modify()
+Function:  quickBar_modify()
 Description: Modifies a field for the currently loaded item. In
 The quick update bar on the side.
 Author: Keenan Johnstone
 *****************************************************************/
-function quick_modifyItem()
+function quickBar_modifyItem()
 {
   
   var quantity = document.getElementById("id_qa_Quantity").value;
@@ -228,6 +228,18 @@ function quick_modifyItem()
   sendBackendRequest("Back_End/ModifyItem.php","SID="+getSID()+"&PartNumber=" + itemNumber + "&Field=Quantity&Value=" + quantity);
   sendBackendRequest("Back_End/ModifyItem.php","SID="+getSID()+"&PartNumber=" + itemNumber + "&Field=Description&Value=" + description);
   return;
+}
+
+/****************************************************************
+Function:  quickBar_clear()
+Description: Clears the quick Access fields
+Author: Keenan Johnstone
+*****************************************************************/
+function quickBar_clear()
+{
+  document.getElementById("id_qa_ID").value = "";
+  document.getElementById("id_qa_Description").value = "";
+  document.getElementById("id_qa_Quantity").value = "";
 }
 
 /****************************************************************
@@ -338,9 +350,9 @@ function parseXMLResponse(xml)
   if(quickAccess.length > 0)
   {
 	//quick access form
-	document.getElementById("id_qa_ID").innerHTML = quickAccess[0].getElementsByTagName("Name")[0].childNodes[0].nodeValue;
-	document.getElementById("id_qa_Description").innerHTML = quickAccess[0].getElementsByTagName("Description")[0].childNodes[0].nodeValue;
-	document.getElementById("id_qa_Quantity").innerHTML = quickAccess[0].getElementsByTagName("Quantity")[0].childNodes[0].nodeValue;
+	document.getElementById("id_qa_ID").value = quickAccess[0].getElementsByTagName("Name")[0].childNodes[0].nodeValue;
+	document.getElementById("id_qa_Description").value = quickAccess[0].getElementsByTagName("Description")[0].childNodes[0].nodeValue;
+	document.getElementById("id_qa_Quantity").value = quickAccess[0].getElementsByTagName("Quantity")[0].childNodes[0].nodeValue;
 	
 	//add item modal dialog
 	document.getElementById("id_ivm_itemNumber").value = quickAccess[0].getElementsByTagName("Name")[0].childNodes[0].nodeValue;
@@ -891,12 +903,8 @@ Description: Requests data for a single item number.
 *****************************************************************/
 function main_getQuickUpdateData(partNumber)
 {
-
-
-
   sendBackendRequest("Back_End/RetrieveItemData.php","SID="+getSID()+"&PartNumber="+ partNumber);
   main_loadLog();
-  
   return;
 }
 
@@ -928,7 +936,7 @@ function search_showAutocomplete(partialStr)
 	  // An item was selected from the list!
 	  //Remove datalists and launch item load functions.
 	  document.getElementById("id_cdm_partList").innerHTML = "";
-      document.getElementById("id_search_queryList").innerHTML = "";
+    document.getElementById("id_search_queryList").innerHTML = "";
 	  main_getQuickUpdateData(val);
 	  return;
 	}

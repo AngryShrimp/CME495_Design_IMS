@@ -72,11 +72,11 @@ th
 	<header class="w3-container">
 	</header>
 	<a onclick="document.getElementById('ItemCreateModal').style.display='block'" style="cursor:pointer;">Add Item</a>
-	<a onclick="document.getElementById('SettingsModal').style.display='block'" style="cursor:pointer;">Settings</a>
-	<a onclick="document.getElementById('LogModal').style.display='block'; main_loadLog()" style="cursor:pointer;">Log</a>
 	<a onclick="document.getElementById('ClassDataModal').style.display='block'" style="cursor:pointer;">Class Data</a> 
 	<a onclick="document.getElementById('ShoppingListModal').style.display='block'" style="cursor:pointer;">Purchase List</a> 
 	<a onclick="document.getElementById('EmailListModal').style.display='block'" style="cursor:pointer;">Notification Settings</a> 
+	<a onclick="document.getElementById('SettingsModal').style.display='block'" style="cursor:pointer;">Settings</a>
+	<a onclick="document.getElementById('LogModal').style.display='block'; main_loadLog()" style="cursor:pointer;">Log</a>
 	<br> 
 	<div style="padding-left:5%">Quick Update:</div>
 	<div style="padding-left:5%">
@@ -393,7 +393,7 @@ th
 	<div class="w3-modal-content w3-blue  w3-animate-top" style="width:95%">
 		<div class="w3-container">
 		<header class="w3-container w3-blue">
-			<span onclick="document.getElementById('ClassDataModal').style.display='none'" 
+			<span onclick="document.getElementById('ClassDataModal').style.display='none'; main_loadBrowser();" 
 			class="w3-closebtn">&times;</span>
 			<h3>Class Data</h3>
 		</header>
@@ -607,6 +607,7 @@ th
 </div>
 
 <!-- Log Browser Modal -->
+<script src="Front_End/log.js"></script>
 <div id="LogModal" class="w3-modal">
 	<div class="w3-modal-content w3-blue  w3-animate-top" style="width:95%">
 		<div class="w3-container">

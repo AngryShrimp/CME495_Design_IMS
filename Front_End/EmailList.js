@@ -86,3 +86,53 @@ function elm_deleteEmailAddress(id)
   
   return;
 }
+
+
+
+function elm_tableDisplay(emailList)
+{
+
+
+	var email_entry = emailList[0].getElementsByTagName("EMAIL_ENTRY");
+	var tableEmailList = "";
+	
+    //check for null data
+    if(email_entry == null)
+    {
+      IMSError("parseXMLResponse Error","Class Data Entry is NULL");
+      return false;	
+    }    
+	
+	//Table header
+	tableEmailList = "<table class=\"w3-table w3-bordered w3-border w3-striped w3-hoverable\" style=\"table-layout:fixed; width=100%;\"><tr>" +
+	        "<col width=\"85%\">"+
+			"<col width=\"15%\">"+
+            "<th class=\"w3-border\">Email Address</th>" + 
+            "<th class=\"w3-border\">Delete</th></tr>";
+			
+
+	//table data
+	for( i = 0; i < email_entry.length; i++)
+    {	
+		var id = email_entry[i].getElementsByTagName("Id")[0].childNodes[0].nodeValue;
+		var emailAddress = email_entry[i].getElementsByTagName("Recipients")[0].childNodes[0].nodeValue;	
+	
+		tableEmailList += "<tr onclick=\"elm_loadRow('" + 
+						id + "','" +
+						emailAddress +
+						"')\">" + 
+						"<td class=\"w3-border\" style=\"word-wrap: break-word\">" + emailAddress + "</td>" +
+						"<td class=\"w3-border\" style=\"word-wrap: break-word\">" + 
+						"<button class=\"w3-btn w3-tiny w3-red w3-border w3-round-large\" type=\"button\" "+
+						"onclick=\"elm_deleteEmailAddress('"+id+"')\">&times</button></td>" +
+                        "</tr>";								
+	}
+
+    tableEmailList += "</table>"
+
+	
+	document.getElementById("id_elm_table").innerHTML = tableEmailList;
+	
+	return;
+
+}

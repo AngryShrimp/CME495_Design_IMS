@@ -288,7 +288,7 @@ function parseXMLResponse(xml)
 	
 	if(statusCode == "2")
 	{
-	  IMSError("parseXMLResponse Error","SID Invalid or Missing, refreshing in 5 seconds\n" + statusMessage);
+	  IMSError("parseXMLResponse Error","SID Invalid or Missing, refreshing in 2 seconds\n" + statusMessage);
 	  setTimeout(function(){window.location = "default.php";}, 2000);
 	  return false;
 
@@ -388,78 +388,8 @@ function parseXMLResponse(xml)
   **************/
   if(log.length > 0)
   {
-    var log_entry = log[0].getElementsByTagName("LOG_ENTRY");
-	var tableLogHeader = "";
-	var tableLogData = "";
-	var tableItemLogHeader = "";
-	var tableItemLogData = "";
-	
-    //check for null data
-    if(log_entry == null)
-    {
-      IMSError("parseXMLResponse Error","Log List is NULL");
-	    return false;	
-    }
-
-    var logHeaderLabelDate = "Date";
-    var logHeaderLabelSID = "SID";
-    var logHeaderLabelPN = "Item Number";
-    var logHeaderLabelLevel = "Log Type";
-    var logHeaderLabelDescription = "Description";
-
-    /*Add sort stuff here*/
-
-    tableLogHeader = "<table class=\"w3-table w3-bordered w3-border w3-striped w3-hoverable\" style=\"table-layout:fixed; width=100%;\"><tr>" +
-            "<col width=\"10%\"><col width=\"12%\"><col width=\"15%\"><col width=\"10%\"><col width=\"20%\">"+
-            "<th class=\"w3-border\" onclick=\"\">"+logHeaderLabelDate+"</th>" +
-            "<th class=\"w3-border\" onclick=\"\">"+logHeaderLabelSID+"</th>" + 
-            "<th class=\"w3-border\" onclick=\"\">"+logHeaderLabelPN+"</th>" + 
-            "<th class=\"w3-border\" onclick=\"\">"+logHeaderLabelLevel+"</th>" + 
-            "<th class=\"w3-border\" onclick=\"\">"+logHeaderLabelDescription+"</th></table>";
-		
-			
-	tableItemLogHeader = tableLogHeader;
-	var tableRow = "";
-	   
-	tableLogData = "<table class=\"w3-table w3-bordered w3-border w3-striped w3-hoverable\" style=\"table-layout:fixed; width=100%;\">" + 
-					"<col width=\"10%\"><col width=\"12%\"><col width=\"15%\"><col width=\"10%\"><col width=\"20%\">";
-	tableItemLogData = tableLogData;
-	
-
-    for( i = 0; i < log_entry.length; i++)
-    {
-
-      tableRow = "<tr>" + 
-				  "<td class=\"w3-border\" style=\"word-wrap: break-word\">" + log_entry[i].getElementsByTagName("Date")[0].childNodes[0].nodeValue + "</td>" +
-                  "<td class=\"w3-border\" style=\"word-wrap: break-word\">" + log_entry[i].getElementsByTagName("SID")[0].childNodes[0].nodeValue + "</td>" +
-                  "<td class=\"w3-border\" style=\"word-wrap: break-word\">" + log_entry[i].getElementsByTagName("Item")[0].childNodes[0].nodeValue + "</td>" +
-                  "<td class=\"w3-border\" style=\"word-wrap: break-word\">" + log_entry[i].getElementsByTagName("Level")[0].childNodes[0].nodeValue + "</td>" +
-                  "<td class=\"w3-border\" style=\"word-wrap: break-word\">" + log_entry[i].getElementsByTagName("Description")[0].childNodes[0].nodeValue + "</td>" +
-                  "</tr>";
- 
-	  tableLogData += tableRow;
- 
-      var ItemViewPN = document.getElementById("id_ivm_itemNumber").value;
-	  if(ItemViewPN != "")
-	  {
-		var xmlPN = log_entry[i].getElementsByTagName("Item")[0].childNodes[0].nodeValue;
-		if(ItemViewPN == xmlPN)
-		{
-		  tableItemLogData += tableRow;
-		}
-	  }				  
-    }
-
-    tableLogData += "</table>";
-	tableItemLogData += "</table>";
-
-    document.getElementById("id_main_logHeader").innerHTML = tableLogHeader;
-    document.getElementById("id_main_logData").innerHTML = tableLogData;
-	
-	document.getElementById("id_ivm_tableHeader").innerHTML = tableItemLogHeader;
-	document.getElementById("id_ivm_tableData").innerHTML = tableItemLogData;
-
-
+	//Function is in log.js
+    log_displayTable(log);
   }
   
 
@@ -670,6 +600,24 @@ function parseXMLResponse(xml)
     for( i = 0; i < browser_entry.length; i++)
     {
 	  var partNumber = browser_entry[i].getElementsByTagName("Name")[0].childNodes[0].nodeValue;
+	  
+	  var consFlag = "";
+	  var eqFlag = "";
+	  var labFlag = "";
+	  
+	  if(browser_entry[i].getElementsByTagName("Consumable_Flag")[0].childNodes[0].nodeValue == "1")
+	  {
+		consFlag = "&#9983;";
+	  }
+	  if(browser_entry[i].getElementsByTagName("Equipment_Flag")[0].childNodes[0].nodeValue == "1")
+	  {
+		eqFlag = "&#9983;";
+	  }
+	  if(browser_entry[i].getElementsByTagName("Lab_Part_Flag")[0].childNodes[0].nodeValue == "1")
+	  {
+		labFlag = "&#9983;";
+	  }
+	  
 
       tableBrowserData += "<tr onclick=\"main_getQuickUpdateData('"+partNumber+"')\" ondblclick=\"main_loadItemEdit()\">" + 
                         "<td class=\"w3-border\" style=\"word-wrap: break-word\">" + partNumber + "</td>" +
@@ -684,9 +632,9 @@ function parseXMLResponse(xml)
                         "<td class=\"w3-border\" style=\"overflow:hidden; width:10%\"><a href=\"" +
 						browser_entry[i].getElementsByTagName("Item_Link")[0].childNodes[0].nodeValue +"\" target=\"_blank\">" + 
 						browser_entry[i].getElementsByTagName("Item_Link")[0].childNodes[0].nodeValue + "</a></td>" +
-                        "<td class=\"w3-border\" style=\"word-wrap: break-word\">" + browser_entry[i].getElementsByTagName("Consumable_Flag")[0].childNodes[0].nodeValue + "</td>" +
-                        "<td class=\"w3-border\" style=\"word-wrap: break-word\">" + browser_entry[i].getElementsByTagName("Equipment_Flag")[0].childNodes[0].nodeValue + "</td>" +
-                        "<td class=\"w3-border\" style=\"word-wrap: break-word\">" + browser_entry[i].getElementsByTagName("Lab_Part_Flag")[0].childNodes[0].nodeValue + "</td>" +
+                        "<td class=\"w3-border\" style=\"word-wrap: break-word\">" + consFlag + "</td>" +
+                        "<td class=\"w3-border\" style=\"word-wrap: break-word\">" + eqFlag + "</td>" +
+                        "<td class=\"w3-border\" style=\"word-wrap: break-word\">" + labFlag + "</td>" +
                         "</tr>";
     }
     tableBrowserData += "</table>"
@@ -700,46 +648,8 @@ function parseXMLResponse(xml)
   ****************/
   if(emailList.length > 0)
   { 
-    var email_entry = emailList[0].getElementsByTagName("EMAIL_ENTRY");
-	var tableEmailList = "";
-	
-    //check for null data
-    if(email_entry == null)
-    {
-      IMSError("parseXMLResponse Error","Class Data Entry is NULL");
-      return false;	
-    }    
-	
-	//Table header
-	tableEmailList = "<table class=\"w3-table w3-bordered w3-border w3-striped w3-hoverable\" style=\"table-layout:fixed; width=100%;\"><tr>" +
-	        "<col width=\"85%\">"+
-			"<col width=\"15%\">"+
-            "<th class=\"w3-border\">Email Address</th>" + 
-            "<th class=\"w3-border\">Delete</th></tr>";
-			
-
-	//table data
-	for( i = 0; i < email_entry.length; i++)
-    {	
-		var id = email_entry[i].getElementsByTagName("Id")[0].childNodes[0].nodeValue;
-		var emailAddress = email_entry[i].getElementsByTagName("Recipients")[0].childNodes[0].nodeValue;	
-	
-		tableEmailList += "<tr onclick=\"elm_loadRow('" + 
-						id + "','" +
-						emailAddress +
-						"')\">" + 
-						"<td class=\"w3-border\" style=\"word-wrap: break-word\">" + emailAddress + "</td>" +
-						"<td class=\"w3-border\" style=\"word-wrap: break-word\">" + 
-						"<button class=\"w3-btn w3-tiny w3-red w3-border w3-round-large\" type=\"button\" "+
-						"onclick=\"elm_deleteEmailAddress('"+id+"')\">&times</button></td>" +
-                        "</tr>";								
-	}
-
-    tableEmailList += "</table>"
-
-	
-	document.getElementById("id_elm_table").innerHTML = tableEmailList;
-
+	//Function is in EmailList.js
+    elm_tableDisplay(emailList);
   }  
   
 
@@ -748,129 +658,9 @@ function parseXMLResponse(xml)
   ****************/
   if(classData.length > 0)
   { 
-
-    var class_entry = classData[0].getElementsByTagName("CLASS_ENTRY");
-	
-    //check for null data
-    if(class_entry == null)
-    {
-      IMSError("parseXMLResponse Error","Class Data Entry is NULL");
-      return false;	
-    }
-    var headerLabelClass = "Class Name";
-    var headerLabelPN = "Part Number";
-    var headerLabelQty = "Quantity";
-    var headerLabelDate = "Date";
-	
-    var currentSort = document.getElementById("id_cmd_sortInfo").innerHTML;
-
-	
-    if(currentSort != "None")
-    {
-      var currentSortSplit = currentSort.split(":");
-      var currentSortCol = currentSortSplit[0];
-      var currentSortDir = currentSortSplit[1];	  
-      
-	  
-      if(currentSortCol == "Class")
-      {
-		    if(currentSortDir == "ASC")
-		    {
-		      headerLabelClass = "Class Name&#9650;"; //Arrow up
-		    }
-		    else
-		    {
-		      headerLabelClass = "Class Name&#9660;";//Arrow Down
-		    }		
-      }
-	  
-      if(currentSortCol == "Part")
-      {
-		    if(currentSortDir == "ASC")
-		    {
-		      headerLabelPN = "Part Number&#9650;";
-		    }
-		    else
-		    {
-		      headerLabelPN = "Part Number&#9660;";
-		    }		
-      }
-	  
-	  
-      if(currentSortCol == "Quantity")
-      {
-		    if(currentSortDir == "ASC")
-		    {
-		      headerLabelQty = "Quantity&#9650;";
-		    }
-		    else
-		    {
-		      headerLabelQty = "Quantity&#9660;";
-		    }		
-      }
-	  
-	  
-  	  if(currentSortCol == "Date")
-   	  {
-    		if(currentSortDir == "ASC")
-    		{
-    		  headerLabelDate = "Date&#9650;";
-     		}
-  	  	else
-    		{
-		      headerLabelDate = "Date&#9660;";
-    		}		
-	    }	
-	}
-
-	var tableClassData = "";
-	var tableClassDataHeader = "";
-	
-	//Table header
-	tableClassDataHeader = "<table class=\"w3-table w3-bordered w3-border w3-striped w3-hoverable\" style=\"table-layout:fixed; width:100%; overflow-y:scroll;\"><tr>" +
-			"<col width=\"8%\"></col><col width=\"23%\"></col><col width=\"23%\"></col><col width=\"23%\"></col><col width=\"23%\">" +
-			"<th class=\"w3-border\">SEL</th>" +
-            "<th class=\"w3-border\" onclick=\"cdm_tableSort('Class')\">"+headerLabelClass+"</th>" + 
-            "<th class=\"w3-border\" onclick=\"cdm_tableSort('Part')\">"+headerLabelPN+"</th>" + 
-            "<th class=\"w3-border\" onclick=\"cdm_tableSort('Quantity')\">"+headerLabelQty+"</th>" +
-            "<th class=\"w3-border\" onclick=\"cdm_tableSort('Date')\">"+headerLabelDate+"</th></table>";
-	//table data
-	tableClassData = "<table class=\"w3-table w3-bordered w3-border w3-striped w3-hoverable\" style=\"table-layout:fixed; width:100%;\">"+
-			"<col width=\"8%\"></col><col width=\"23%\"></col><col width=\"23%\"></col><col width=\"23%\"></col><col width=\"23%\"></col>" ;
-	for( i = 0; i < class_entry.length; i++)
-    {
-	
-		var id = class_entry[i].getElementsByTagName("Id")[0].childNodes[0].nodeValue;
-		var className = class_entry[i].getElementsByTagName("Class")[0].childNodes[0].nodeValue;
-		var part = class_entry[i].getElementsByTagName("Part")[0].childNodes[0].nodeValue;
-		var qty = class_entry[i].getElementsByTagName("Quantity")[0].childNodes[0].nodeValue;
-		var date = class_entry[i].getElementsByTagName("Date")[0].childNodes[0].nodeValue;
-	
-	
-		tableClassData += "<tr onclick=\"cdm_loadRow('" + 
-						id + "','" +
-						className + "','" +
-						part + "','" +
-						qty + "','" +
-						date +
-						"')\">" + 
-						"<td class=\"w3-border\" style=\"word-wrap: break-word\"><input class=\"w3-check\" type=\"checkbox\" "+
-						"id=\"id_cdm_checkbox" + i + "\" " +
-						"onchange=\"cdm_selCheck(this.id,'"  + id + "')\"></input></td>" +
-						"<td class=\"w3-border\" style=\"word-wrap: break-word\">" + className + "</td>" +
-                        "<td class=\"w3-border\" style=\"word-wrap: break-word\">" + part + "</td>" +
-                        "<td class=\"w3-border\" style=\"word-wrap: break-word\">" + qty + "</td>" +
-                        "<td class=\"w3-border\" style=\"word-wrap: break-word\">" + date + "</td>" +                   
-                        "</tr>";								
-	}
-
-    tableClassData += "</table>"
-
-	document.getElementById("id_cdm_tableHeader").innerHTML = tableClassDataHeader;
-	document.getElementById("id_cdm_table").innerHTML = tableClassData;
-
-  }  
-  
+	//Function is in ClassData.js
+    cdm_displayTable(classData);
+  }    
 
   return true; 
   
@@ -1124,9 +914,9 @@ function createPurchaseReportTable(xml)
     	var quantity = browser_entry[i].getElementsByTagName("Quantity")[0].childNodes[0].nodeValue;
     	
       tableBrowser += "<tr>" + 
-      						"<td>" + supplier_part_number + "</td>" +
-                        	"<td>" + item_link + "</td>" +
-                        	"<td>" + quantity + "</td>" +
+						"<td>" + supplier_part_number + "</td>" +
+						"<td>" + item_link + "</td>" +
+						"<td>" + quantity + "</td>" +
                       "</tr>";
     }
 

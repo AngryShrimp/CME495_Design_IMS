@@ -350,3 +350,129 @@ function cdm_selCheck(checkboxID,recordID)
     document.getElementById("id_cdm_deletionList").innerHTML = newList;
 
 }
+
+
+function cdm_displayTable(classData)
+{
+	var class_entry = classData[0].getElementsByTagName("CLASS_ENTRY");
+	
+    //check for null data
+    if(class_entry == null)
+    {
+      IMSError("parseXMLResponse Error","Class Data Entry is NULL");
+      return false;	
+    }
+    var headerLabelClass = "Class Name";
+    var headerLabelPN = "Part Number";
+    var headerLabelQty = "Quantity";
+    var headerLabelDate = "Date";
+	
+    var currentSort = document.getElementById("id_cmd_sortInfo").innerHTML;
+
+	
+    if(currentSort != "None")
+    {
+      var currentSortSplit = currentSort.split(":");
+      var currentSortCol = currentSortSplit[0];
+      var currentSortDir = currentSortSplit[1];	  
+      
+	  
+      if(currentSortCol == "Class")
+      {
+		    if(currentSortDir == "ASC")
+		    {
+		      headerLabelClass = "Class Name&#9650;"; //Arrow up
+		    }
+		    else
+		    {
+		      headerLabelClass = "Class Name&#9660;";//Arrow Down
+		    }		
+      }
+	  
+      if(currentSortCol == "Part")
+      {
+		    if(currentSortDir == "ASC")
+		    {
+		      headerLabelPN = "Part Number&#9650;";
+		    }
+		    else
+		    {
+		      headerLabelPN = "Part Number&#9660;";
+		    }		
+      }
+	  
+	  
+      if(currentSortCol == "Quantity")
+      {
+		    if(currentSortDir == "ASC")
+		    {
+		      headerLabelQty = "Quantity&#9650;";
+		    }
+		    else
+		    {
+		      headerLabelQty = "Quantity&#9660;";
+		    }		
+      }
+	  
+	  
+  	  if(currentSortCol == "Date")
+   	  {
+    		if(currentSortDir == "ASC")
+    		{
+    		  headerLabelDate = "Date&#9650;";
+     		}
+  	  	else
+    		{
+		      headerLabelDate = "Date&#9660;";
+    		}		
+	    }	
+	}
+
+	var tableClassData = "";
+	var tableClassDataHeader = "";
+	
+	//Table header
+	tableClassDataHeader = "<table class=\"w3-table w3-bordered w3-border w3-striped w3-hoverable\" style=\"table-layout:fixed; width:100%; overflow-y:scroll;\"><tr>" +
+			"<col width=\"8%\"></col><col width=\"23%\"></col><col width=\"23%\"></col><col width=\"23%\"></col><col width=\"23%\">" +
+			"<th class=\"w3-border\">SEL</th>" +
+            "<th class=\"w3-border\" onclick=\"cdm_tableSort('Class')\">"+headerLabelClass+"</th>" + 
+            "<th class=\"w3-border\" onclick=\"cdm_tableSort('Part')\">"+headerLabelPN+"</th>" + 
+            "<th class=\"w3-border\" onclick=\"cdm_tableSort('Quantity')\">"+headerLabelQty+"</th>" +
+            "<th class=\"w3-border\" onclick=\"cdm_tableSort('Date')\">"+headerLabelDate+"</th></table>";
+	//table data
+	tableClassData = "<table class=\"w3-table w3-bordered w3-border w3-striped w3-hoverable\" style=\"table-layout:fixed; width:100%;\">"+
+			"<col width=\"8%\"></col><col width=\"23%\"></col><col width=\"23%\"></col><col width=\"23%\"></col><col width=\"23%\"></col>" ;
+	for( i = 0; i < class_entry.length; i++)
+    {
+	
+		var id = class_entry[i].getElementsByTagName("Id")[0].childNodes[0].nodeValue;
+		var className = class_entry[i].getElementsByTagName("Class")[0].childNodes[0].nodeValue;
+		var part = class_entry[i].getElementsByTagName("Part")[0].childNodes[0].nodeValue;
+		var qty = class_entry[i].getElementsByTagName("Quantity")[0].childNodes[0].nodeValue;
+		var date = class_entry[i].getElementsByTagName("Date")[0].childNodes[0].nodeValue;
+	
+	
+		tableClassData += "<tr onclick=\"cdm_loadRow('" + 
+						id + "','" +
+						className + "','" +
+						part + "','" +
+						qty + "','" +
+						date +
+						"')\">" + 
+						"<td class=\"w3-border\" style=\"word-wrap: break-word\"><input class=\"w3-check\" type=\"checkbox\" "+
+						"id=\"id_cdm_checkbox" + i + "\" " +
+						"onchange=\"cdm_selCheck(this.id,'"  + id + "')\"></input></td>" +
+						"<td class=\"w3-border\" style=\"word-wrap: break-word\">" + className + "</td>" +
+                        "<td class=\"w3-border\" style=\"word-wrap: break-word\">" + part + "</td>" +
+                        "<td class=\"w3-border\" style=\"word-wrap: break-word\">" + qty + "</td>" +
+                        "<td class=\"w3-border\" style=\"word-wrap: break-word\">" + date + "</td>" +                   
+                        "</tr>";								
+	}
+
+    tableClassData += "</table>"
+
+	document.getElementById("id_cdm_tableHeader").innerHTML = tableClassDataHeader;
+	document.getElementById("id_cdm_table").innerHTML = tableClassData;
+	
+	return;
+}

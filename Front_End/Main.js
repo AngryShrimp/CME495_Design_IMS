@@ -1,3 +1,10 @@
+function w3_open() {
+    document.getElementsByClassName("w3-sidenav")[0].style.display = "block";
+}
+function w3_close() {
+    document.getElementsByClassName("w3-sidenav")[0].style.display = "none";
+}
+
 /****************************************************************
 Function:  populateForms()
 Description: This function run all data retrieval functions so 
@@ -490,11 +497,11 @@ function parseXMLResponse(xml)
       {
         if(brw_currentSortDir == "ASC")
         {
-          browserHeaderLabelName = "Supplier Name&#9650;"; //Arrow up
+          browserHeaderLabelSupplierName = "Supplier Name&#9650;"; //Arrow up
         }
         else
         {
-          browserHeaderLabelName = "Supplier Name&#9660;";//Arrow Down
+          browserHeaderLabelSupplierName = "Supplier Name&#9660;";//Arrow Down
         } 
       }
       if(brw_currentSortCol == "Supplier_Part_Number")
@@ -585,7 +592,7 @@ function parseXMLResponse(xml)
             "<th class=\"w3-border\" onclick=\"brw_tableSort('Type')\">"+browserHeaderLabelType+"</th>" + 
             "<th class=\"w3-border\" onclick=\"brw_tableSort('Value')\">"+browserHeaderLabelValue+"</th>" +
             "<th class=\"w3-border\" onclick=\"brw_tableSort('Location')\">"+browserHeaderLabelLocation+"</th>" + 
-            "<th class=\"w3-border\" onclick=\"brw_tableSort('Suppliers_Name')\">"+browserHeaderLabelName+"</th>" + 
+            "<th class=\"w3-border\" onclick=\"brw_tableSort('Suppliers_Name')\">"+browserHeaderLabelSupplierName+"</th>" + 
             "<th class=\"w3-border\" onclick=\"brw_tableSort('Supplier_Part_Number')\">"+browserHeaderLabelPartNumber+"</th>" + 
             "<th class=\"w3-border\" onclick=\"brw_tableSort('Ordering_Threshold')\">"+browserHeaderLabelOrderingThreshold+"</th>" + 
             "<th class=\"w3-border\" onclick=\"brw_tableSort('Description')\">"+browserHeaderLabelDescription+"</th>" + 
@@ -607,15 +614,15 @@ function parseXMLResponse(xml)
 	  
 	  if(browser_entry[i].getElementsByTagName("Consumable_Flag")[0].childNodes[0].nodeValue == "1")
 	  {
-		consFlag = "&#9983;";
+		consFlag = "&#9873;";
 	  }
 	  if(browser_entry[i].getElementsByTagName("Equipment_Flag")[0].childNodes[0].nodeValue == "1")
 	  {
-		eqFlag = "&#9983;";
+		eqFlag = "&#9873;";
 	  }
 	  if(browser_entry[i].getElementsByTagName("Lab_Part_Flag")[0].childNodes[0].nodeValue == "1")
 	  {
-		labFlag = "&#9983;";
+		labFlag = "&#9873;";
 	  }
 	  
 

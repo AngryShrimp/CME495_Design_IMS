@@ -25,6 +25,7 @@ function ivm_modifyItem(id,field)
 	
   sendBackendRequest("Back_End/ModifyItem.php","SID="+getSID()+"&PartNumber="+ itemNumber + "&Field="+field + "&Value=" + value);
   main_loadLog(); //refresh the log
+  document.getElementById(id).style.backgroundColor = "white";
   return;
 
 }
@@ -45,5 +46,12 @@ function ivm_deleteItem()
 	
 	main_loadLog(); //refresh the log
 	main_loadBrowser(); //refresh the item browser.
+	return;
+}
+
+
+function ivm_editedField(elementID)
+{
+	document.getElementById(elementID).style.backgroundColor = "lightgreen";
 	return;
 }

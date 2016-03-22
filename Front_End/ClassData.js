@@ -432,7 +432,7 @@ function cdm_displayTable(classData)
 	var tableClassDataHeader = "";
 	
 	//Table header
-	tableClassDataHeader = "<table class=\"w3-table w3-bordered w3-border w3-striped w3-hoverable\" style=\"table-layout:fixed; width:100%; overflow-y:scroll;\"><tr>" +
+	tableClassDataHeader = "<table class=\"w3-table w3-bordered w3-border w3-striped w3-hoverable w3-small\" style=\"table-layout:fixed; width:100%; overflow-y:scroll;\"><tr>" +
 			"<col width=\"8%\"></col><col width=\"23%\"></col><col width=\"23%\"></col><col width=\"23%\"></col><col width=\"23%\">" +
 			"<th class=\"w3-border\">SEL</th>" +
             "<th class=\"w3-border\" onclick=\"cdm_tableSort('Class')\">"+headerLabelClass+"</th>" + 
@@ -440,7 +440,7 @@ function cdm_displayTable(classData)
             "<th class=\"w3-border\" onclick=\"cdm_tableSort('Quantity')\">"+headerLabelQty+"</th>" +
             "<th class=\"w3-border\" onclick=\"cdm_tableSort('Date')\">"+headerLabelDate+"</th></table>";
 	//table data
-	tableClassData = "<table class=\"w3-table w3-bordered w3-border w3-striped w3-hoverable\" style=\"table-layout:fixed; width:100%;\">"+
+	tableClassData = "<table class=\"w3-table w3-bordered w3-border w3-striped w3-hoverable w3-small\" style=\"table-layout:fixed; width:100%;\">"+
 			"<col width=\"8%\"></col><col width=\"23%\"></col><col width=\"23%\"></col><col width=\"23%\"></col><col width=\"23%\"></col>" ;
 	for( i = 0; i < class_entry.length; i++)
     {

@@ -105,7 +105,7 @@ th
 	<br>
 		<form>
 		<font size="3">Search:</font><br>
-		<input list="id_search_queryList" class="w3-input w3-border w3-text-black" type="text" id="id_search_bar" name="search" oninput="main_queryBarOnInput(this)">
+		<input list="id_search_queryList" class="w3-input w3-border w3-text-black" type="text" id="id_search_bar" name="search" oninput="main_queryBarOnInput(this)" autocomplete="off">
 		<datalist id="id_search_queryList"/>
 		</form>
 	</div>
@@ -300,56 +300,56 @@ th
 				<tr class="w3-border">
 				<th>Value</th>
 				<td class="w3-container">
-					<input class="w3-input w3-border w3-text-black" type="text" id="id_ivm_value" onchange="ivm_modifyItem(this.id,'Value')">
+					<input class="w3-input w3-border w3-text-black" type="text" id="id_ivm_value" onchange="ivm_modifyItem(this.id,'Value')" oninput="ivm_editedField(this.id)" autocomplete="off">
 				</td>
 				</tr>
 				
 				<tr class="w3-border">
 				<th>Description</th>
 				<td class="w3-container">
-					<input class="w3-input w3-border w3-text-black" type="text" id="id_ivm_desc" onchange="ivm_modifyItem(this.id,'Description')">
+					<input class="w3-input w3-border w3-text-black" type="text" id="id_ivm_desc" onchange="ivm_modifyItem(this.id,'Description')" oninput="ivm_editedField(this.id)" autocomplete="off">
 				</td>   
 				</tr>
 
 				<tr class="w3-border">
 				<th>Supplier Part Number</th>
 				<td class="w3-container">
-					<input class="w3-input w3-border w3-text-black" type="text" id="id_ivm_supplierPN" onchange="ivm_modifyItem(this.id,'Supplier_Part_Number')">
+					<input class="w3-input w3-border w3-text-black" type="text" id="id_ivm_supplierPN" onchange="ivm_modifyItem(this.id,'Supplier_Part_Number')" oninput="ivm_editedField(this.id)" autocomplete="off">
 				</td>   
 				</tr>
 
 				<tr class="w3-border">
 				<th>Supplier Name</th>
 				<td class="w3-container">
-					<input class="w3-input w3-border w3-text-black" type="text" id="id_ivm_supplierName" onchange="ivm_modifyItem(this.id,'Suppliers_Name')">
+					<input class="w3-input w3-border w3-text-black" type="text" id="id_ivm_supplierName" onchange="ivm_modifyItem(this.id,'Suppliers_Name')" oninput="ivm_editedField(this.id)" autocomplete="off">
 				</td>
 				</tr>
 				
 				<tr class="w3-border">
 				<th>Document URL</th>
 				<td class="w3-container">
-					<input class="w3-input w3-border w3-text-black" type="text" id="id_ivm_link" onchange="ivm_modifyItem(this.id,'Item_Link')" ondblclick="window.open(this.value,'_blank')">
+					<input class="w3-input w3-border w3-text-black" type="text" id="id_ivm_link" onchange="ivm_modifyItem(this.id,'Item_Link')" ondblclick="window.open(this.value,'_blank')" oninput="ivm_editedField(this.id)" autocomplete="off">
 				</td>
 				</tr>
 
 				<tr class="w3-border">
 				<th>Quantity</th>
 				<td class="w3-container">
-					<input class="w3-input w3-border w3-text-black" type="text" id="id_ivm_qty" onchange="ivm_modifyItem(this.id,'Quantity')">
+					<input class="w3-input w3-border w3-text-black" type="text" id="id_ivm_qty" onchange="ivm_modifyItem(this.id,'Quantity')" oninput="ivm_editedField(this.id)" autocomplete="off">
 				</td>
 				</tr>
 				
 				<tr class="w3-border">
 				<th>Threshold</th>
 				<td class="w3-container">
-					<input class="w3-input w3-border w3-text-black" type="text" id="id_ivm_thresh" onchange="ivm_modifyItem(this.id,'Ordering_Threshold')">     
+					<input class="w3-input w3-border w3-text-black" type="text" id="id_ivm_thresh" onchange="ivm_modifyItem(this.id,'Ordering_Threshold')" oninput="ivm_editedField(this.id)" autocomplete="off">     
 				</td>
 				</tr>
 				
 				<tr class="w3-border">
 				<th>Location</th>
 				<td class="w3-container">
-					<input class="w3-input w3-border w3-text-black" type="text" id="id_ivm_location" onchange="ivm_modifyItem(this.id,'Location')">
+					<input class="w3-input w3-border w3-text-black" type="text" id="id_ivm_location" onchange="ivm_modifyItem(this.id,'Location')" oninput="ivm_editedField(this.id)" autocomplete="off">
 				</td>   
 				</tr>
 				
@@ -379,7 +379,7 @@ th
 			</div>
 				
 				
-			<div id="id_ivm_tableHeader" class="w3-responsive w3-white w3-border w3-small" style="max-height: 6vh; overflow-y:scroll;"></div>      
+			<div id="id_ivm_tableHeader" class="w3-responsive w3-white w3-border w3-small" style="overflow-y:scroll;"></div>      
 			<div id="id_ivm_tableData" class="w3-responsive w3-white w3-border w3-small" style="max-height: 20vh; overflow-y:scroll;"></div>   
 			<footer class="w3-container w3-blue w3-row">
 				<p/>
@@ -458,7 +458,7 @@ th
 				<header class="w3-container w3-blue">
 				<span onclick="document.getElementById('ShoppingListModal').style.display='none'" 
 			class="w3-closebtn">&times;</span>
-			<h3>Shopping List</h3>
+			<h3>Purchase List</h3>
 			<div class="w3-container" style="width:95%">
 		<h2>Complete Purchase List (Threshold Violations + Manual Entries)</h2>
 </div>
@@ -579,9 +579,10 @@ th
 		<header class="w3-container w3-blue">
 			<span onclick="document.getElementById('EmailListModal').style.display='none'" 
 			class="w3-closebtn">&times;</span>
-			<h3>Class Data</h3>
+			<h3>Notification Settings</h3>
 		</header>
-		<div id="id_elm_table" class="w3-responsive w3-white" style="max-height: 50vh;">
+		<div id="id_elm_tableHeader" class="w3-responsive w3-white" style="overflow-y:scroll"></div>
+		<div id="id_elm_tableData" class="w3-responsive w3-white" style="max-height: 50vh; overflow-y:scroll">
 		</div>
 		 
 		<div class="w3-container">

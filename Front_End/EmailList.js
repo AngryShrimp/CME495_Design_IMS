@@ -94,7 +94,8 @@ function elm_tableDisplay(emailList)
 
 
 	var email_entry = emailList[0].getElementsByTagName("EMAIL_ENTRY");
-	var tableEmailList = "";
+	var tableEmailListHeader = "";
+	var tableEmailListData = "";
 	
     //check for null data
     if(email_entry == null)
@@ -103,21 +104,24 @@ function elm_tableDisplay(emailList)
       return false;	
     }    
 	
+	var colWidth = "<col width=\"85%\"><col width=\"15%\">";
+	
 	//Table header
-	tableEmailList = "<table class=\"w3-table w3-bordered w3-border w3-striped w3-hoverable\" style=\"table-layout:fixed; width=100%;\"><tr>" +
-	        "<col width=\"85%\">"+
-			"<col width=\"15%\">"+
+	tableEmailListHeader = "<table class=\"w3-table w3-bordered w3-border w3-striped w3-hoverable w3-small\" style=\"table-layout:fixed; width=100%;\"><tr>" +
+	        colWidth+
             "<th class=\"w3-border\">Email Address</th>" + 
-            "<th class=\"w3-border\">Delete</th></tr>";
+            "<th class=\"w3-border\">Delete</th></tr></table>";
 			
 
 	//table data
+	tableEmailListData = "<table class=\"w3-table w3-bordered w3-border w3-striped w3-hoverable w3-small\" style=\"table-layout:fixed; width=100%;\">"
+						+colWidth;
 	for( i = 0; i < email_entry.length; i++)
     {	
 		var id = email_entry[i].getElementsByTagName("Id")[0].childNodes[0].nodeValue;
 		var emailAddress = email_entry[i].getElementsByTagName("Recipients")[0].childNodes[0].nodeValue;	
 	
-		tableEmailList += "<tr onclick=\"elm_loadRow('" + 
+		tableEmailListData += "<tr onclick=\"elm_loadRow('" + 
 						id + "','" +
 						emailAddress +
 						"')\">" + 
@@ -128,10 +132,11 @@ function elm_tableDisplay(emailList)
                         "</tr>";								
 	}
 
-    tableEmailList += "</table>"
+    tableEmailListData += "</table>"
 
-	
-	document.getElementById("id_elm_table").innerHTML = tableEmailList;
+	document.getElementById("id_elm_tableHeader").innerHTML = tableEmailListHeader;
+
+	document.getElementById("id_elm_tableData").innerHTML = tableEmailListData;
 	
 	return;
 

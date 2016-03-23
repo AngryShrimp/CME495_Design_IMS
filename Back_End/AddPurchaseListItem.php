@@ -79,15 +79,18 @@ catch(PDOException $e)
 	$statusCode = 1;
 	$statusMessage = 'AddPurchaseListItem SQLError: '.$e->getMessage();
 	$log->add_log($sessionID,'Error',$statusMessage);
-        echo "Error: " . $e->getMessage();
+    echo "Error: " . $e->getMessage();
 	
 }
 catch(Exception $e)
 {
 	$statusCode = $e->getCode();
 	$statusMessage = 'AddPurchaseListItem SQLError: '. $e->getMessage();
-	$log->add_log($sessionID,'Error',$statusMessage);
-        echo "Error: " . $e->getMessage();
+	if(!$log->add_log($sessionID,'Error',$statusMessage,"N/A",true))
+	{
+		$statusMessage = $statusMessage." **Logging Failed**";
+	}
+    echo "Error: " . $e->getMessage();
 
 }	
 if ($statusCode == 0){

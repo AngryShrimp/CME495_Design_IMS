@@ -90,7 +90,10 @@ catch(Exception $e)
 
 	$statusCode = $e->getCode();
 	$statusMessage = 'BackupDatabase Error: '. $e->getMessage();
-	$log->add_log($sessionID,'Error',$statusMessage);
+	if(!$log->add_log($sessionID,'Error',$statusMessage,"N/A",true))
+	{
+		$statusMessage = $statusMessage." **Logging Failed**";
+	}
         echo "Error: " . $e->getMessage();
     sqlsrv_configure("WarningsReturnAsErrors", 1);
     sqlsrv_close($conn);
@@ -100,7 +103,7 @@ catch(Exception $e)
 if ($statusCode == 0){
 	$statusMessage = 'Database backup successful.';
 
-	$log->add_log($sessionID,'Info',$statusMessage);
+	$log->add_log($sessionID,'Information',$statusMessage);
 	$statusArray[0] = $statusCode;
 	$statusArray[1] = $statusMessage;
 

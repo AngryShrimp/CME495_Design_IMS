@@ -17,6 +17,7 @@ class IMSLog
 	
 	public function __construct($input_loc = "")
 	{	
+	
 		if(!($input_loc == ""))
 		{
 			$this->log_file_loc = $input_loc;
@@ -24,7 +25,7 @@ class IMSLog
 		else
 		{		
 			//default log location
-			$this->log_file_loc = $_SERVER['DOCUMENT_ROOT']."\Back_End\log\IMSLog.csv";
+			$this->log_file_loc = trim($_SERVER['DOCUMENT_ROOT'])."\Back_End\log\IMSLog.csv";
 			
 		}
 
@@ -32,16 +33,8 @@ class IMSLog
 		$path = pathinfo($this->log_file_loc);
 		if(!file_exists($path['dirname']))
 		{
-			if(!mkdir(dirname($this->log_file_loc,0777,true)))
-			{
-				throw new Exception("Could not make log directory. ($this->log_file_loc)",1);
-			}
-		}
-		
-		if(!is_writable($path['dirname']))
-		{
-			throw new Exception("Log directory ($this->log_file_loc) is not writeable.",1);
-		}	
+			mkdir($path['dirname'],0777,true);			
+		}				
 	}
 	
 	/*******************************************************************
@@ -56,7 +49,9 @@ class IMSLog
 	 ********************************************************************/
 	public function set_log_location($file_location)
 	{
+		
 		$file_location = $file_location."IMSLog.csv";
+		
 		//Check that log folder exists and check write permissions.
 		$path = pathinfo($file_location);
 		if(!file_exists($path['dirname']))
@@ -78,7 +73,7 @@ class IMSLog
 	}
 	
 	
-	public function add_log($SID,$Level,$Message,$ItemNum = "N/A")
+	public function add_log($SID,$Level,$Message,$ItemNum = "N/A",$failSafe = false)
 	{
 	
 		//prevent debug messages from being written if option not set.
@@ -86,7 +81,7 @@ class IMSLog
 			return;
 
 
-		$this->waitForLock();
+		$this->waitForLock($failSafe);
 			
 		$lock_file = fopen($this->log_file_loc.".lock",'w+');	
 		fwrite($lock_file,"Locked");
@@ -97,8 +92,11 @@ class IMSLog
 		if($log_file == FALSE)
 		{
 			unlink($this->log_file_loc.".lock");
-			throw new Exception("IMSLog->add_log: Log file could not be opened",1);
-			return;
+			
+			if(!$failSafe)
+				throw new Exception("IMSLog->add_log: Log file could not be opened. ($this->log_file_loc)",1);
+			else
+				return false;
 		} 
 		
 		//check for empty inputs.
@@ -127,6 +125,7 @@ class IMSLog
 		
 		unlink($this->log_file_loc.".lock");		
 		
+		return true;
 	}
 	
 	
@@ -182,7 +181,7 @@ class IMSLog
 	}
 	
 
-	private function waitForLock()
+	private function waitForLock($failSafe = false)
 	{
 		$wait_counter = 0;
 		
@@ -191,11 +190,14 @@ class IMSLog
 			$wait_counter++;
 			if($wait_counter > 100) //10 second time out.
 			{
-				throw new Exception("Logging time-out waiting for lock",1);
+				if(!$failSafe)
+					throw new Exception("Logging time-out waiting for lock",1);
+				else
+					return false;
 			}
 			time_nanosleep(0, 100000000); //sleep for a 10th of a second.
 		}		
-		return;
+		return true;
 	}	
 }
 

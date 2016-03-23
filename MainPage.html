@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html>
-<title>IMS</title>
+<title>Inventory Management System</title>
 <head>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="stylesheet" type="text/css" href="Front_End/w3.css">
@@ -63,14 +63,15 @@ th
 
 </style>
 
+
+</head>
 <!-- Main window -->
 <script src="Front_End/Main.js"></script>
-</head>
 <body onload="populateForms()">
 
 <nav class="w3-sidenav w3-blue w3-card-2 w3-animate-left" style="display:none;">
-	<a href="javascript:void(0)" onclick="w3_close()" 
-	  class="w3-closenav w3-large">Close &times;</a>
+	<a href="javascript:void(0)" onclick="main_NavClose()" 
+	  class="w3-closenav w3-xxlarge">&lArr;</a>
 	<a onclick="document.getElementById('ItemCreateModal').style.display='block'" style="cursor:pointer;">Add Item</a>
 	<a onclick="document.getElementById('ClassDataModal').style.display='block'" style="cursor:pointer;">Class Data</a> 
 	<a onclick="document.getElementById('ShoppingListModal').style.display='block'" style="cursor:pointer;">Purchase List</a> 
@@ -95,7 +96,7 @@ th
 </nav>
 
 <header class="w3-container w3-blue" style="hight:10vh">
-<span class="w3-opennav w3-xlarge" onclick="w3_open()">&#9776;</span>
+<span class="w3-opennav w3-xlarge" onclick="main_NavOpen()">&#9776;</span>
 <form class="w3-form">
 	<div class="w3-group">
 	<a>SID:</a>
@@ -162,14 +163,14 @@ th
 						<tr class="w3-border">
 						<th>Value</th>
 						<td class="w3-container">       
-							<input class="w3-input w3-border w3-text-black" type="text" id="id_cvm_value" oninput="cdm_autoPN()" placeholder="###">
+							<input class="w3-input w3-border w3-text-black" type="text" id="id_cvm_value" oninput="cdm_autoPN()" placeholder="###" autocomplete="off">
 						</td>
 						</tr>
 						
 						<tr class="w3-border">
 						<th>Description</th>
 						<td class="w3-container">
-							<input class="w3-input w3-border w3-text-black" type="text" id="id_cvm_desc" placeholder="Part Description">
+							<input class="w3-input w3-border w3-text-black" type="text" id="id_cvm_desc" placeholder="Part Description" autocomplete="off">
 						</td>
 						</tr>
 
@@ -177,49 +178,49 @@ th
 						<tr class="w3-border">
 						<th>Supplier Part Number</th>
 						<td class="w3-container">
-							<input class="w3-input w3-border w3-text-black" type="text" id="id_cvm_supplierPN" placeholder="Part Number">
+							<input class="w3-input w3-border w3-text-black" type="text" id="id_cvm_supplierPN" placeholder="Part Number" autocomplete="off">
 						</td>
 						</tr>
 
 						<tr class="w3-border">
 						<th>Supplier Name</th>
 						<td class="w3-container">
-							<input class="w3-input w3-border w3-text-black" type="text" id="id_cvm_supplierName" placeholder="Digikey">
+							<input class="w3-input w3-border w3-text-black" type="text" id="id_cvm_supplierName" placeholder="Digikey" autocomplete="off">
 						</td>
 						</tr>
 						
 						<tr class="w3-border">
 						<th>Document URL</th>
 						<td class="w3-container">
-							<input class="w3-input w3-border w3-text-black" type="text" id="id_cvm_link" placeholder="www.someURL.com">
+							<input class="w3-input w3-border w3-text-black" type="text" id="id_cvm_link" placeholder="www.someURL.com" autocomplete="off">
 						</td>
 						</tr>
 
 						<tr class="w3-border">
 						<th>Quantity</th>
 						<td class="w3-container">
-							<input class="w3-input w3-border w3-text-black" type="text" id="id_cvm_qty" placeholder="###">
+							<input class="w3-input w3-border w3-text-black" type="text" id="id_cvm_qty" placeholder="###" autocomplete="off">
 						</td>
 						</tr>
 						
 						<tr class="w3-border">
 						<th>Threshold</th>
 						<td class="w3-container">
-							<input class="w3-input w3-border w3-text-black" type="text" id="id_cvm_thresh" placeholder="###">
+							<input class="w3-input w3-border w3-text-black" type="text" id="id_cvm_thresh" placeholder="###" autocomplete="off">
 						</td>
 						</tr>
 						
 						<tr class="w3-border">
 						<th>Location</th>
 						<td class="w3-container">
-							<input class="w3-input w3-border w3-text-black" type="text" id="id_cvm_location" placeholder="B12D22">
+							<input class="w3-input w3-border w3-text-black" type="text" id="id_cvm_location" placeholder="B12D22" autocomplete="off">
 						</td>
 						</tr>
 						
 						<tr class="w3-border">
 						<th>Item Number</th>
 						<td class="w3-container">
-							<input class="w3-input w3-border w3-text-black" type="text" id="id_cvm_itemNumber" placeholder="A###-01">       
+							<input class="w3-input w3-border w3-text-black" type="text" id="id_cvm_itemNumber" placeholder="A###-01" autocomplete="off">       
 						</td>
 						</tr>   
 						
@@ -228,15 +229,15 @@ th
 						<td class="w3-container">
 							<div = class="w3-container w3-third">
 							<label>Consumable</label>
-							<input class="w3-check w3-border w3-text-black" type="checkbox" id="id_cvm_flagConsumable">         
+							<input class="w3-check w3-border w3-text-black" type="checkbox" id="id_cvm_flagConsumable" autocomplete="off">         
 							</div>
 							<div = class="w3-container w3-third">
 							<label>Equipment</label>
-							<input class="w3-check w3-border w3-text-black" type="checkbox" id="id_cvm_flagEquipment">          
+							<input class="w3-check w3-border w3-text-black" type="checkbox" id="id_cvm_flagEquipment" autocomplete="off">          
 							</div>
 							<div = class="w3-container w3-third">
 							<label>Lab Part</label>
-							<input class="w3-check w3-border w3-text-black" type="checkbox" id="id_cvm_flagLabPart" disabled>        
+							<input class="w3-check w3-border w3-text-black" type="checkbox" id="id_cvm_flagLabPart" autocomplete="off" disabled>        
 							</div>
 						</td>
 						</tr>               
@@ -615,7 +616,7 @@ th
 		<div class="w3-container">
 			<header class="w3-container w3-blue">
 				<span onclick="document.getElementById('LogModal').style.display='none'" class="w3-closebtn">&times;</span>
-				<h3 id="id_iem_title">Log Browser</h3>
+				<h3 id="id_log_title">Log Browser</h3>
 			</header>
 			<button class="w3-btn w3-light-green w3-border w3-round-large" type="button" onclick="main_loadLog()">Refresh</button>
 			<br><br>

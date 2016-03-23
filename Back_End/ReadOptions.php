@@ -70,20 +70,23 @@ catch(Exception $e)
 {
 	$statusCode = $e->getCode();
 	$statusMessage = 'ReadOptions Error: '. $e->getMessage();
-	$log->add_log($sessionID,'Error',$statusMessage);
-        echo "Error: " . $e->getMessage();
+	if(!$log->add_log($sessionID,'Error',$statusMessage,"N/A",true))
+	{
+		$statusMessage = $statusMessage." **Logging Failed**";
+	}
+    echo "Error: " . $e->getMessage();
 
 }
 
 if ($statusCode == 0){
-        $statusMessage = "Option $option changed successfully.";
-	$log->add_log($sessionID,'Info',$statusMessage);
+    $statusMessage = "Option $option changed successfully.";
+	$log->add_log($sessionID,'Information',$statusMessage);
     
-        $statusArray[0] = $statusCode;
+    $statusArray[0] = $statusCode;
 	$statusArray[1] = $statusMessage;
         
         
-        echo "Script execution successful\n\n\n";
+    echo "Script execution successful\n\n\n";
 	$IMSBase->GenerateXMLResponse($sessionID,$statusArray);
 }
 ?>

@@ -33,6 +33,13 @@ try
 	else 
 		$timeout = intval($opt_timeout);
 	
+	$opt_logLoc = $sql->getOption('Log_File_Location');	
+	echo "check";
+	if($opt_logLoc === false)
+		$log->add_log($sessionID,'Warning','DeleteClassData Warning: Log_File_Location Option missing or invalid.');
+	else 
+		$log->set_log_location($opt_logLoc);
+	
 
 	if ($_SERVER["REQUEST_METHOD"] == "GET") 
 	{
@@ -65,7 +72,10 @@ catch(Exception $e)
 {
 	$statusCode = $e->getCode();
 	$statusMessage = 'GenerateSID Error: '. $e->getMessage();
-	//$log->add_log($sessionID,'Error',$statusMessage);
+	if(!$log->add_log($sessionID,'Error',$statusMessage,"N/A",true))
+	{
+		$statusMessage = $statusMessage." **Logging Error**";
+	}
 }
 
 	setcookie("SID", $SID, time() + ($timeout), "/");

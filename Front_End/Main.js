@@ -1,7 +1,7 @@
-function w3_open() {
+function main_NavOpen() {
     document.getElementsByClassName("w3-sidenav")[0].style.display = "block";
 }
-function w3_close() {
+function main_NavClose() {
     document.getElementsByClassName("w3-sidenav")[0].style.display = "none";
 }
 
@@ -13,6 +13,8 @@ SID from the server
 *****************************************************************/
 function populateForms()
 {
+	document.title = "Inventory Management System";
+
 	if(setSID())
 	{
 		cdm_getClassData();
@@ -317,7 +319,6 @@ function parseXMLResponse(xml)
   {
 	var change = createItemChange[0].getElementsByTagName("CHANGE");
   
-	alert(change[0].getElementsByTagName("Part")[0].childNodes[0].nodeValue);
 	document.getElementById("id_cvm_itemNumber").value = change[0].getElementsByTagName("Part")[0].childNodes[0].nodeValue;
   }
   
@@ -406,14 +407,14 @@ function parseXMLResponse(xml)
   if(browser.length > 0) //Browser section present
   { 
     var browser_entry = browser[0].getElementsByTagName("BROWSER_ENTRY");
-	  var tableBrowserData = "";
+	var tableBrowserData = "";
     var tableBrowserHeader = "";
 
     //check for null data
     if(browser_entry == null)
     {
       IMSError("parseXMLResponse Error","Broswer List is NULL");
-	    return false;	
+	  return false;	
     }
 
     var browserHeaderLabelName = "Name";

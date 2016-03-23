@@ -98,15 +98,18 @@ catch(PDOException $e)
 	$statusCode = 1;
 	$statusMessage = 'RemoveManualEntries SQLError: '.$e->getMessage();
 	$log->add_log($sessionID,'Error',$statusMessage);
-        echo "Error: " . $e->getMessage();
+    echo "Error: " . $e->getMessage();
 	
 }
 catch(Exception $e)
 {
 	$statusCode = $e->getCode();
 	$statusMessage = 'RemoveManualEntries SQLError: '. $e->getMessage();
-	$log->add_log($sessionID,'Error',$statusMessage);
-        echo "Error: " . $e->getMessage();
+	if(!$log->add_log($sessionID,'Error',$statusMessage,"N/A",true))
+	{
+		$statusMessage = $statusMessage." **Logging Failed**";
+	}
+    echo "Error: " . $e->getMessage();
 
 }	
 if ($statusCode == 0){
@@ -117,7 +120,7 @@ if ($statusCode == 0){
         	$statusMessage .= $aItem[$i] . " ";
         }
         
-		$log->add_log($sessionID,'Info',$statusMessage);
+		$log->add_log($sessionID,'Information',$statusMessage);
     
         $statusArray[0] = $statusCode;
 		$statusArray[1] = $statusMessage;

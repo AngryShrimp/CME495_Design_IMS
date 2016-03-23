@@ -81,13 +81,16 @@ catch(Exception $e)
 {
 	$statusCode = $e->getCode();
 	$statusMessage = 'GeneratePurchaseReport Error: '. $e->getMessage();
-	$log->add_log($sessionID,'Error',$statusMessage);
-        echo "Error: " . $e->getMessage();
+	if(!$log->add_log($sessionID,'Error',$statusMessage,"N/A",true))
+	{
+		$statusMessage = $statusMessage." **Logging Failed**";
+	}
+    echo "Error: " . $e->getMessage();
 
 }	
 if ($statusCode == 0){
         $statusMessage = "Purchase report generated.";
-		$log->add_log($sessionID,'Info',$statusMessage);
+		$log->add_log($sessionID,'Debug',$statusMessage);
     
         $statusArray[0] = $statusCode;
 		$statusArray[1] = $statusMessage;

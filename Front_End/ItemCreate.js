@@ -103,7 +103,6 @@ function createNewItem()
   
   if(returnVal == false)
   {
-	IMSError("createNewItem","Part Number Creation Error");
 	return;
   }  
   
@@ -112,14 +111,14 @@ function createNewItem()
 
   if(qty != "")
   {  
-    xhttp.open("POST", "Back_End/ModifyItem.php", false);
+    xhttp.open("POST", "Back_End/ModifyItem.php", true);
     xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");  
 	xhttp.send("SID="+getSID()+"&PartNumber="+partNumber+"&Field=Quantity&Value="+qty);
   }  
   
   if(threshold != "")
   {  
-    xhttp.open("POST", "Back_End/ModifyItem.php", false);
+    xhttp.open("POST", "Back_End/ModifyItem.php", true);
     xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
 	xhttp.send("SID="+getSID()+"&PartNumber="+partNumber+"&Field=Ordering_Threshold&Value="+threshold);
   }
@@ -127,75 +126,78 @@ function createNewItem()
   
   if(location != "")
   {  
-    xhttp.open("POST", "Back_End/ModifyItem.php", false);
+    xhttp.open("POST", "Back_End/ModifyItem.php", true);
     xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
 	xhttp.send("SID="+getSID()+"&PartNumber="+partNumber+"&Field=Location&Value="+location);
   }
   
   if(description != "")
   {  
-    xhttp.open("POST", "Back_End/ModifyItem.php", false);
+    xhttp.open("POST", "Back_End/ModifyItem.php", true);
     xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
 	xhttp.send("SID="+getSID()+"&PartNumber="+partNumber+"&Field=Description&Value="+description);
   }
   
   if(type != "")
   {  
-    xhttp.open("POST", "Back_End/ModifyItem.php", false);
+    xhttp.open("POST", "Back_End/ModifyItem.php", true);
     xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
 	xhttp.send("SID="+getSID()+"&PartNumber="+partNumber+"&Field=Type&Value="+type);
   }
   
   if(value != "")
   {  
-    xhttp.open("POST", "Back_End/ModifyItem.php", false);
+    xhttp.open("POST", "Back_End/ModifyItem.php", true);
     xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
 	xhttp.send("SID="+getSID()+"&PartNumber="+partNumber+"&Field=Value&Value="+value);
   }
   
   if(supplierName != "")
   { 
-    xhttp.open("POST", "Back_End/ModifyItem.php", false);
+    xhttp.open("POST", "Back_End/ModifyItem.php", true);
     xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
 	xhttp.send("SID="+getSID()+"&PartNumber="+partNumber+"&Field=Suppliers_Name&Value="+supplierName);
   }
   
   if(supplierPN != "")
   {  
-    xhttp.open("POST", "Back_End/ModifyItem.php", false);
+    xhttp.open("POST", "Back_End/ModifyItem.php", true);
     xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
 	xhttp.send("SID="+getSID()+"&PartNumber="+partNumber+"&Field=Supplier_Part_Number&Value="+supplierPN);
   }
   
   if(link != "")
   {  
-    xhttp.open("POST", "Back_End/ModifyItem.php", false);
+    xhttp.open("POST", "Back_End/ModifyItem.php", true);
     xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
 	xhttp.send("SID="+getSID()+"&PartNumber="+partNumber+"&Field=Item_Link&Value="+link);
   }
   
   if(flagConsumable != 0)
   {
-    xhttp.open("POST", "Back_End/ModifyItem.php", false);
+    xhttp.open("POST", "Back_End/ModifyItem.php", true);
     xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
 	xhttp.send("SID="+getSID()+"&PartNumber="+partNumber+"&Field=Consumable_Flag&Value="+flagConsumable);  
   }
   
   if(flagEquipment != 0)
   {
-    xhttp.open("POST", "Back_End/ModifyItem.php", false);
+    xhttp.open("POST", "Back_End/ModifyItem.php", true);
     xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
 	xhttp.send("SID="+getSID()+"&PartNumber="+partNumber+"&Field=Equipment_Flag&Value="+flagEquipment);  
   }
   
   if(flagLabPart != 0)
   {
-    xhttp.open("POST", "Back_End/ModifyItem.php", false);
+    xhttp.open("POST", "Back_End/ModifyItem.php", true);
     xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
 	xhttp.send("SID="+getSID()+"&PartNumber="+partNumber+"&Field=Lab_Part_Flag&Value="+flagLabPart);  
   }
   
   main_loadLog(); //refresh the log
+  
+  //IMSError used as a message box in this case.
+  IMSError("Part Number Creation","Part Number "+partNumber + " created successfully.");
   return;
   
 }

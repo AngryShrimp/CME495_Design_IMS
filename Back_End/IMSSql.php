@@ -84,34 +84,37 @@ class IMSSql {
 	public function retrieveOptions()
 	{
 		
-		try {
+		try 
+		{
 			
 									
-				$cmd = 'SELECT Remote_Server_Enabled, Backup_Frequency, Automated_Backups_Enabled, Thresholds_Enabled FROM dbo.Options';
-				
-				
-				$XMLData = "<?xml version='1.0' encoding='UTF-8'?>\n";
-				$XMLData .= "<Options>\n";
-				
-				foreach ($this->conn->query($cmd) as $row){                 
-				
+			$cmd = 'SELECT Remote_Server_Enabled, Backup_Frequency, Automated_Backups_Enabled, Thresholds_Enabled FROM dbo.Options';
+			
+			
+			$XMLData = "<?xml version='1.0' encoding='UTF-8'?>\n";
+			$XMLData .= "<Options>\n";
+			
+			foreach ($this->conn->query($cmd) as $row){                 
+			
 
-				$XMLData .= "<Remote_Server_Enabled>".$row['Remote_Server_Enabled']."</Remote_Server_Enabled>\n";                        
-				$XMLData .= "<Backup_Frequency>".$row['Backup_Frequency']."</Backup_Frequency>\n";
-				$XMLData .= "<Automated_Backups_Enabled>".$row['Automated_Backups_Enabled']."</Automated_Backups_Enabled>\n";
-				$XMLData .= "<Thresholds_Enabled>".$row['Thresholds_Enabled']."</Thresholds_Enabled>\n";                       
+			$XMLData .= "<Remote_Server_Enabled>".$row['Remote_Server_Enabled']."</Remote_Server_Enabled>\n";                        
+			$XMLData .= "<Backup_Frequency>".$row['Backup_Frequency']."</Backup_Frequency>\n";
+			$XMLData .= "<Automated_Backups_Enabled>".$row['Automated_Backups_Enabled']."</Automated_Backups_Enabled>\n";
+			$XMLData .= "<Thresholds_Enabled>".$row['Thresholds_Enabled']."</Thresholds_Enabled>\n";                       
+			
+			}
+			$XMLData .= "</Options>";
+			
+			$xml=simplexml_load_string($XMLData) or die("Error: Cannot create object");
+			print_r($xml);
 				
-				}
-				$XMLData .= "</Options>";
 				
-				$xml=simplexml_load_string($XMLData) or die("Error: Cannot create object");
-				print_r($xml);
+		} 
+		catch (Exception $e) 
+		{
 				
-				
-		} catch (Exception $e) {
-				
-				echo "Exception in Retrieve Options in IMSSql.php";
-				throw $e;
+			echo "Exception in Retrieve Options in IMSSql.php";
+			throw $e;
 		}
 	}
 	

@@ -94,7 +94,10 @@ catch(Exception $e)
 {
 	$statusCode = $e->getCode();
 	$statusMessage = 'ModifyItem Error: '. $e->getMessage();
-	$log->add_log($sessionID,'Error',$statusMessage);
+	if(!$log->add_log($sessionID,'Error',$statusMessage,"N/A",true))	
+	{
+		$statusMessage = $statusMessage." **Logging Failed**";
+	}
 
 }	
 //finally()  PHP 5.5+, currently using 5.3.

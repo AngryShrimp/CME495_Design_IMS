@@ -82,8 +82,8 @@ try
 	$sql->command("DELETE FROM dbo.Class_Data WHERE Id=$id;");
 	
 	$statusCode = '0';
-	$statusMessage = "Class data record ID:$id has been deleted from the database.";
-	$log->add_log($sessionID,'Information',$statusMessage);
+	$statusMessage = "$partNumber has been removed from Class data. (Record $id)";
+	$log->add_log($sessionID,'Information',$statusMessage,$partNumber);
 	
 	//retrieve new table.
 	$sqlQuery = "SELECT * FROM dbo.Class_Data";

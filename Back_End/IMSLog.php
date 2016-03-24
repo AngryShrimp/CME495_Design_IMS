@@ -112,6 +112,10 @@ class IMSLog
 		{
 			$Message = "Unknown";
 		}
+		if($ItemNum == "")
+		{
+			$ItemNum = "Unknown";
+		}
 		
 		//Ensure Message does not have any commas.
 		$Message = str_replace(',','-',$Message);

@@ -97,8 +97,8 @@ th
 
 <header class="w3-container w3-blue" style="hight:10vh" >
 <span class="w3-opennav w3-xlarge" onclick="main_NavOpen()">&#9776;</span>
-<div style="display: inline; margin-left: 45%; font-size: 25px">
-	IMS
+<div style="display: inline; margin-left: 20%; font-size: 25px">
+	Inventory Management System
 </div>
 <div style="display: inline; float: right">
 	<a>SID:</a>
@@ -421,13 +421,13 @@ th
 		</div>
 		<form class="w3-container">
 		<div class="w3-container w3-quarter">
-				<input class="w3-input w3-border w3-text-black" type="text" id="id_cdm_classInput" placeholder="" onclick="">
+				<input class="w3-input w3-border w3-text-black" type="text" id="id_cdm_classInput" placeholder="CME495" onclick="" autocomplete="off">
 				<label>Class</label>
 		</div>
 		<div id="id_cdm_classInputOrginal" style="display: none;"></div>
 
 		<div class="w3-container w3-quarter">
-				<input list="id_cdm_partList" class="w3-input w3-border w3-text-black" type="text" id="id_cdm_PNInput" placeholder="" oninput="cdm_showPNAutocomplete(this.value)" onclick="">
+				<input list="id_cdm_partList" class="w3-input w3-border w3-text-black" type="text" id="id_cdm_PNInput" placeholder="R100-01" oninput="cdm_showPNAutocomplete(this.value)" onclick="" autocomplete="off">
 				<datalist id="id_cdm_partList">
 				</datalist>
 				<label>Part Number</label>
@@ -435,13 +435,13 @@ th
 		<div id="id_cdm_PNInputOrginal" style="display: none;"></div>
 
 		<div class="w3-container w3-quarter">
-				<input class="w3-input w3-border w3-text-black" type="text" id="id_cdm_qtyInput" placeholder="" onclick="">
+				<input class="w3-input w3-border w3-text-black" type="text" id="id_cdm_qtyInput" placeholder="##" onclick="" autocomplete="off">
 				<label>Quantity Needed</label>
 		</div>
 		<div id="id_cdm_qtyInputOrginal" style="display: none;"></div>
 
 		<div class="w3-container w3-quarter">
-				<input class="w3-input w3-border w3-text-black" type="text" id="id_cdm_dateInput" placeholder="" onclick="">
+				<input class="w3-input w3-border w3-text-black" type="text" id="id_cdm_dateInput" placeholder="YYYY-MM-DD" onclick="" autocomplete="off">
 				<label>Date Needed</label>
 		</div>
 		<div id="id_cdm_dateInputOrginal" style="display: none;"></div>

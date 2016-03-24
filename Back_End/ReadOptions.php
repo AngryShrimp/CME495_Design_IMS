@@ -79,14 +79,12 @@ catch(Exception $e)
 }
 
 if ($statusCode == 0){
-    $statusMessage = "Option $option changed successfully.";
+    $statusMessage = "Option table fetched.";
 	$log->add_log($sessionID,'Information',$statusMessage);
     
     $statusArray[0] = $statusCode;
 	$statusArray[1] = $statusMessage;
         
-        
-    echo "Script execution successful\n\n\n";
-	$IMSBase->GenerateXMLResponse($sessionID,$statusArray);
+	//$IMSBase->GenerateXMLResponse($sessionID,$statusArray);
 }
 ?>

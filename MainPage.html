@@ -71,7 +71,7 @@ th
 
 <nav class="w3-sidenav w3-blue w3-card-2 w3-animate-left" style="display:none;">
 	<a href="javascript:void(0)" onclick="main_NavClose()" 
-	  class="w3-closenav w3-xxlarge">&lArr;</a>
+	  class="w3-closenav w3-xxlarge">&#8592;</a>
 	<a onclick="document.getElementById('ItemCreateModal').style.display='block'" style="cursor:pointer;">Add Item</a>
 	<a onclick="document.getElementById('ClassDataModal').style.display='block'" style="cursor:pointer;">Class Data</a> 
 	<a onclick="document.getElementById('ShoppingListModal').style.display='block'" style="cursor:pointer;">Purchase List</a> 
@@ -79,7 +79,7 @@ th
 	<a onclick="document.getElementById('SettingsModal').style.display='block'" style="cursor:pointer;">Settings</a>
 	<a onclick="document.getElementById('LogModal').style.display='block'; main_loadLog()" style="cursor:pointer;">Log</a>
 	<br> 
-	<div style="padding-left:5%">Quick Update:</div>
+	<!--  <div style="padding-left:5%">Quick Update:</div>
 	<div style="padding-left:5%">
 		<textarea type="text" class="w3-input w3-border w3-text-black" rows="1" style="width: 13vw;" id="id_qa_ID" placeholder="PartID" disabled></textarea>
 	</div>
@@ -92,21 +92,30 @@ th
 	<br>
 	<div style="padding-left:5%">
 		<button class="w3-btn w3-light-green w3-border w3-round-large" type='button' onclick="quickBar_modifyItem();main_loadBrowser();">Update</button>
-	</div>
+	</div> -->
 </nav>
 
 <header class="w3-container w3-blue" style="hight:10vh" >
 <span class="w3-opennav w3-xlarge" onclick="main_NavOpen()">&#9776;</span>
-<form class="w3-form" onclick="main_NavClose()">
-	<div class="w3-group">
+<div style="display: inline; margin-left: 45%; font-size: 25px">
+	IMS
+</div>
+<div style="display: inline; float: right">
 	<a>SID:</a>
 	<a id="id_main_SIDDisplay"></a>
 	<a> </a>
 	<a id="id_main_RunLevelDisplay"></a>
-	<br>
+</div>
+<form class="w3-form" style="display: inline" onclick="main_NavClose()">
+	<div class="w3-group">
 		<form>
 		<font size="3">Search:</font><br>
 		<input list="id_search_queryList" class="w3-input w3-border w3-text-black" type="text" id="id_search_bar" name="search" oninput="main_queryBarOnInput(this)" autocomplete="off">
+		<font size="2">Quick Update:</font><br>
+		<textarea type="text" class="w3-input w3-border w3-text-black" style="width: 15%; height: 40px; float: left;" id="id_qa_ID" placeholder="PartID" disabled></textarea>
+		<textarea type="text" class="w3-input w3-border w3-text-black" style="width: 15%; height: 40px; float: left;" id="id_qa_Quantity" placeholder="Quantity"></textarea>		
+		<textarea type="text" class="w3-input w3-border w3-text-black" style="width: 60%; height: 40px; float: left" id="id_qa_Description" placeholder="Description" disabled></textarea>
+		<button class="w3-btn w3-light-green w3-border w3-round-large" style="display: block; float: left; height: 40px; width: 9%; margin-left: 1%" type='button' onclick="quickBar_modifyItem();main_loadBrowser();">Update</button>
 		<datalist id="id_search_queryList"/>
 		</form>
 	</div>

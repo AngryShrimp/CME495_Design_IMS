@@ -112,8 +112,8 @@ try
 		
 		
 		$statusCode = '0';
-		$statusMessage = "Class data for ($classNumber) part number ($partNumber) created successfully.";
-		$log->add_log($sessionID,'Information',$statusMessage);
+		$statusMessage = "$partNumber added to Class: $classNumber data.";
+		$log->add_log($sessionID,'Information',$statusMessage,$partNumber);
 		
 	}
 

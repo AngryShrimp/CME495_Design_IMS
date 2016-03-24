@@ -63,7 +63,11 @@ try
 	$IMSBase->verifyData($data,"/^.+$/");	
 			
 	
+<<<<<<< HEAD
 	$dataArray[0] = $sql->command("UPDATE dbo.Options SET Value='$data' WHERE [Option]='$option'");		
+=======
+	$dataArray[0] = $sql->command("UPDATE dbo.Options SET Value=$data WHERE [Option]='$option'");		
+>>>>>>> origin/master
 		
 	
 }

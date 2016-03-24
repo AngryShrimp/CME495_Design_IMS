@@ -71,7 +71,7 @@ th
 
 <nav class="w3-sidenav w3-blue w3-card-2 w3-animate-left" style="display:none;">
 	<a href="javascript:void(0)" onclick="main_NavClose()" 
-	  class="w3-closenav w3-xxlarge">&lArr;</a>
+	  class="w3-closenav w3-xxlarge">&#8592;</a>
 	<a onclick="document.getElementById('ItemCreateModal').style.display='block'" style="cursor:pointer;">Add Item</a>
 	<a onclick="document.getElementById('ClassDataModal').style.display='block'" style="cursor:pointer;">Class Data</a> 
 	<a onclick="document.getElementById('ShoppingListModal').style.display='block'" style="cursor:pointer;">Purchase List</a> 
@@ -79,34 +79,30 @@ th
 	<a onclick="document.getElementById('SettingsModal').style.display='block'" style="cursor:pointer;">Settings</a>
 	<a onclick="document.getElementById('LogModal').style.display='block'; main_loadLog()" style="cursor:pointer;">Log</a>
 	<br> 
-	<div style="padding-left:5%">Quick Update:</div>
-	<div style="padding-left:5%">
-		<textarea type="text" class="w3-input w3-border w3-text-black" rows="1" style="width: 13vw;" id="id_qa_ID" placeholder="PartID" disabled></textarea>
-	</div>
-	<div style="padding-left:5%">
-		<textarea type="text" class="w3-input w3-border w3-text-black" rows="1" style="width: 13vw;" id="id_qa_Quantity" placeholder="Quantity"></textarea>
-	</div> 
-	<div style="padding-left:5%">
-		<textarea type="text" class="w3-input w3-border w3-text-black" rows="6" style="width: 13vw;" id="id_qa_Description" placeholder="Description"></textarea>
-	</div> 
-	<br>
-	<div style="padding-left:5%">
-		<button class="w3-btn w3-light-green w3-border w3-round-large" type='button' onclick="quickBar_modifyItem();main_loadBrowser();">Update</button>
-	</div>
 </nav>
 
 <header class="w3-container w3-blue" style="hight:10vh" >
 <span class="w3-opennav w3-xlarge" onclick="main_NavOpen()">&#9776;</span>
-<form class="w3-form" onclick="main_NavClose()">
-	<div class="w3-group">
+<div style="display: inline; margin-left: 20%; font-size: 25px">
+	Inventory Management System
+</div>
+<div style="display: inline; float: right">
 	<a>SID:</a>
 	<a id="id_main_SIDDisplay"></a>
 	<a> </a>
 	<a id="id_main_RunLevelDisplay"></a>
-	<br>
+</div>
+<form class="w3-form" style="display: inline" onclick="main_NavClose()">
+	<div class="w3-group">
 		<form>
 		<font size="3">Search:</font><br>
-		<input list="id_search_queryList" class="w3-input w3-border w3-text-black" type="text" id="id_search_bar" name="search" oninput="main_queryBarOnInput(this)" autocomplete="off">
+		<input list="id_search_queryList" class="w3-input w3-border w3-text-black" type="text" id="id_search_bar" oninput="main_queryBarOnInput(this)" autocomplete="off">
+		<font size="2">Quick Update:</font><br>
+		<input type="text" class="w3-input w3-border w3-text-black" style="width: 15%; height: 40px; float: left;" id="id_qa_ID" placeholder="PartID" disabled></input>
+		<div style="display:none" id="id_qa_QuantityOrginal"></div>		
+		<input type="text" class="w3-input w3-border w3-text-black" style="width: 15%; height: 40px; float: left;" id="id_qa_Quantity" placeholder="Quantity" oninput="main_QUQtyInput()" onchange="quickBar_modifyItem()" onclick="this.select()"></input>		
+		<input type="text" class="w3-input w3-border w3-text-black" style="width: 70%; height: 40px; float: left" id="id_qa_Description" placeholder="Description" disabled></input>
+		<!--<button class="w3-btn w3-light-green w3-border w3-round-large" style="display: block; float: left; height: 40px; width: 9%; margin-left: 1%" type='button' onclick="quickBar_modifyItem();main_loadBrowser();">Update</button>-->
 		<datalist id="id_search_queryList"/>
 		</form>
 	</div>
@@ -412,13 +408,13 @@ th
 		</div>
 		<form class="w3-container">
 		<div class="w3-container w3-quarter">
-				<input class="w3-input w3-border w3-text-black" type="text" id="id_cdm_classInput" placeholder="" onclick="">
+				<input class="w3-input w3-border w3-text-black" type="text" id="id_cdm_classInput" placeholder="CME495" onclick="" autocomplete="off">
 				<label>Class</label>
 		</div>
 		<div id="id_cdm_classInputOrginal" style="display: none;"></div>
 
 		<div class="w3-container w3-quarter">
-				<input list="id_cdm_partList" class="w3-input w3-border w3-text-black" type="text" id="id_cdm_PNInput" placeholder="" oninput="cdm_showPNAutocomplete(this.value)" onclick="">
+				<input list="id_cdm_partList" class="w3-input w3-border w3-text-black" type="text" id="id_cdm_PNInput" placeholder="R100-01" oninput="cdm_showPNAutocomplete(this.value)" onclick="" autocomplete="off">
 				<datalist id="id_cdm_partList">
 				</datalist>
 				<label>Part Number</label>
@@ -426,13 +422,13 @@ th
 		<div id="id_cdm_PNInputOrginal" style="display: none;"></div>
 
 		<div class="w3-container w3-quarter">
-				<input class="w3-input w3-border w3-text-black" type="text" id="id_cdm_qtyInput" placeholder="" onclick="">
+				<input class="w3-input w3-border w3-text-black" type="text" id="id_cdm_qtyInput" placeholder="##" onclick="" autocomplete="off">
 				<label>Quantity Needed</label>
 		</div>
 		<div id="id_cdm_qtyInputOrginal" style="display: none;"></div>
 
 		<div class="w3-container w3-quarter">
-				<input class="w3-input w3-border w3-text-black" type="text" id="id_cdm_dateInput" placeholder="" onclick="">
+				<input class="w3-input w3-border w3-text-black" type="text" id="id_cdm_dateInput" placeholder="YYYY-MM-DD" onclick="" autocomplete="off">
 				<label>Date Needed</label>
 		</div>
 		<div id="id_cdm_dateInputOrginal" style="display: none;"></div>
@@ -571,6 +567,7 @@ th
 						<option value="Email_User">Email server username</option>
 						<option value="Email_Pass">Email server password</option>											
 					</select>
+<<<<<<< HEAD
 					
 				</form>
 				<br><br>
@@ -580,6 +577,13 @@ th
 				<br><br>
 				<button onclick="SubmitChange()" class="w3-btn w3-red w3-border w3-round-large">Submit Change</button>
 				</div>
+=======
+					Value: <input type="text" id="id_opt_value">
+					<br><br>
+					
+				</form>
+				<button onclick="SubmitChange()" class="w3-btn w3-red w3-border w3-round-large">Submit Change</button>
+>>>>>>> origin/master
 					
 						<div class="textarea">
 								<textarea class="codearea" id="textareacode" spellcheck="false" rows="10">Waiting...</textarea>

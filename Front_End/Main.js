@@ -199,7 +199,11 @@ function brw_tableSort(column)
   
   document.getElementById("id_brw_sortInfo").innerHTML = column + ":"+ brw_sortDir;  
 }
-
+function main_QUQtyInput()
+{
+	document.getElementById('id_qa_Quantity').style.backgroundColor = 'lightgreen';
+	return;
+}
 /****************************************************************
 Function:  quickBar_modify()
 Description: Modifies a field for the currently loaded item. In
@@ -209,9 +213,10 @@ Author: Keenan Johnstone
 function quickBar_modifyItem()
 {
   
-  var quantity = document.getElementById("id_qa_Quantity").value;
+  var quantity = document.getElementById("id_qa_QuantityOrginal").value;
+  var qty_input = document.getElementById("id_qa_Quantity").value;
   var description = document.getElementById("id_qa_Description").value;
-  var itemNumber = document.getElementById("id_qa_ID").value;
+  var itemNumber = document.getElementById("id_qa_ID").value; 
 
   if(itemNumber == "")
   {
@@ -231,13 +236,35 @@ function quickBar_modifyItem()
     IMSError("Quick Update Error","Cannot have an empty Description field");
     return;
   }
+  
+  if(qty_input.charAt(0) == "+")
+  {
+	qty_input = parseInt(quantity) + parseInt(qty_input.substr(1));
+  }
+  else if(qty_input.charAt(0) == "-")
+  {
+	qty_input = parseInt(quantity) - parseInt(qty_input.substr(1));
+  }
+  else if(isNaN(qty_input))
+  {
+	IMSError("Quick Update Error","Quantity change must be a number and/or +/-.");
+	return;
+  }
+
+  if(parseInt(qty_input) < 0)
+  {
+    IMSError("Quick Update Error","Number of part remaining must be greater than 0");
+	return;
+  }
 
   //Replace any newlines with spaces
   description = description.replace(/(?:\r\n|\r|\n)/g, ' ');
   quantity = quantity.replace(/(?:\r\n|\r|\n)/g, ' ');
 
-  sendBackendRequest("Back_End/ModifyItem.php","SID="+getSID()+"&PartNumber=" + itemNumber + "&Field=Quantity&Value=" + quantity);
-  sendBackendRequest("Back_End/ModifyItem.php","SID="+getSID()+"&PartNumber=" + itemNumber + "&Field=Description&Value=" + description);
+  sendBackendRequest("Back_End/ModifyItem.php","SID="+getSID()+"&PartNumber=" + itemNumber + "&Field=Quantity&Value=" + qty_input);
+  document.getElementById('id_qa_Quantity').style.backgroundColor = 'white';
+  setTimeout(function(){main_getQuickUpdateData(itemNumber)},250);
+  main_loadBrowser();
   return;
 }
 
@@ -363,6 +390,8 @@ function parseXMLResponse(xml)
 	document.getElementById("id_qa_ID").value = quickAccess[0].getElementsByTagName("Name")[0].childNodes[0].nodeValue;
 	document.getElementById("id_qa_Description").value = quickAccess[0].getElementsByTagName("Description")[0].childNodes[0].nodeValue;
 	document.getElementById("id_qa_Quantity").value = quickAccess[0].getElementsByTagName("Quantity")[0].childNodes[0].nodeValue;
+    document.getElementById("id_qa_QuantityOrginal").value = quickAccess[0].getElementsByTagName("Quantity")[0].childNodes[0].nodeValue;
+
 	
 	//add item modal dialog
 	document.getElementById("id_ivm_itemNumber").value = quickAccess[0].getElementsByTagName("Name")[0].childNodes[0].nodeValue;
@@ -940,7 +969,11 @@ function createPurchaseReportTable(xml)
   
 }
 
+
+
+
 function tableTimers(){
 	setInterval(main_loadBrowser, 600000);
 	setInterval(main_loadLog, 600000);
 }
+

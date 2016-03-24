@@ -91,9 +91,18 @@ try
 	
 	$dataArray = $stmt->fetchAll(PDO::FETCH_ASSOC);
 	
+	$partNumber = "N/A";
+	//Find Part Number
+	foreach($dataArray as $entry)
+	{
+		if($entry['Id'] == $recordID)
+			$partNumber = $entry['Part'];
+	}
+	
+	
 	$statusCode = '0';
 	$statusMessage = "Class Data Record($recordID) - $field was updated with $value";
-	$log->add_log($sessionID,'Information',$statusMessage);
+	$log->add_log($sessionID,'Information',$statusMessage,$partNumber);
 	
 	
 }

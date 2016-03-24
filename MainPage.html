@@ -97,7 +97,7 @@ th
 
 <header class="w3-container w3-blue" style="hight:10vh" >
 <span class="w3-opennav w3-xlarge" onclick="main_NavOpen()">&#9776;</span>
-<div style="display: inline; margin-left: 20%; font-size: 25px">
+<div style="display: inline; margin-left: 34%; font-size: 25px">
 	Inventory Management System
 </div>
 <div style="display: inline; float: right">
@@ -110,10 +110,10 @@ th
 	<div class="w3-group">
 		<form>
 		<font size="3">Search:</font><br>
-		<input list="id_search_queryList" class="w3-input w3-border w3-text-black" type="text" id="id_search_bar" name="search" oninput="main_queryBarOnInput(this)" autocomplete="off">
+		<input list="id_search_queryList" class="w3-input w3-border w3-text-black" type="text" id="id_search_bar" oninput="main_queryBarOnInput(this)" autocomplete="off">
 		<font size="2">Quick Update:</font><br>
 		<textarea type="text" class="w3-input w3-border w3-text-black" style="width: 15%; height: 40px; float: left;" id="id_qa_ID" placeholder="PartID" disabled></textarea>
-		<textarea type="text" class="w3-input w3-border w3-text-black" style="width: 15%; height: 40px; float: left;" id="id_qa_Quantity" placeholder="Quantity"></textarea>		
+		<input type="text" class="w3-input w3-border w3-text-black" style="width: 15%; height: 40px; float: left;" id="id_qa_Quantity" placeholder="Quantity"></input>		
 		<textarea type="text" class="w3-input w3-border w3-text-black" style="width: 60%; height: 40px; float: left" id="id_qa_Description" placeholder="Description" disabled></textarea>
 		<button class="w3-btn w3-light-green w3-border w3-round-large" style="display: block; float: left; height: 40px; width: 9%; margin-left: 1%" type='button' onclick="quickBar_modifyItem();main_loadBrowser();">Update</button>
 		<datalist id="id_search_queryList"/>

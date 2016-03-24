@@ -43,9 +43,6 @@ function GetOption(){
 function SubmitChange(){
 	var selection = document.getElementById("id_opt_option").value;
 	var change = document.getElementById("id_opt_value").value;
-<<<<<<< HEAD
-	sendSettingsTextAreaRequest("Back_End/ModifyOption.php","textareacode","SID="+getSID()+"&Option="+selection+"&Data="+change);
-=======
 	sendSettingsTextAreaRequest("Back_End/ModifyOption.php","textareacode","SID="+getSID()+"&Data="+change+"&Option="+selection);
->>>>>>> origin/master
+
 }

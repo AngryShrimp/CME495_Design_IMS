@@ -95,9 +95,9 @@ th
 	</div>
 </nav>
 
-<header class="w3-container w3-blue" style="hight:10vh">
+<header class="w3-container w3-blue" style="hight:10vh" >
 <span class="w3-opennav w3-xlarge" onclick="main_NavOpen()">&#9776;</span>
-<form class="w3-form">
+<form class="w3-form" onclick="main_NavClose()">
 	<div class="w3-group">
 	<a>SID:</a>
 	<a id="id_main_SIDDisplay"></a>
@@ -113,14 +113,14 @@ th
 </form>
 </header>
 
-<div class="w3-container" style="hight:80vh">
+<div class="w3-container" style="hight:80vh" onclick="main_NavClose()">
 	<h2>Browser</h2>
 	<div id="id_brw_sortInfo" style="display: none;">None</div>
 	<div id="id_main_browserHeader" class="w3-responsive w3-white w3-border w3-small" style="overflow-y:scroll;"></div>
-	<div id="id_main_browserData" class="w3-responsive w3-white w3-border w3-small" style="max-height: 50vh; overflow-y:scroll;"></div>
+	<div id="id_main_browserData" class="w3-responsive w3-white w3-border w3-small" style="max-height: 60vh; overflow-y:scroll;"></div>
 </div>
 
-<footer class="w3-container w3-blue w3-row" style="position: fixed; bottom: 0; left: 0; right: 0; hight:10vh; display:none">
+<footer class="w3-container w3-blue w3-row" style="position: fixed; bottom: 0; left: 0; right: 0; hight:5vh; display:none">
 	<div class="w3-container w3-third w3-red">
 		<p id="status_code"></p>
 	</div>

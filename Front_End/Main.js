@@ -1,7 +1,9 @@
-function main_NavOpen() {
+function main_NavOpen() 
+{
     document.getElementsByClassName("w3-sidenav")[0].style.display = "block";
 }
-function main_NavClose() {
+function main_NavClose() 
+{
     document.getElementsByClassName("w3-sidenav")[0].style.display = "none";
 }
 

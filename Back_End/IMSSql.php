@@ -74,7 +74,26 @@ class IMSSql {
 		}	
 	}
 	
-
+	
+	public function changeOption($selectedOption){
+	
+		$stmt = $this->conn->prepare("SELECT Value FROM dbo.Options WHERE [Option]='$selectedOption'");
+		$stmt->execute();			
+		$result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+	
+		print_r($result[0]['Value']);
+	}
+	
+	public function retrieveOption($selectedOption){
+	
+		$stmt = $this->conn->prepare("SELECT Value FROM dbo.Options WHERE [Option]='$selectedOption'");
+		$stmt->execute();
+			
+		$result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+	
+		print_r($result[0]['Value']);
+	}
+	
 	/*
 	 * @Function: retrieveOptions
 	 * @Description: Retrieves the options row from the database
@@ -88,25 +107,25 @@ class IMSSql {
 		{
 			
 									
-			$cmd = 'SELECT Remote_Server_Enabled, Backup_Frequency, Automated_Backups_Enabled, Thresholds_Enabled FROM dbo.Options';
+			$cmd = 'SELECT [Option], Value FROM dbo.Options';
 			
-			
+			$optionOutput = "";
 			$XMLData = "<?xml version='1.0' encoding='UTF-8'?>\n";
 			$XMLData .= "<Options>\n";
 			
 			foreach ($this->conn->query($cmd) as $row){                 
 			
-
-			$XMLData .= "<Remote_Server_Enabled>".$row['Remote_Server_Enabled']."</Remote_Server_Enabled>\n";                        
-			$XMLData .= "<Backup_Frequency>".$row['Backup_Frequency']."</Backup_Frequency>\n";
-			$XMLData .= "<Automated_Backups_Enabled>".$row['Automated_Backups_Enabled']."</Automated_Backups_Enabled>\n";
-			$XMLData .= "<Thresholds_Enabled>".$row['Thresholds_Enabled']."</Thresholds_Enabled>\n";                       
+			$optionOutput .= $row['Option']."     ".$row['Value']."\n";
+			$XMLData .= "<Option>".$row['Option']."</Option>\n";                        
+			$XMLData .= "<Value>".$row['Value']."</Value>\n";
+                      
 			
 			}
 			$XMLData .= "</Options>";
 			
 			$xml=simplexml_load_string($XMLData) or die("Error: Cannot create object");
-			print_r($xml);
+			//print_r($xml);
+			print_r($optionOutput);
 				
 				
 		} 

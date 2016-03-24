@@ -53,8 +53,8 @@ textarea
 #textareacode {
 	resize: none;
 	color:black;
-	margin-left: 15%;
-	width:80%;
+	margin-left: 60%;
+	width:40%;
 }
 th
 {
@@ -545,25 +545,39 @@ th
 			</header>
 		<button onclick="Backup()" class="w3-btn w3-red w3-border w3-round-large">Backup Database</button>
 		<button onclick="Restore()" class="w3-btn w3-red w3-border w3-round-large">Import Backup Data</button>
-
 </div>
 
 		<div class="w3-container">
-				<div class="textareacontainer">
+				<p></p>
+				<form class="w3-container w3-responsive w3-white w3-border" style="width:21%; padding-left:0px; padding-right:0px;">
+					<select id="id_opt_option" onchange="GetOption()">
+						<option value="" disabled selected>-- IMS System Options --</option>
+						<option value="Credential_Expiry_Time_Seconds">Credential Expiry Time (seconds)</option>
+						<option value="Debug">Debug mode enabled</option>
+						<option value="Log_File_Location">Log File Location</option>
+						<option value="Remote_Server_Enabled">Enable Remote Server</option>
+						<option value="Thresholds_Enabled">Enable thresholds</option>	
+						<option value="" disabled>-- Backup Options --</option>
+						<option value="Automated_Backups_Enabled">Automate Backups</option>
+						<option value="Backup_Frequency">Backup Frequency</option>
+						<option value="" disabled>-- Email Options --</option>
+						<option value="Email_fromEmail">Senders email</option>
+						<option value="Email_fromName">Senders display name</option>
+						<option value="Email_Server">Email server address</option>
+						<option value="Email_User">Email server username</option>
+						<option value="Email_Pass">Email server password</option>											
+					</select>
+					Value: <input type="text" id="id_opt_value">
+					<br><br>
+					
+				</form>
+				<button onclick="SubmitChange()" class="w3-btn w3-red w3-border w3-round-large">Submit Change</button>
+					
 						<div class="textarea">
-							<div style="overflow:auto;">
-								<div class="headerText">Output:</div>
-							</div>
-							<div class="textareawrapper">
-								<textarea autocomplete="off" class="codearea" id="textareacode" wrap="logical" spellcheck="false" rows="25">Waiting...</textarea>
-							 </div>
+								<textarea class="codearea" id="textareacode" spellcheck="false" rows="10">Waiting...</textarea>
 						</div>
 				</div>
-
-		</div>
-				<footer class="w3-container w3-blue w3-row">
-				<p/>
-		</footer> 
+				<footer class="w3-container w3-blue w3-row"></footer> 
 		</div>
 </div>
 

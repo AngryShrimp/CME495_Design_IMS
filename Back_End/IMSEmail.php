@@ -7,7 +7,7 @@ class IMSEmail{
 
 
 		//Settings for sendEmail function, need to be set before calling.
-		public $email_host = "";
+		public $email_host = "smtp.usask.ca";
 		public $email_username = "";
 		public $email_password = "";
 		public $email_fromemail = "";
@@ -161,14 +161,15 @@ class IMSEmail{
 		
 			$mail->From = $this->email_fromemail;
 			$mail->FromName = $this->email_fromname;
-		
+			
 		
 			foreach($to_array as $to)
 			{
 				$mail->addAddress($to);
 			}
 		
-		
+			$mail->addAttachment("email/IMSEmail.csv");
+			
 			$mail->isHTML(true);
 		
 			$mail->Subject = $subject;

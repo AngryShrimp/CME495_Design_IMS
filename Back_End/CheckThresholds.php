@@ -7,7 +7,7 @@ include "IMSBase.php";
 $statusArray="";
 $dataArray="";
 $sessionID="";
-
+$statusCode = 0;
 try{
 
 	$IMSBase = new IMSBase();
@@ -42,11 +42,13 @@ try{
 	$statusCode = 1;
 	$statusMessage = 'CheckThresholds SQLError: '.$e->getMessage();
 	$log->add_log($sessionID,'Error',$statusMessage);
+	$statusCode = 1;
     echo "Error: " . $e->getMessage();
 	
 }
 catch(Exception $e)
 {
+	$statusCode = 1;
 	$statusCode = $e->getCode();
 	$statusMessage = 'CheckThresholds Error: '. $e->getMessage();
 	if(!$log->add_log($sessionID,'Error',$statusMessage,"N/A",true))

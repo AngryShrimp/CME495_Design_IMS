@@ -96,6 +96,18 @@ class IMSSql {
 			}	
 		}
 		$message = "Number of entries added to list: $count";
+		
+		$recip[0] = "email@email.com";
+		
+		
+		if(!$email->sendEmail($recip, "Test e-mail 4", "Hello, world!!"))
+		{
+			echo "Mailer Error: " . $email->ErrorInfo;
+		}
+		else
+		{
+			echo "Message has been sent successfully";
+		}
 		return $message;
 		
 	}

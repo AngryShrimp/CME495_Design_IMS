@@ -9,8 +9,12 @@
  *
  ***********************************************************************/
 
+include "IMSEmail.php";
+
 class IMSSql {
 
+
+	
 	private $l_servername = "";
 	private $l_username = "";
 	private $l_password = "";
@@ -74,6 +78,27 @@ class IMSSql {
 		}	
 	}
 	
+	public function checkThresholds(){
+		
+		$email = new IMSEmail();
+		$cmd = 'SELECT * FROM dbo.Inventory';
+		$count = 0;
+		
+		foreach ($this->conn->query($cmd) as $row){
+			
+			if ($row['Quantity'] < $row['Ordering_Threshold'] && $row['Threshold_Reported'] == 0){
+				$Name = $row['Name'];
+				$email->add_email($row['Supplier_Part_Number'], $row['Item_Link'], $row['Quantity']);
+				$stmt = $this->conn->prepare("UPDATE dbo.Inventory SET Threshold_Reported=1 WHERE Name='$Name'");
+				$stmt->execute();
+				$count++;
+				
+			}	
+		}
+		$message = "Number of entries added to list: $count";
+		return $message;
+		
+	}
 	
 	public function changeOption($selectedOption){
 	

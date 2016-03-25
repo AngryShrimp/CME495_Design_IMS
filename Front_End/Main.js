@@ -26,6 +26,7 @@ function populateForms()
 		RetrievePurchaseReport();
 		tableTimers();
 		cvm_setupAddItemBatch();
+		main_checkThreshold();
 		//startCheckThresholdTimer()
 	}
 }
@@ -991,7 +992,7 @@ function main_checkThreshold(){
 	  };
 	  xhttp.open("POST", "Back_End/CheckThresholds.php", true);
 	  xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-	  xhttp.send(); 
+	  xhttp.send("SID="+getSID()); 
 	  
 	  return;
 }

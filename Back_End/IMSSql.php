@@ -81,10 +81,38 @@ class IMSSql {
 	public function checkThresholds(){
 		
 		$email = new IMSEmail();
+		$cmd0 = "SELECT Value from dbo.Options WHERE [Option]='Thresholds_Enabled'";
 		$cmd = 'SELECT * FROM dbo.Inventory';
 		$belowCount = 0;
 		$aboveCount = 0;
 		
+		/*
+		 * If thresholds are disabled this block will execute fully.
+		 * email list will not get updated but it will still check for items that have been replenished
+		 */
+		foreach ($this->conn->query($cmd0) as $row0){
+			if ($row0['Value'] == "False" || $row0['Value'] == "false"){
+				
+				foreach ($this->conn->query($cmd) as $row){
+					if ($row['Quantity'] > $row['Ordering_Threshold'] && $row['Threshold_Reported'] == 1){
+						$Name = $row['Name'];
+						$stmt = $this->conn->prepare("UPDATE dbo.Inventory SET Threshold_Reported=0 WHERE Name='$Name'");
+						$stmt->execute();
+						$aboveCount++;							
+					}
+				}
+				
+				$message[0] = "Threshold checking is not enabled in options";
+				$message[1] = "Number of items restocked above threshold: $aboveCount";
+			
+				return $message;
+			}
+		}
+		
+		/*
+		 * If thresholds are enabled this block will execute fully.
+		 * Items under threshold are added to email list and will check for items that have been replenished
+		 */
 		foreach ($this->conn->query($cmd) as $row){
 			
 			if ($row['Quantity'] < $row['Ordering_Threshold'] && $row['Threshold_Reported'] == 0){

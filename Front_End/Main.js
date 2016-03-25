@@ -264,7 +264,7 @@ function quickBar_modifyItem()
   sendBackendRequest("Back_End/ModifyItem.php","SID="+getSID()+"&PartNumber=" + itemNumber + "&Field=Quantity&Value=" + qty_input);
   document.getElementById('id_qa_Quantity').style.backgroundColor = 'white';
   setTimeout(function(){main_getQuickUpdateData(itemNumber)},250);
-  main_checkThreshold(); //See if threshold was violated with the item update
+  setTimeout(main_checkThreshold,250); //See if threshold was violated with the item update
   main_loadBrowser();
   return;
 }

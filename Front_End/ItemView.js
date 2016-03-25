@@ -26,7 +26,7 @@ function ivm_modifyItem(id,field)
   sendBackendRequest("Back_End/ModifyItem.php","SID="+getSID()+"&PartNumber="+ itemNumber + "&Field="+field + "&Value=" + value);
   main_loadLog(); //refresh the log
   document.getElementById(id).style.backgroundColor = "white";
-  main_checkThreshold();
+  setTimeout(main_checkThreshold,250);
   return;
 
 }

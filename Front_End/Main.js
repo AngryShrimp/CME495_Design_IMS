@@ -26,6 +26,7 @@ function populateForms()
 		RetrievePurchaseReport();
 		tableTimers();
 		cvm_setupAddItemBatch();
+		//startCheckThresholdTimer()
 	}
 }
 
@@ -969,7 +970,31 @@ function createPurchaseReportTable(xml)
   
 }
 
-
+function main_checkThreshold(){
+	var xhttp = new XMLHttpRequest();
+	  xhttp.onreadystatechange = function() 
+	  {
+	    if(xhttp.status == 404)
+		{
+		  IMSError("main_checkThreshold Error","404 Error returned for: "+"CheckThresholds.php");
+		}
+		
+		if(xhttp.status == 500)
+		{
+		  IMSError("main_checkThreshold Error","500 Error returned for: "+"CheckThresholds.php");
+		}
+	  
+	    if (xhttp.readyState == 4 && xhttp.status == 200) 
+	    {
+	      parseXMLResponse(xhttp);
+	    }
+	  };
+	  xhttp.open("POST", "Back_End/CheckThresholds.php", true);
+	  xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+	  xhttp.send(); 
+	  
+	  return;
+}
 
 
 function tableTimers(){
@@ -977,3 +1002,6 @@ function tableTimers(){
 	setInterval(main_loadLog, 600000);
 }
 
+function startCheckThresholdTimer(){
+	setInterval(main_checkThreshold, 600000);
+}

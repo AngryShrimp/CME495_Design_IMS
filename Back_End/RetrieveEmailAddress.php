@@ -65,7 +65,7 @@ try
 	
 	$statusCode = '0';
 	$statusMessage = "RetrieveEmailAddress: ".count($dataArray)." Entries in Email Address Table.";
-	$log->add_log($sessionID,'Information',$statusMessage);
+	$log->add_log($sessionID,'Debug',$statusMessage);
 
 	       
 }

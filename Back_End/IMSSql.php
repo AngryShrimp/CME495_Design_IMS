@@ -97,6 +97,7 @@ class IMSSql {
 		}
 		$message = "Number of entries added to list: $count";
 		
+		/*
 		$recip[0] = "email@email.com";
 		
 		
@@ -108,6 +109,7 @@ class IMSSql {
 		{
 			echo "Message has been sent successfully";
 		}
+		*/
 		return $message;
 		
 	}

@@ -33,13 +33,12 @@ try{
 	else 
 		$log->set_log_location($opt_logLoc);
 
-	$runLevel = $sql->verifySID($sessionID,"1"); //1 = Requires edit privileges.
+	$runLevel = $sql->verifySID($sessionID,"0");
 
-	$dataArray[0] = $sql->checkThresholds();
+	$dataArray = $sql->checkThresholds();
 	
 }catch(PDOException $e)
 {
-	$statusCode = 1;
 	$statusMessage = 'CheckThresholds SQLError: '.$e->getMessage();
 	$log->add_log($sessionID,'Error',$statusMessage);
 	$statusCode = 1;
@@ -48,7 +47,6 @@ try{
 }
 catch(Exception $e)
 {
-	$statusCode = 1;
 	$statusCode = $e->getCode();
 	$statusMessage = 'CheckThresholds Error: '. $e->getMessage();
 	if(!$log->add_log($sessionID,'Error',$statusMessage,"N/A",true))
@@ -60,7 +58,7 @@ catch(Exception $e)
 }
 
 if ($statusCode == 0){
-    $statusMessage = "CheckThresholds completed successfully.  $dataArray[0]";
+    $statusMessage = "CheckThresholds completed successfully.";
 	$log->add_log($sessionID,'Info',$statusMessage);
     
     $statusArray[0] = $statusCode;

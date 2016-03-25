@@ -82,7 +82,8 @@ class IMSSql {
 		
 		$email = new IMSEmail();
 		$cmd = 'SELECT * FROM dbo.Inventory';
-		$count = 0;
+		$belowCount = 0;
+		$aboveCount = 0;
 		
 		foreach ($this->conn->query($cmd) as $row){
 			
@@ -91,11 +92,20 @@ class IMSSql {
 				$email->add_email($row['Supplier_Part_Number'], $row['Item_Link'], $row['Quantity']);
 				$stmt = $this->conn->prepare("UPDATE dbo.Inventory SET Threshold_Reported=1 WHERE Name='$Name'");
 				$stmt->execute();
-				$count++;
+				$belowCount++;
 				
-			}	
+			}
+			
+			if ($row['Quantity'] > $row['Ordering_Threshold'] && $row['Threshold_Reported'] == 1){
+				$Name = $row['Name'];
+				$stmt = $this->conn->prepare("UPDATE dbo.Inventory SET Threshold_Reported=0 WHERE Name='$Name'");
+				$stmt->execute();
+				$aboveCount++;
+			
+			}
 		}
-		$message = "Number of entries added to list: $count";
+		$message[0] = "Number of entries added to list: $belowCount";
+		$message[1] = "Number of items restocked above threshold: $aboveCount";
 		
 		/*
 		$recip[0] = "email@email.com";

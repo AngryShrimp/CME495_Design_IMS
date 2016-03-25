@@ -26,8 +26,6 @@ function populateForms()
 		RetrievePurchaseReport();
 		tableTimers();
 		cvm_setupAddItemBatch();
-		main_checkThreshold();
-		//startCheckThresholdTimer()
 	}
 }
 
@@ -266,6 +264,7 @@ function quickBar_modifyItem()
   sendBackendRequest("Back_End/ModifyItem.php","SID="+getSID()+"&PartNumber=" + itemNumber + "&Field=Quantity&Value=" + qty_input);
   document.getElementById('id_qa_Quantity').style.backgroundColor = 'white';
   setTimeout(function(){main_getQuickUpdateData(itemNumber)},250);
+  main_checkThreshold(); //See if threshold was violated with the item update
   main_loadBrowser();
   return;
 }
@@ -1003,6 +1002,3 @@ function tableTimers(){
 	setInterval(main_loadLog, 600000);
 }
 
-function startCheckThresholdTimer(){
-	setInterval(main_checkThreshold, 600000);
-}

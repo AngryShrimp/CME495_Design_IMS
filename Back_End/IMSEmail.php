@@ -67,7 +67,10 @@ class IMSEmail{
 				$lock_file = fopen($this->email_file_loc.".lock",'w+');
 				fwrite($lock_file,"Locked");
 				fclose($lock_file);
-		
+				$exists = file_exists($this->email_file_loc);
+				
+				
+					
 				$email_file = fopen($this->email_file_loc,'a');
 		
 				if($email_file == FALSE)
@@ -80,6 +83,12 @@ class IMSEmail{
 							return false;
 				}
 		
+				//Add headers if file didn't exist
+				if (!$exists){
+					$headers = "Date,Supplier_Part_Number,Item_Link,Quantity_Remaining\n";
+					fwrite($email_file,$headers);
+				}
+				
 				//check for empty inputs.
 				if($Supplier_Part_Number == "")
 				{

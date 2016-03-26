@@ -136,120 +136,120 @@ th
 			class="w3-closebtn">&times;</span>
 			<h3>Add Item</h3>
 		 </header>
-			<form class="w3-container w3-responsive w3-white w3-border">
-				<table class="w3-table w3-bordered w3-border w3-striped w3-small" style="table-layout:fixed; width=100%;">    
-				<col width="20%"/><col width="80%"/>
-						<tr class="w3-border">
-						<th>Type</th>
-						<td class="w3-container">       
-							<select class="w3-select w3-border" name="option" id="id_cvm_type" onchange="cdm_autoPN()">
-								<option value="" disabled selected>Select Type</option>
-								<option value="Capacitor">Capacitor</option>
-								<option value="Resistor">Resistor</option>
-								<option value="Inductor">Inductor</option>
-								<option value="Equipment">Equipment</option>
-								<option value="Transistor">Transistor</option>
-								<option value="Transformer">Transformer</option>
-								<option value="Integrated Circuit">Integrated Circuit</option>
-								<option value="Other">Other</option>
-							</select>     
-						</td>
-						</tr>
-						
-						<tr class="w3-border">
-						<th>Value</th>
-						<td class="w3-container">       
-							<input class="w3-input w3-border w3-text-black" type="text" id="id_cvm_value" oninput="cdm_autoPN()" placeholder="###" autocomplete="off">
-						</td>
-						</tr>
-						
-						<tr class="w3-border">
-						<th>Description</th>
-						<td class="w3-container">
-							<input class="w3-input w3-border w3-text-black" type="text" id="id_cvm_desc" placeholder="Part Description" autocomplete="off">
-						</td>
-						</tr>
+		<form class="w3-container w3-responsive w3-white w3-border">
+			<table class="w3-table w3-bordered w3-border w3-striped w3-small" style="table-layout:fixed; width=100%;">    
+			<col width="20%"/><col width="80%"/>
+					<tr class="w3-border">
+					<th>Type</th>
+					<td class="w3-container">       
+						<select class="w3-select w3-border" name="option" id="id_cvm_type" onchange="cdm_autoPN()">
+							<option value="" disabled selected>Select Type</option>
+							<option value="Capacitor">Capacitor</option>
+							<option value="Resistor">Resistor</option>
+							<option value="Inductor">Inductor</option>
+							<option value="Equipment">Equipment</option>
+							<option value="Transistor">Transistor</option>
+							<option value="Transformer">Transformer</option>
+							<option value="Integrated Circuit">Integrated Circuit</option>
+							<option value="Other">Other</option>
+						</select>     
+					</td>
+					</tr>
+					
+					<tr class="w3-border">
+					<th>Value</th>
+					<td class="w3-container">       
+						<input class="w3-input w3-border w3-text-black" type="text" id="id_cvm_value" oninput="cdm_autoPN()" placeholder="###" autocomplete="off">
+					</td>
+					</tr>
+					
+					<tr class="w3-border">
+					<th>Description</th>
+					<td class="w3-container">
+						<input class="w3-input w3-border w3-text-black" type="text" id="id_cvm_desc" placeholder="Part Description" autocomplete="off">
+					</td>
+					</tr>
 
-						
-						<tr class="w3-border">
-						<th>Supplier Part Number</th>
-						<td class="w3-container">
-							<input class="w3-input w3-border w3-text-black" type="text" id="id_cvm_supplierPN" placeholder="Part Number" autocomplete="off">
-						</td>
-						</tr>
+					
+					<tr class="w3-border">
+					<th>Supplier Part Number</th>
+					<td class="w3-container">
+						<input class="w3-input w3-border w3-text-black" type="text" id="id_cvm_supplierPN" placeholder="Part Number" autocomplete="off">
+					</td>
+					</tr>
 
-						<tr class="w3-border">
-						<th>Supplier Name</th>
-						<td class="w3-container">
-							<input class="w3-input w3-border w3-text-black" type="text" id="id_cvm_supplierName" placeholder="Digikey" autocomplete="off">
-						</td>
-						</tr>
-						
-						<tr class="w3-border">
-						<th>Document URL</th>
-						<td class="w3-container">
-							<input class="w3-input w3-border w3-text-black" type="text" id="id_cvm_link" placeholder="www.someURL.com" autocomplete="off">
-						</td>
-						</tr>
+					<tr class="w3-border">
+					<th>Supplier Name</th>
+					<td class="w3-container">
+						<input class="w3-input w3-border w3-text-black" type="text" id="id_cvm_supplierName" placeholder="Digikey" autocomplete="off">
+					</td>
+					</tr>
+					
+					<tr class="w3-border">
+					<th>Document URL</th>
+					<td class="w3-container">
+						<input class="w3-input w3-border w3-text-black" type="text" id="id_cvm_link" placeholder="www.someURL.com" autocomplete="off">
+					</td>
+					</tr>
 
-						<tr class="w3-border">
-						<th>Quantity</th>
-						<td class="w3-container">
-							<input class="w3-input w3-border w3-text-black" type="text" id="id_cvm_qty" placeholder="###" autocomplete="off">
-						</td>
-						</tr>
-						
-						<tr class="w3-border">
-						<th>Threshold</th>
-						<td class="w3-container">
-							<input class="w3-input w3-border w3-text-black" type="text" id="id_cvm_thresh" placeholder="###" autocomplete="off">
-						</td>
-						</tr>
-						
-						<tr class="w3-border">
-						<th>Location</th>
-						<td class="w3-container">
-							<input class="w3-input w3-border w3-text-black" type="text" id="id_cvm_location" placeholder="B12D22" autocomplete="off">
-						</td>
-						</tr>
-						
-						<tr class="w3-border">
-						<th>Item Number</th>
-						<td class="w3-container">
-							<input class="w3-input w3-border w3-text-black" type="text" id="id_cvm_itemNumber" placeholder="A###-01" autocomplete="off">       
-						</td>
-						</tr>   
-						
-						<tr class="w3-border">
-						<th>Flags</th>
-						<td class="w3-container">
-							<div = class="w3-container w3-third">
-							<label>Consumable</label>
-							<input class="w3-check w3-border w3-text-black" type="checkbox" id="id_cvm_flagConsumable" autocomplete="off">         
-							</div>
-							<div = class="w3-container w3-third">
-							<label>Equipment</label>
-							<input class="w3-check w3-border w3-text-black" type="checkbox" id="id_cvm_flagEquipment" autocomplete="off">          
-							</div>
-							<div = class="w3-container w3-third">
-							<label>Lab Part</label>
-							<input class="w3-check w3-border w3-text-black" type="checkbox" id="id_cvm_flagLabPart" autocomplete="off" disabled>        
-							</div>
-						</td>
-						</tr>               
-					</table>
-				</form>
-				<p/>
-				<button class="w3-btn w3-light-green w3-border w3-round-large" type="button" onclick="createNewItem()">Create Item</button>
-				<p/>
-				<h4>Add Item Batch</h4>
-				<input class="w3-btn" id="file" type="file" />
-				<div class="w3-progress-container" id="id_cvm_addBatchProgressBarCont">
-				  <div id="id_cvm_addBatchProgressBar" class="w3-progressbar w3-green" style="width:0%"></div>
-				</div>
-				<footer class="w3-container w3-blue w3-row">
-					<p></p>
-				</footer>     
+					<tr class="w3-border">
+					<th>Quantity</th>
+					<td class="w3-container">
+						<input class="w3-input w3-border w3-text-black" type="text" id="id_cvm_qty" placeholder="###" autocomplete="off">
+					</td>
+					</tr>
+					
+					<tr class="w3-border">
+					<th>Threshold</th>
+					<td class="w3-container">
+						<input class="w3-input w3-border w3-text-black" type="text" id="id_cvm_thresh" placeholder="###" autocomplete="off">
+					</td>
+					</tr>
+					
+					<tr class="w3-border">
+					<th>Location</th>
+					<td class="w3-container">
+						<input class="w3-input w3-border w3-text-black" type="text" id="id_cvm_location" placeholder="B12D22" autocomplete="off">
+					</td>
+					</tr>
+					
+					<tr class="w3-border">
+					<th>Item Number</th>
+					<td class="w3-container">
+						<input class="w3-input w3-border w3-text-black" type="text" id="id_cvm_itemNumber" placeholder="A###-01" autocomplete="off">       
+					</td>
+					</tr>   
+					
+					<tr class="w3-border">
+					<th>Flags</th>
+					<td class="w3-container">
+						<div = class="w3-container w3-third">
+						<label>Consumable</label>
+						<input class="w3-check w3-border w3-text-black" type="checkbox" id="id_cvm_flagConsumable" autocomplete="off">         
+						</div>
+						<div = class="w3-container w3-third">
+						<label>Equipment</label>
+						<input class="w3-check w3-border w3-text-black" type="checkbox" id="id_cvm_flagEquipment" autocomplete="off">          
+						</div>
+						<div = class="w3-container w3-third">
+						<label>Lab Part</label>
+						<input class="w3-check w3-border w3-text-black" type="checkbox" id="id_cvm_flagLabPart" autocomplete="off" disabled>        
+						</div>
+					</td>
+					</tr>               
+				</table>
+			</form>
+			<p/>
+			<button class="w3-btn w3-light-green w3-border w3-round-large" type="button" onclick="createNewItem()">Create Item</button>
+			<p/>
+			<h4>Add Item Batch</h4>
+			<input class="w3-btn" id="file" type="file" />
+			<div class="w3-progress-container" id="id_cvm_addBatchProgressBarCont">
+			  <div id="id_cvm_addBatchProgressBar" class="w3-progressbar w3-green" style="width:0%"></div>
+			</div>
+			<footer class="w3-container w3-blue w3-row">
+				<p></p>
+			</footer>     
 		</div>		
 	</div>
 </div>
@@ -536,7 +536,7 @@ th
 <!--  Settings Modal Box -->
 <script src="Front_End/settings.js"></script>
 <div id="SettingsModal" class="w3-modal">
-	<div class="w3-modal-content w3-blue  w3-animate-top" style="width:70%">
+	<div class="w3-modal-content w3-blue  w3-animate-top" style="width:95%;">
 		<div class="w3-container">
 		<header class="w3-container w3-blue">
 			<span onclick="document.getElementById('SettingsModal').style.display='none'" 
@@ -545,49 +545,147 @@ th
 			</header>
 		<button onclick="Backup()" class="w3-btn w3-red w3-border w3-round-large">Backup Database</button>
 		<button onclick="Restore()" class="w3-btn w3-red w3-border w3-round-large">Import Backup Data</button>
-</div>
-
-		<div class="w3-container">
-				<p></p>
-				<form class="w3-container w3-responsive w3-white w3-border" style="width:21%; padding-left:0px; padding-right:0px;">
-					<select id="id_opt_option" onchange="GetOption()">
-						<option value="" disabled selected>-- IMS System Options --</option>
-						<option value="Credential_Expiry_Time_Seconds">Credential Expiry Time (seconds)</option>
-						<option value="Debug">Debug mode enabled</option>
-						<option value="Log_File_Location">Log File Location</option>
-						<option value="Thresholds_Enabled">Enable thresholds</option>	
-						<option value="" disabled>-- Backup Options --</option>
-						<option value="Automated_Backups_Enabled">Automate Backups</option>
-						<option value="Backup_Frequency">Backup Frequency</option>
-						<option value="" disabled>-- Email Options --</option>
-						<option value="Email_fromEmail">Senders email</option>
-						<option value="Email_fromName">Senders display name</option>
-						<option value="Email_Server">Email server address</option>
-						<option value="Email_User">Email server username</option>
-						<option value="Email_Pass">Email server password</option>
-						<option value="" disabled>-- SQL Database Options --</option>
-						<option value="Remote_Server_Enabled">Enable Remote Server</option>
-						<option value="SQL_LOCATION">SQL Server Path</option>
-						<option value="SQL_USER">Database Username</option>
-						<option value="SQL_PASS">Database Password</option>
-						<option value="SQL_DRIVER">SQL Driver</option>											
-					</select>
+		</div>
+		
+		<form class="w3-container w3-responsive w3-white w3-border">
+			<table class="w3-table w3-bordered w3-border w3-striped w3-small" style="table-layout:fixed; width=100%;">    
+			<col width="30%"/><col width="70%"/>
+										
+					<tr class="w3-border">
+					<th>Credential Expiry Time (seconds)</th>
+					<td class="w3-container">       
+						<input class="w3-input w3-border w3-text-black" type="text" id="id_opt_credTime" placeholder="0000" autocomplete="off" oninput="opt_editedField(this.id)" onchange="opt_modifyOption(this.id,'Credential_Expiry_Time_Seconds')">
+					</td>
+					</tr>
+					
+					<tr class="w3-border">
+					<th>Debug Mode</th>
+					<td class="w3-container">
+						<input class="w3-check w3-border w3-text-black" type="checkbox" id="id_opt_debug" onchange="opt_modifyOption(this.id,'Debug')">
+					</td>
+					</tr>
 
 					
-				</form>
-				<br><br>
-				<div class="w3-container">
-				Value: <br>
-					<input class="w3-text-black" type="text" id="id_opt_value">
-				<br><br>
-				<button onclick="SubmitChange()" class="w3-btn w3-red w3-border w3-round-large">Submit Change</button>
-				</div>
+					<tr class="w3-border">
+					<th>Log File Location</th>
+					<td class="w3-container">
+						<input class="w3-input w3-border w3-text-black" type="text" id="id_opt_logFileLoc" placeholder="C:/IMS/Logs" autocomplete="off" oninput="opt_editedField(this.id)" onchange="opt_modifyOption(this.id,'Log_File_Location')">
+					</td>
+					</tr>
+
+					<tr class="w3-border">
+					<th>Enable Thresholds</th>
+					<td class="w3-container">
+						<input class="w3-check w3-border w3-text-black" type="checkbox" id="id_opt_enThresholds" onchange="opt_modifyOption(this.id,'Thresholds_Enabled')">
+					</td>
+					</tr>
 					
-						<div class="textarea">
-								<textarea class="codearea" id="textareacode" spellcheck="false" rows="10">Waiting...</textarea>
-						</div>
-				</div>
-				<footer class="w3-container w3-blue w3-row"></footer> 
+					<tr class="w3-border">
+					<th>Backup Options</th>
+					<td class="w3-container">
+					</td>
+					</tr>
+					
+					<tr class="w3-border">
+					<th>Automate Backups</th>
+					<td class="w3-container">
+						<input class="w3-check w3-border w3-text-black" type="checkbox" id="id_opt_autoBackups" onchange="opt_modifyOption(this.id,'Automated_Backups_Enabled')">
+					</td>
+					</tr>
+
+					<tr class="w3-border">
+					<th>Backup Frequency</th>
+					<td class="w3-container">
+						<input class="w3-input w3-border w3-text-black" type="text" id="id_opt_backupFreq" placeholder="0000" autocomplete="off" oninput="opt_editedField(this.id)" onchange="opt_modifyOption(this.id,'Backup_Frequency')">
+					</td>
+					</tr>
+					
+					<tr class="w3-border">
+					<th>Email Settings</th>
+					<td class="w3-container">
+					</td>
+					</tr>
+					
+					<tr class="w3-border">
+					<th>Senders Email Address</th>
+					<td class="w3-container">
+						<input class="w3-input w3-border w3-text-black" type="text" id="id_opt_emailAddress" placeholder="A111@mail.usask.ca" autocomplete="off" oninput="opt_editedField(this.id)" onchange="opt_modifyOption(this.id,'Email_fromEmail')">
+					</td>
+					</tr>
+					
+					<tr class="w3-border">
+					<th>Senders Display Name</th>
+					<td class="w3-container">
+						<input class="w3-input w3-border w3-text-black" type="text" id="id_opt_emailDisplayName" placeholder="Billy Jim-Joe Bob" autocomplete="off" oninput="opt_editedField(this.id)" onchange="opt_modifyOption(this.id,'Email_fromName')">
+					</td>
+					</tr>
+					
+					<tr class="w3-border">
+					<th>Email Server Address</th>
+					<td class="w3-container">
+						<input class="w3-input w3-border w3-text-black" type="text" id="id_opt_emailServerAddress" placeholder="smtp.usask.ca" autocomplete="off" oninput="opt_editedField(this.id)" onchange="opt_modifyOption(this.id,'Email_Server')">       
+					</td>
+					</tr>  	
+
+					<tr class="w3-border">
+					<th>Email Server Username</th>
+					<td class="w3-container">
+						<input class="w3-input w3-border w3-text-black" type="text" id="id_opt_emailServerUser" placeholder="A111" autocomplete="off" oninput="opt_editedField(this.id)" onchange="opt_modifyOption(this.id,'Email_User')">       
+					</td>
+					</tr> 
+
+					<tr class="w3-border">
+					<th>Email Server Password</th>
+					<td class="w3-container">
+						<input class="w3-input w3-border w3-text-black" type="text" id="id_opt_emailServerPass" autocomplete="off" oninput="opt_editedField(this.id)" onchange="opt_modifyOption(this.id,'Email_Pass')">       
+					</td>
+					</tr>
+					
+					<tr class="w3-border">
+					<th>SQL Database Options</th>
+					<td class="w3-container">
+					</td>
+					</tr>
+
+					<tr class="w3-border">
+					<th>SQL Server Location</th>
+					<td class="w3-container">
+						<input class="w3-input w3-border w3-text-black" type="text" id="id_opt_SQLServerLoc" placeholder="(local)/SQLExpress" autocomplete="off" oninput="opt_editedField(this.id)" onchange="opt_modifyOption(this.id,'SQL_LOCATION')">       
+					</td>
+					</tr> 
+
+					<tr class="w3-border">
+					<th>Enable Remote Server</th>
+					<td class="w3-container">
+						<input class="w3-check w3-border w3-text-black" type="checkbox" id="id_opt_SQLRemoteServer" onchange="opt_modifyOption(this.id,'Remote_Server_Enabled')">       
+					</td>
+					</tr> 					
+					
+					<tr class="w3-border">
+					<th>Database Username</th>
+					<td class="w3-container">
+						<input class="w3-input w3-border w3-text-black" type="text" id="id_opt_SQLUser" autocomplete="off" oninput="opt_editedField(this.id)" onchange="opt_modifyOption(this.id,'SQL_USER')">       
+					</td>
+					</tr> 
+					
+					<tr class="w3-border">
+					<th>Database Password</th>
+					<td class="w3-container">
+						<input class="w3-input w3-border w3-text-black" type="text" id="id_opt_SQLPass" autocomplete="off" oninput="opt_editedField(this.id)" onchange="opt_modifyOption(this.id,'SQL_PASS')">       
+					</td>
+					</tr> 
+					
+					<tr class="w3-border">
+					<th>SQL Driver</th>
+					<td class="w3-container">
+						<input class="w3-input w3-border w3-text-black" type="text" id="id_opt_SQLDriver" autocomplete="off" oninput="opt_editedField(this.id)" onchange="opt_modifyOption(this.id,'SQL_DRIVER')">       
+					</td>
+					</tr> 
+					              
+				</table>
+			</form>	
+
+			<footer class="w3-container w3-blue w3-row"></footer> 
 		</div>
 </div>
 

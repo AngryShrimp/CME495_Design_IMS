@@ -21,14 +21,14 @@ $sessionID = "";
 
 $statusMessage = "";
 $statusCode = 0;
-$optionSelected = "";
+$dataArray = NULL;
+$runLevel = "0";
 
 try
 {
 	if ($_SERVER["REQUEST_METHOD"] == "POST") 
 	{
 		$sessionID = $_POST["SID"];
-		$option = $_POST["option"];
 	}
 
 
@@ -52,11 +52,34 @@ try
 		$log->set_log_location($opt_logLoc);	
 	
 
-	$IMSBase->verifyData($sessionID,"/^.+$/");
-                
-    $sql->retrieveOption($option);
+	$runLevel = $sql->verifySID($sessionID); 
+	
+	$sqlQuery = "SELECT * FROM dbo.Options";
+	
+	$stmt = $sql->prepare($sqlQuery);
+	$stmt->execute();	
+	
+	$dataArray = $stmt->fetchAll(PDO::FETCH_ASSOC);  
+	
+	$php_options_file_loc = $_SERVER['DOCUMENT_ROOT']."\Back_End\IMS_Settings.ini";
+	
+	if(file_exists($php_options_file_loc))
+	{
+		$options_file = parse_ini_file($php_options_file_loc,TRUE);	
 		
-		
+		$dataArray[count($dataArray)+1]['Option'] = "SQL_LOCATION";
+		$dataArray[count($dataArray)]['Value'] = $options_file["SQL_SERVER"]["SQL_LOCATION"];
+		$dataArray[count($dataArray)+1]['Option'] = "SQL_USER";
+		$dataArray[count($dataArray)]['Value'] = $options_file["SQL_SERVER"]["SQL_USER"];
+		$dataArray[count($dataArray)+1]['Option'] = "SQL_PASS";
+		$dataArray[count($dataArray)]['Value'] = $options_file["SQL_SERVER"]["SQL_PASS"];
+		$dataArray[count($dataArray)+1]['Option'] = "SQL_DRIVER";
+		$dataArray[count($dataArray)]['Value'] = $options_file["SQL_SERVER"]["SQL_DRIVER"];
+	}	
+
+	$statusCode = "0";
+	$statusMessage = "Option table fetched.";
+	$log->add_log($sessionID,'Debug',$statusMessage);
 	
 }
 catch(PDOException $e)
@@ -64,7 +87,6 @@ catch(PDOException $e)
 	$statusCode = 1;
 	$statusMessage = 'ReadOptions SQLError: '.$e->getMessage();
 	$log->add_log($sessionID,'Error',$statusMessage);
-        echo "Error: " . $e->getMessage();
 	
 }
 catch(Exception $e)
@@ -75,17 +97,15 @@ catch(Exception $e)
 	{
 		$statusMessage = $statusMessage." **Logging Failed**";
 	}
-    echo "Error: " . $e->getMessage();
 
 }
 
-if ($statusCode == 0){
-    $statusMessage = "Option table fetched.";
-	$log->add_log($sessionID,'Information',$statusMessage);
-    
-    $statusArray[0] = $statusCode;
-	$statusArray[1] = $statusMessage;
-        
-	//$IMSBase->GenerateXMLResponse($sessionID,$statusArray);
-}
+
+
+$statusArray[0] = $statusCode;
+$statusArray[1] = $statusMessage;
+$statusArray[2] = $runLevel;
+	
+$IMSBase->GenerateXMLResponse($sessionID,$statusArray,NULL,$dataArray,"OPTIONS","OPT_ENTRY");
+
 ?>

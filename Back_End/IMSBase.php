@@ -100,14 +100,16 @@ class IMSBase
 				$xml->startElement($section_name);
 					foreach($associative_array as $array_entry)
 					{
+						
 						$xml->startElement($subsection_name);
-							foreach($array_entry as $key => $data)
-							{
-								$xml->startElement(str_replace(' ','',$key));
-									$xml->text($data);
-								$xml->endElement();					
-							}
+						foreach($array_entry as $key => $data)
+						{
+							$xml->startElement(str_replace(' ','',$key));
+								$xml->text($data);
+							$xml->endElement();					
+						}
 						$xml->endElement();
+						
 					}				
 				$xml->endElement();			
 			}

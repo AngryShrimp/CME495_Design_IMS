@@ -63,8 +63,14 @@ try
 	$IMSBase->verifyData($data,"/^.+$/");	
 			
 	
-	$dataArray[0] = $sql->command("UPDATE dbo.Options SET Value='$data' WHERE [Option]='$option'");		
-
+	$dataArray[0] = $sql->command("UPDATE dbo.Options SET [Value]='$data' WHERE [Option]='$option'");		
+	
+	$statusCode = "0";
+	$statusMessage = "Option $option changed to $data.";
+	$log->add_log($sessionID,'Information',$statusMessage);
+    
+    
+        
 		
 	
 }
@@ -73,7 +79,6 @@ catch(PDOException $e)
 	$statusCode = 1;
 	$statusMessage = 'ModifyOption SQLError: '.$e->getMessage();
 	$log->add_log($sessionID,'Error',$statusMessage);
-    echo "Error: " . $e->getMessage();
 	
 }
 catch(Exception $e)
@@ -84,20 +89,12 @@ catch(Exception $e)
 	{
 		$statusMessage = $statusMessage." **Logging Failed**";
 	}
-    echo "Error: " . $e->getMessage();
 
-}
-
-if ($statusCode == 0){
-        $statusMessage = "Option $option changed successfully.";
-	$log->add_log($sessionID,'Info',$statusMessage);
-    
-    $statusArray[0] = $statusCode;
+}    
+	$statusArray[0] = $statusCode;
 	$statusArray[1] = $statusMessage;
 	$statusArray[2] = $runLevel;
         
-        
-    echo "Option updated.  New value is $data.";
-	//$IMSBase->GenerateXMLResponse($sessionID,$statusArray,NULL,$dataArray,"OPTIONS","OPTIONS_ENTRY");
-}
+	$IMSBase->GenerateXMLResponse($sessionID,$statusArray);
+
 ?>

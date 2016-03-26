@@ -387,7 +387,7 @@ class IMSSql {
 	{
 		try
 		{
-			$stmt = $this->prepare("SELECT [Value] FROM dbo.options WHERE [Option]='$option';");
+			$stmt = $this->prepare("SELECT [Value] FROM dbo.Options WHERE [Option]='$option';");
 			$stmt->execute();	
 				
 			$dataArray = $stmt->fetchAll(PDO::FETCH_ASSOC); 

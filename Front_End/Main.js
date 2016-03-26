@@ -19,6 +19,7 @@ function populateForms()
 
 	if(setSID())
 	{
+		opt_GetOption();
 		cdm_getClassData();
 		main_loadBrowser();
 		elm_getEmailList();
@@ -312,7 +313,9 @@ function parseXMLResponse(xml)
   var quickAccess = xmlDoc.getElementsByTagName("QACCESS");
   var classData = xmlDoc.getElementsByTagName("CLASS_DATA");
   var emailList = xmlDoc.getElementsByTagName("EMAIL_LIST");
-  var createItemChange = xmlDoc.getElementsByTagName("CREATEITEM");
+  var createItemChange = xmlDoc.getElementsByTagName("CREATEITEM");  
+  var options = xmlDoc.getElementsByTagName("OPTIONS");
+
 
   if(status.length > 0)
   {
@@ -431,6 +434,14 @@ function parseXMLResponse(xml)
 	//Function is in log.js
     log_displayTable(log);
   }
+  
+  /***********************
+   Options Table
+   ***********************/
+   if(options.length > 0)
+   {
+	 opt_displayOptions(options);
+   }
   
 
   /*****************

@@ -959,7 +959,7 @@ function RetrievePurchaseReport()
 	    					"<tr>" +
 	            				"<th>Supplier Part Number</th>" + 
 	            				"<th>Item Link</th>" + 
-	            				"<th>Quantity</th>" +
+	            				"<th>Quantity Remaining</th>" +
 	            			"</tr>";
 
 	    for( i = 0; i < browser_entry.length; i++)
@@ -1032,7 +1032,7 @@ function createPurchaseReportTable(xml)
     tableBrowser = "<table><tr>" +
             "<th>Supplier Part Number</th>" + 
             "<th>Item Link</th>" + 
-            "<th>Quantity</th>";
+            "<th>Quantity Remaining</th>";
 
     for( i = 0; i < browser_entry.length; i++)
     {

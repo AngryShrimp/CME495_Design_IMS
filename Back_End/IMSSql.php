@@ -86,7 +86,7 @@ class IMSSql {
 		$cmd0 = "SELECT Value from dbo.Options WHERE [Option]='Thresholds_Enabled'";
 		$cmd = 'SELECT * FROM dbo.Inventory';		
 		$cmd1 = "SELECT Part, Quantity FROM dbo.Class_Data";
-		
+		$cmd2 = "SELECT * FROM dbo.Purchase_List";
 		$belowCount = 0;
 		$aboveCount = 0;
 		
@@ -157,6 +157,20 @@ class IMSSql {
 				$stmt->execute();
 				$aboveCount++;
 			
+			}
+		}
+		
+		//Check for entries on the Purchase List table that haven't been reported
+		//No check is required for replenished quantities as it's assumed the user will delete
+		//the item from the manual entry table
+		foreach ($this->conn->query($cmd2) as $row2){
+			
+			if ($row2['Threshold_Reported'] == 0){
+				$Name = $row2['Supplier_Part_Number'];
+				$email->add_email($row2['Supplier_Part_Number'], $row2['Item_Link'], $row2['Quantity']);
+				$stmt = $this->conn->prepare("UPDATE dbo.Purchase_List SET Threshold_Reported=1 WHERE Supplier_Part_Number='$Name'");
+				$stmt->execute();
+				$belowCount++;
 			}
 		}
 		$message[0] = "Number of entries added to list: $belowCount";

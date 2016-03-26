@@ -57,8 +57,11 @@ try
 	if ($tableType == "manual")
 		$sqlQuery = "SELECT Supplier_Part_Number, Item_Link, Quantity FROM dbo.Purchase_List;";	
 	else
-		$sqlQuery = "SELECT Supplier_Part_Number, Item_Link, Quantity FROM dbo.Inventory WHERE Quantity < Ordering_Threshold UNION 
-			SELECT Supplier_Part_Number, Item_Link, Quantity FROM dbo.Purchase_List;";
+		$sqlQuery = "SELECT Supplier_Part_Number, Item_Link, Quantity FROM dbo.Inventory 
+				WHERE Quantity < Ordering_Threshold
+				UNION SELECT Supplier_Part_Number, Item_Link, Quantity FROM dbo.Purchase_List
+				UNION SELECT Supplier_Part_Number, Item_Link, Quantity FROM dbo.Inventory
+				WHERE (Quantity - Lab_Quantity) < Ordering_Threshold AND Lab_Part_Flag=1;";
 	
 	
 	$stmt = $sql->prepare($sqlQuery);

@@ -48,6 +48,8 @@ function shp_addClassDataEntry()
   document.getElementById("id_shp_ItemLink").value = "";	
   document.getElementById("id_shp_Quantity").value = "";
   
+  main_checkThreshold();
+  
   return;
 }
 
@@ -97,7 +99,7 @@ function shp_addClassDataEntry()
 								"<th class=\"w3-border\">SEL</th>" + 
 	            				"<th class=\"w3-border\">Supplier Part Number</th>" + 
 	            				"<th class=\"w3-border\">Item Link</th>" + 
-	            				"<th class=\"w3-border\">Quantity</th>" +
+	            				"<th class=\"w3-border\">Quantity Remaining</th>" +
 	            			"</tr>";
 
 	    for( i = 0; i < browser_entry.length; i++)
@@ -172,7 +174,7 @@ function createPurchaseReportTable(xml)
 
             "<th class=\"w3-border\">Supplier Part Number</th>" + 
             "<th class=\"w3-border\">Item Link</th>" + 	
-            "<th class=\"w3-border\">Quantity</th>";
+            "<th class=\"w3-border\">Quantity Remaining</th>";
 
     for( i = 0; i < browser_entry.length; i++)
     {

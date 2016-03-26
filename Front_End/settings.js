@@ -25,7 +25,6 @@ function Backup(){
 }
 
 function Restore(){
-	document.getElementById("textareacode").innerHTML = "Restoring Database...";
 	sendSettingsTextAreaRequest("Back_End/RestoreDatabase.php","textareacode");
 	
 }

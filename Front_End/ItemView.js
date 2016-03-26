@@ -56,3 +56,50 @@ function ivm_editedField(elementID)
 	document.getElementById(elementID).style.backgroundColor = "lightgreen";
 	return;
 }
+
+
+
+function onchangeIE_ivm(evt)
+{
+	if(navigator.sayswho == "IE 11")
+	{
+		var evt = (evt) ? evt : ((event) ? event : null); 
+		var node = (evt.target) ? evt.target : ((evt.srcElement) ? evt.srcElement : null); 
+		if ((evt.keyCode == 13) && (node.type=="text"))  
+		{	
+			
+			switch(node.id)
+			{
+				
+				case "id_ivm_value":
+					ivm_modifyItem(node.id,'Value');
+				break;
+				case "id_ivm_desc":
+					ivm_modifyItem(node.id,'Description');
+				break;
+				case "id_ivm_supplierPN":
+					ivm_modifyItem(node.id,'Supplier_Part_Number');
+				break;
+				case "id_ivm_supplierName":
+					ivm_modifyItem(node.id,'Suppliers_Name');
+				break;
+				case "id_ivm_link":
+					ivm_modifyItem(node.id,'Item_Link');
+				break;
+				case "id_ivm_qty":
+					ivm_modifyItem(node.id,'Quantity');
+				break;
+				case "id_ivm_thresh":
+					ivm_modifyItem(node.id,'Ordering_Threshold');
+				break;
+				case "id_ivm_location":
+					ivm_modifyItem(node.id,'Location');
+				break;
+				default: 
+					return;
+			}		
+			
+		}
+	}
+}
+

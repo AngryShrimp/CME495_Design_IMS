@@ -6,14 +6,7 @@ class IMSEmail{
 		
 
 
-		//Settings for sendEmail function, need to be set before calling.
-		public $email_host = "smtp.usask.ca";
-		public $email_username = "";
-		public $email_password = "";
-		public $email_fromemail = "";
-		public $email_fromname = "";
 
-		
 		public $email_file_loc;
 		public $opt_debug = true;  //default, log debug entries
 		
@@ -33,6 +26,8 @@ class IMSEmail{
 				}
 				time_nanosleep(0, 100000000); //sleep for a 10th of a second.
 			}
+			
+			
 			return true;
 		}
 		
@@ -46,7 +41,7 @@ class IMSEmail{
 			else
 			{
 				//default log location
-				$this->email_file_loc = trim($_SERVER['DOCUMENT_ROOT']).'\Back_End\email\IMSEmail.csv';
+				$this->email_file_loc = trim($_SERVER['DOCUMENT_ROOT']).'\Back_End\email\IMSEmail.html';
 					
 			}
 		
@@ -57,6 +52,32 @@ class IMSEmail{
 				mkdir($path['dirname'],0777,true);
 			}
 		}
+		
+
+		private function assembleEmailHeaders(){
+		
+			$myfile = fopen("email/IMSEmailTemplate.html", "r") or die ("IMSEmail: unable to open file in function assembleEmailHeaders().");
+			$message = fread($myfile, filesize("email/IMSEmailTemplate.html"));
+			fclose($myfile);
+			return $message;
+		}
+		
+		
+		private function assembleBody($Supplier_Part_Number,$Item_Link,$Quantity){
+			
+			$body = "<tr>\n".
+					"<td>".$Supplier_Part_Number."</td>\n".
+					"<td>".$Item_Link."</td>\n".
+					"<td>".$Quantity."</td>\n".
+					"<td>".date("d-m-Y")."   ".date("h:ia")."</td>";
+			
+			$body .= "</tr>\n";
+		
+			return $body;
+		}
+		
+
+		
 		
 		public function add_email($Supplier_Part_Number,$Item_Link,$Quantity,$failSafe = false)
 		{
@@ -85,7 +106,7 @@ class IMSEmail{
 		
 				//Add headers if file didn't exist
 				if (!$exists){
-					$headers = "Date,Supplier_Part_Number,Item_Link,Quantity_Remaining\n";
+					$headers = $this->assembleEmailHeaders();					
 					fwrite($email_file,$headers);
 				}
 				
@@ -103,9 +124,8 @@ class IMSEmail{
 					$Quantity = "Unknown";
 				}
 		
-		
-				$email_entry = date("c").",".$Supplier_Part_Number.",".$Item_Link.",".$Quantity."\n";
-		
+				$email_entry = $this->assembleBody($Supplier_Part_Number,$Item_Link,$Quantity);				
+				
 				fwrite($email_file,$email_entry);
 		
 				fclose($email_file);
@@ -131,62 +151,75 @@ class IMSEmail{
 		 * Notes: Class variables email_host,email_username,email_password,email_fromemail,
 		 *			and email_fromname must be set before calling function.
 		 *******************************************************************/
-		public function sendEmail($to_array,$subject,$message)
+		public function sendEmail($to_array,$subject,$credentials)
 		{
-			if($this->email_host == "")
+			if($credentials["server"] == NULL)
 			{
 				throw new Exception("IMSEmail->sendEmail: SMTP Host Name Missing",1);
 			}
-			if($this->email_username == "")
+			if($credentials["user"] == NULL)
 			{
 				throw new Exception("IMSEmail->sendEmail: SMTP User Name Missing",1);
 			}
-			if($this->email_password == "")
+			if($credentials["password"] == NULL)
 			{
 				throw new Exception("IMSEmail->sendEmail: SMTP Password Missing",1);
 			}
-			if($this->email_fromemail == "")
+			if($credentials["from_email"] == NULL)
 			{
 				throw new Exception("IMSEmail->sendEmail: SMTP From Email Missing",1);
 			}
-			if($this->email_fromname == "")
+			if($credentials["from_name"] == NULL)
 			{
 				throw new Exception("IMSEmail->sendEmail: SMTP From Name Missing",1);
 			}
-		
-		
+					
 			$mail = new PHPMailer(true); //Throw exceptions on error
 		
 			$mail->SMTPDebug = 0;
 			$mail->isSMTP();
-			$mail->Host = $this->email_host;
+			$mail->Host = $credentials["server"];
 			$mail->SMTPAuth=true;
-			$mail->Username = $this->email_username;
-			$mail->Password = $this->email_password;
+			$mail->Username = $credentials["user"];
+			$mail->Password = $credentials["password"];
 			$mail->SMTPSecure = "tls";
 			$mail->Port = 587;
 		
 		
 		
-			$mail->From = $this->email_fromemail;
-			$mail->FromName = $this->email_fromname;
+			$mail->From = $credentials["from_email"];
+			$mail->FromName = $credentials["from_name"];
 			
 		
+			$footers = "</table>\n</body>\n</head>\n</html>";
+			
 			foreach($to_array as $to)
 			{
 				$mail->addAddress($to);
 			}
-		
-			$mail->addAttachment("email/IMSEmail.csv");
-			
+
 			$mail->isHTML(true);
 		
 			$mail->Subject = $subject;
-			$mail->Body = $message;
+			
+			$emailmessage = fopen("email/IMSEmail.html", "r") or die ("IMSEmail: unable to open file in function sendEmail().");
+			$mail->Body = fread($emailmessage, filesize("email/IMSEmail.html"));
+			fclose($emailmessage);
+			$mail->Body .= $footers;
+			
 			$mail->AltBody = "If you can't read this email, please use the Shopping List page on the IMS page.";
 		
-			$mail->send();
-		
+			if(!$mail->send())
+			{
+				return "Mailer Error: " . $mail->ErrorInfo;
+			}
+			else
+			{
+				unlink($this->email_file_loc);
+				
+				return "Email sent";
+			}
+			
 			return;
 		}
 		

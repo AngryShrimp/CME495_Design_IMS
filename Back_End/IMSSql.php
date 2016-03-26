@@ -82,9 +82,26 @@ class IMSSql {
 		
 		$email = new IMSEmail();
 		$cmd0 = "SELECT Value from dbo.Options WHERE [Option]='Thresholds_Enabled'";
-		$cmd = 'SELECT * FROM dbo.Inventory';
+		$cmd = 'SELECT * FROM dbo.Inventory';		
+		$cmd1 = "SELECT Part, Quantity FROM dbo.Class_Data";
+		
 		$belowCount = 0;
 		$aboveCount = 0;
+		
+		/*
+		//Clear entries 
+		$stmt = $this->conn->prepare("UPDATE dbo.Inventory SET Lab_Quantity=0 WHERE Lab_Part_Flag=0");
+		$stmt->execute();
+		*/
+		
+		//Get purchase table data and update inventory table
+		foreach ($this->conn->query($cmd1) as $row1){
+			$Name1 = $row1['Part'];
+			$Quantity1 = $row1['Quantity'];
+			
+			$stmt = $this->conn->prepare("UPDATE dbo.Inventory SET Lab_Quantity=$Quantity1 WHERE Name='$Name1'");
+			$stmt->execute();
+		}
 		
 		/*
 		 * If thresholds are disabled this block will execute fully.
@@ -92,9 +109,9 @@ class IMSSql {
 		 */
 		foreach ($this->conn->query($cmd0) as $row0){
 			if ($row0['Value'] == "False" || $row0['Value'] == "false"){
-				
 				foreach ($this->conn->query($cmd) as $row){
-					if ($row['Quantity'] > $row['Ordering_Threshold'] && $row['Threshold_Reported'] == 1){
+					$difference = $row['Quantity'] - $row['Lab_Quantity'];
+					if ($row['Quantity'] >= $row['Ordering_Threshold'] && $row['Threshold_Reported'] == 1 && $difference >= $row['Ordering_Threshold']){
 						$Name = $row['Name'];
 						$stmt = $this->conn->prepare("UPDATE dbo.Inventory SET Threshold_Reported=0 WHERE Name='$Name'");
 						$stmt->execute();
@@ -115,16 +132,29 @@ class IMSSql {
 		 */
 		foreach ($this->conn->query($cmd) as $row){
 			
-			if ($row['Quantity'] < $row['Ordering_Threshold'] && $row['Threshold_Reported'] == 0){
-				$Name = $row['Name'];
+			$Name = $row['Name'];
+			$difference = $row['Quantity'] - $row['Lab_Quantity'];
+
+			//Check for normal violations
+			if ($row['Quantity'] < $row['Ordering_Threshold'] && $row['Threshold_Reported'] == 0){				
 				$email->add_email($row['Supplier_Part_Number'], $row['Item_Link'], $row['Quantity']);
 				$stmt = $this->conn->prepare("UPDATE dbo.Inventory SET Threshold_Reported=1 WHERE Name='$Name'");
 				$stmt->execute();
 				$belowCount++;
 				
 			}
+			//Offset quantity by lab equipment requirements and see if it violates the threshold
+			if ($row['Lab_Part_Flag'] == 1 && $row['Quantity'] >= $row['Ordering_Threshold'] && $row['Threshold_Reported'] == 0){
+					if ($difference < $row['Ordering_Threshold']){
+						$email->add_email($row['Supplier_Part_Number'], $row['Item_Link'], $row['Quantity']);
+						$stmt = $this->conn->prepare("UPDATE dbo.Inventory SET Threshold_Reported=1 WHERE Name='$Name'");
+						$stmt->execute();
+						$belowCount++;
+					}
+			}
 			
-			if ($row['Quantity'] > $row['Ordering_Threshold'] && $row['Threshold_Reported'] == 1){
+			//Check for replenished quantities and remove the threshold violation flag
+			if ($row['Quantity'] >= $row['Ordering_Threshold'] && $row['Threshold_Reported'] == 1 && $difference >= $row['Ordering_Threshold']){
 				$Name = $row['Name'];
 				$stmt = $this->conn->prepare("UPDATE dbo.Inventory SET Threshold_Reported=0 WHERE Name='$Name'");
 				$stmt->execute();
@@ -135,23 +165,58 @@ class IMSSql {
 		$message[0] = "Number of entries added to list: $belowCount";
 		$message[1] = "Number of items restocked above threshold: $aboveCount";
 		
-		/*
-		$recip[0] = "email@email.com";
-		
-		
-		if(!$email->sendEmail($recip, "Test e-mail 4", "Hello, world!!"))
-		{
-			echo "Mailer Error: " . $email->ErrorInfo;
+		if ($belowCount > 0){
+			$recipients = $this->getEmailList();
+			$credentials = $this->getEmailCredentials();
+			$email->sendEmail($recipients,"PHP mail test",$credentials);
 		}
-		else
-		{
-			echo "Message has been sent successfully";
-		}
-		*/
+		
 		return $message;
 		
 	}
 	
+	private function getEmailCredentials(){
+		
+				
+		$cmd[0] = "SELECT Value from dbo.Options WHERE [Option]='Email_fromEmail'";
+		$cmd[1] = "SELECT Value from dbo.Options WHERE [Option]='Email_fromName'";
+		$cmd[2] = "SELECT Value from dbo.Options WHERE [Option]='Email_Pass'";
+		$cmd[3] = "SELECT Value from dbo.Options WHERE [Option]='Email_Server'";
+		$cmd[4] = "SELECT Value from dbo.Options WHERE [Option]='Email_User'";
+		
+		$array[0] = "from_email";
+		$array[1] = "from_name";
+		$array[2] = "password";
+		$array[3] = "server";
+		$array[4] = "user";
+		
+		$CMDSIZE = sizeof($cmd);
+		
+		if ($CMDSIZE != sizeof($array)) die ("IMSSql->getEmailCredentials() error: cmd | array size mismatch");
+		
+		
+		for ($x=0; $x < $CMDSIZE; $x++){		
+			foreach ($this->conn->query($cmd[$x]) as $row){
+				$list[$array[$x]] = $row['Value'];
+			}
+		}
+		
+		return $list;
+	}
+	
+	private function getEmailList(){
+		
+		$cmd = "SELECT Recipients FROM dbo.Emails";
+		$x = 0;
+		
+		foreach ($this->conn->query($cmd) as $row){
+			$list[$x] = $row['Recipients'];
+			$x++;			
+		}
+		
+		return $list;
+		 
+	}
 	public function changeOption($selectedOption){
 	
 		$stmt = $this->conn->prepare("SELECT Value FROM dbo.Options WHERE [Option]='$selectedOption'");

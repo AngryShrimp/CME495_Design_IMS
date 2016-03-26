@@ -74,7 +74,7 @@ try
 	//Build SQL Query	
 	if($filter != "")
 	{
-            $sqlQuery = $sqlQuery." WHERE [Name] LIKE '%$filter%' or [Description] LIKE '%filter%'"
+            $sqlQuery = $sqlQuery." WHERE [Name] LIKE '%$filter%' or [Description] LIKE '%$filter%'"
 						." or [Supplier_Part_Number] LIKE '%$filter%' or [Type] LIKE '%$filter%'"
 						." or [Value] LIKE '%$filter%' or [Quantity] LIKE '%$filter%'"
 						." or [Location] LIKE '%$filter%' or [Ordering_Threshold] LIKE '%$filter%'"

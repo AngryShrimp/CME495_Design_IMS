@@ -7,6 +7,9 @@ function main_NavClose()
     document.getElementsByClassName("w3-sidenav")[0].style.display = "none";
 }
 
+
+
+
 /****************************************************************
 Function:  populateForms()
 Description: This function run all data retrieval functions so 
@@ -15,11 +18,13 @@ SID from the server
 *****************************************************************/
 function populateForms()
 {
-	document.title = "Inventory Management System";
-
+	document.title = "Inventory Management System";	
+	
+	
 	if(setSID())
 	{
 		opt_GetOption();
+		setupIEFixes();
 		cdm_getClassData();
 		main_loadBrowser();
 		elm_getEmailList();
@@ -27,6 +32,56 @@ function populateForms()
 		RetrievePurchaseReport();
 		tableTimers();
 		cvm_setupAddItemBatch();
+	}
+}
+
+
+function setupIEFixes()
+{
+	
+	//Why do we even need to do this Microsoft.
+	navigator.sayswho= (function(){
+    var ua= navigator.userAgent, tem,
+    M= ua.match(/(opera|chrome|safari|firefox|msie|trident(?=\/))\/?\s*(\d+)/i) || [];
+    if(/trident/i.test(M[1])){
+        tem=  /\brv[ :]+(\d+)/g.exec(ua) || [];
+        return 'IE '+(tem[1] || '');
+    }
+    if(M[1]=== 'Chrome'){
+        tem= ua.match(/\b(OPR|Edge)\/(\d+)/);
+        if(tem!= null) return tem.slice(1).join(' ').replace('OPR', 'Opera');
+    }
+    M= M[2]? [M[1], M[2]]: [navigator.appName, navigator.appVersion, '-?'];
+    if((tem= ua.match(/version\/(\d+)/i))!= null) M.splice(1, 1, tem[1]);
+    return M.join(' ');
+	})();
+
+	//Fix for id_qa_Quantity input field. 
+	document.getElementById('id_qa_Quantity').onkeypress = onchangeIE_id_qa_qty;
+	//Fix for modify item form fields. Functions in ItemView.js
+	document.getElementById('id_ivm_value').onkeypress = onchangeIE_ivm;
+	document.getElementById('id_ivm_desc').onkeypress = onchangeIE_ivm;
+	document.getElementById('id_ivm_supplierPN').onkeypress = onchangeIE_ivm;
+	document.getElementById('id_ivm_supplierName').onkeypress = onchangeIE_ivm;
+	document.getElementById('id_ivm_link').onkeypress = onchangeIE_ivm;
+	document.getElementById('id_ivm_qty').onkeypress = onchangeIE_ivm;
+	document.getElementById('id_ivm_thresh').onkeypress = onchangeIE_ivm;
+	document.getElementById('id_ivm_location').onkeypress = onchangeIE_ivm;
+
+	return;
+}
+
+
+function onchangeIE_id_qa_qty(evt)
+{
+	if(navigator.sayswho == "IE 11")
+	{
+		var evt = (evt) ? evt : ((event) ? event : null); 
+		var node = (evt.target) ? evt.target : ((evt.srcElement) ? evt.srcElement : null); 
+		if ((evt.keyCode == 13) && (node.type=="text"))  
+		{
+			quickBar_modifyItem();
+		}
 	}
 }
 

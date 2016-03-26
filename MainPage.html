@@ -81,7 +81,7 @@ th
 	<br> 
 </nav>
 
-<header class="w3-container w3-blue" style="hight:10vh" >
+<header class="w3-container w3-blue" style="hight:10%" >
 <span class="w3-opennav w3-xlarge" onclick="main_NavOpen()">&#9776;</span>
 <div style="display: inline;font-size: 25px">
 	Inventory Management System
@@ -102,18 +102,17 @@ th
 		<div style="display:none" id="id_qa_QuantityOrginal"></div>		
 		<input type="text" class="w3-input w3-border w3-text-black" style="width: 15%; height: 40px; float: left;" id="id_qa_Quantity" placeholder="Quantity" oninput="main_QUQtyInput()" onchange="quickBar_modifyItem()" onclick="this.select()"></input>		
 		<input type="text" class="w3-input w3-border w3-text-black" style="width: 70%; height: 40px; float: left" id="id_qa_Description" placeholder="Description" disabled></input>
-		<!--<button class="w3-btn w3-light-green w3-border w3-round-large" style="display: block; float: left; height: 40px; width: 9%; margin-left: 1%" type='button' onclick="quickBar_modifyItem();main_loadBrowser();">Update</button>-->
 		<datalist id="id_search_queryList"/>
 		</form>
 	</div>
 </form>
 </header>
 
-<div class="w3-container" style="hight:80vh" onclick="main_NavClose()">
-	<h2>Browser</h2>
+<div class="w3-container" style="max-hight:80%" onclick="main_NavClose()">
+	<h4>Browser</h4>
 	<div id="id_brw_sortInfo" style="display: none;">None</div>
 	<div id="id_main_browserHeader" class="w3-responsive w3-white w3-border w3-small" style="overflow-y:scroll;"></div>
-	<div id="id_main_browserData" class="w3-responsive w3-white w3-border w3-small" style="max-height: 60vh; overflow-y:scroll;"></div>
+	<div id="id_main_browserData" class="w3-responsive w3-white w3-border w3-small" style="max-height: 50vh; overflow-y:scroll;"></div>
 </div>
 
 <footer class="w3-container w3-blue w3-row" style="position: fixed; bottom: 0; left: 0; right: 0; hight:5vh; display:none">

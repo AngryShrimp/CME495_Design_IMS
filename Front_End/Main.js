@@ -67,6 +67,22 @@ function setupIEFixes()
 	document.getElementById('id_ivm_qty').onkeypress = onchangeIE_ivm;
 	document.getElementById('id_ivm_thresh').onkeypress = onchangeIE_ivm;
 	document.getElementById('id_ivm_location').onkeypress = onchangeIE_ivm;
+	//Fix for settings form. Function in settings.js
+	document.getElementById('id_opt_credTime').onkeypress = onchangeIE_opt;
+	document.getElementById('id_opt_debug').onkeypress = onchangeIE_opt;
+	document.getElementById('id_opt_logFileLoc').onkeypress = onchangeIE_opt;
+	document.getElementById('id_opt_enThresholds').onkeypress = onchangeIE_opt;
+	document.getElementById('id_opt_autoBackups').onkeypress = onchangeIE_opt;
+	document.getElementById('id_opt_backupFreq').onkeypress = onchangeIE_opt;
+	document.getElementById('id_opt_emailAddress').onkeypress = onchangeIE_opt;
+	document.getElementById('id_opt_emailServerAddress').onkeypress = onchangeIE_opt;
+	document.getElementById('id_opt_emailServerUser').onkeypress = onchangeIE_opt;
+	document.getElementById('id_opt_emailServerPass').onkeypress = onchangeIE_opt;
+	document.getElementById('id_opt_SQLServerLoc').onkeypress = onchangeIE_opt;
+	document.getElementById('id_opt_SQLUser').onkeypress = onchangeIE_opt;
+	document.getElementById('id_opt_SQLPass').onkeypress = onchangeIE_opt;
+	document.getElementById('id_opt_SQLDriver').onkeypress = onchangeIE_opt;
+
 
 	return;
 }
@@ -123,8 +139,14 @@ function renewSID()
 {
 	var SID = getSID();	
 	
+	var renewTime = document.getElementById('id_opt_credTime').value;
+	if(renewTime == "")
+		renewTime = 3600;
+	
+	
+	
 	var d = new Date();
-    d.setTime(d.getTime() + (3600*1000)); //expire time
+    d.setTime(d.getTime() + (parseInt(renewTime)*1000)); //expire time
     var expires = "expires="+d.toUTCString();
     document.cookie = "SID=" + SID + "; " + expires;
 	

@@ -5,66 +5,13 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="stylesheet" type="text/css" href="Front_End/w3.css">
 <style type="text/css">
-table 
-{
-		table-layout: fixed;
-}
-table td:nth-child(7) 
-{
-		word-wrap: break-word;
-		width: 50%;
-		max-width: 1px;
-}
-#table-wrapper 
-{
-		position:relative;
-}
-#table-scroll 
-{
-		height:250px;
-		overflow:auto;  
-		margin-top:20px;
-}
-#table-scroll2
-{
-		height:250px;
-		overflow:auto;  
-		margin-top:20px;
-		width:100%
-}
-#table-wrapper table 
-{
-		width:100%;
-}
-#table-wrapper table thead th .text 
-{
-		position:absolute;   
-		top:-20px;
-		z-index:2;
-		height:20px;
-		width:35%;
-		border:1px solid red;
-}
-textarea 
-{
-	resize: none;
-	color:black;
-}
-#textareacode {
-	resize: none;
-	color:black;
-	margin-left: 60%;
-	width:40%;
-}
 th
 {
 	cursor:pointer;
 }
-
 </style>
-
-
 </head>
+
 <!-- Main window -->
 <script src="Front_End/Main.js"></script>
 <body onload="populateForms()">
@@ -94,16 +41,14 @@ th
 </div>
 <form class="w3-form" style="display: inline" onclick="main_NavClose()">
 	<div class="w3-group">
-		<form>
 		<font size="3">Search:</font><br>
 		<input list="id_search_queryList" class="w3-input w3-border w3-text-black" type="text" id="id_search_bar" oninput="main_queryBarOnInput(this)" autocomplete="off">
-		<font size="2">Quick Update:</font><br>
+		<font size="2">Quick Update:</font><br/>
 		<input type="text" class="w3-input w3-border w3-text-black" style="width: 15%; height: 40px; float: left;" id="id_qa_ID" placeholder="PartID" disabled></input>
 		<div style="display:none" id="id_qa_QuantityOrginal"></div>		
 		<input type="text" class="w3-input w3-border w3-text-black" style="width: 15%; height: 40px; float: left;" id="id_qa_Quantity" placeholder="Quantity" oninput="main_QUQtyInput()" onchange="quickBar_modifyItem()" onclick="this.select()"></input>		
 		<input type="text" class="w3-input w3-border w3-text-black" style="width: 70%; height: 40px; float: left" id="id_qa_Description" placeholder="Description" disabled></input>
 		<datalist id="id_search_queryList"/>
-		</form>
 	</div>
 </form>
 </header>
@@ -649,35 +594,35 @@ th
 					<tr class="w3-border">
 					<th>SQL Server Location</th>
 					<td class="w3-container">
-						<input class="w3-input w3-border w3-text-black" type="text" id="id_opt_SQLServerLoc" placeholder="(local)/SQLExpress" autocomplete="off" oninput="opt_editedField(this.id)" onchange="opt_modifyOption(this.id,'SQL_LOCATION')">       
+						<input class="w3-input w3-border w3-text-black" type="text" id="id_opt_SQLServerLoc" placeholder="(local)/SQLExpress" autocomplete="off" oninput="opt_editedField(this.id)" onchange="opt_modifyOption(this.id,'SQL_LOCATION')" disabled>       
 					</td>
 					</tr> 
 
 					<tr class="w3-border">
 					<th>Enable Remote Server</th>
 					<td class="w3-container">
-						<input class="w3-check w3-border w3-text-black" type="checkbox" id="id_opt_SQLRemoteServer" onchange="opt_modifyOption(this.id,'Remote_Server_Enabled')">       
+						<input class="w3-check w3-border w3-text-black" type="checkbox" id="id_opt_SQLRemoteServer" onchange="opt_modifyOption(this.id,'Remote_Server_Enabled')" disabled>       
 					</td>
 					</tr> 					
 					
 					<tr class="w3-border">
 					<th>Database Username</th>
 					<td class="w3-container">
-						<input class="w3-input w3-border w3-text-black" type="text" id="id_opt_SQLUser" autocomplete="off" oninput="opt_editedField(this.id)" onchange="opt_modifyOption(this.id,'SQL_USER')">       
+						<input class="w3-input w3-border w3-text-black" type="text" id="id_opt_SQLUser" autocomplete="off" oninput="opt_editedField(this.id)" onchange="opt_modifyOption(this.id,'SQL_USER')" disabled>       
 					</td>
 					</tr> 
 					
 					<tr class="w3-border">
 					<th>Database Password</th>
 					<td class="w3-container">
-						<input class="w3-input w3-border w3-text-black" type="text" id="id_opt_SQLPass" autocomplete="off" oninput="opt_editedField(this.id)" onchange="opt_modifyOption(this.id,'SQL_PASS')">       
+						<input class="w3-input w3-border w3-text-black" type="text" id="id_opt_SQLPass" autocomplete="off" oninput="opt_editedField(this.id)" onchange="opt_modifyOption(this.id,'SQL_PASS')" disabled>       
 					</td>
 					</tr> 
 					
 					<tr class="w3-border">
 					<th>SQL Driver</th>
 					<td class="w3-container">
-						<input class="w3-input w3-border w3-text-black" type="text" id="id_opt_SQLDriver" autocomplete="off" oninput="opt_editedField(this.id)" onchange="opt_modifyOption(this.id,'SQL_DRIVER')">       
+						<input class="w3-input w3-border w3-text-black" type="text" id="id_opt_SQLDriver" autocomplete="off" oninput="opt_editedField(this.id)" onchange="opt_modifyOption(this.id,'SQL_DRIVER')" disabled>       
 					</td>
 					</tr> 
 					              

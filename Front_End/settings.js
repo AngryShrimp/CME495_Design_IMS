@@ -141,3 +141,65 @@ function opt_editedField(id)
 {
 	document.getElementById(id).style.backgroundColor = "lightgreen";
 }
+
+
+function onchangeIE_opt(evt)
+{
+	if(navigator.sayswho == "IE 11")
+	{
+		var evt = (evt) ? evt : ((event) ? event : null); 
+		var node = (evt.target) ? evt.target : ((evt.srcElement) ? evt.srcElement : null); 
+		if ((evt.keyCode == 13) && (node.type=="text"))  
+		{	
+
+			switch(node.id)
+			{
+				case "id_opt_credTime":
+					opt_modifyOption(node.id,'Credential_Expiry_Time_Seconds');
+				break;
+				case "id_opt_debug":
+					opt_modifyOption(node.id,'Debug');
+				break;
+				case "id_opt_logFileLoc":
+					opt_modifyOption(node.id,'Log_File_Location');
+				break;
+				case "id_opt_enThresholds":
+					opt_modifyOption(node.id,'Thresholds_Enabled');
+				break;
+				case "id_opt_autoBackups":
+					opt_modifyOption(node.id,'Automated_Backups_Enabled');
+				break;
+				case "id_opt_backupFreq":
+					opt_modifyOption(node.id,'Backup_Frequency');
+				break;
+				case "id_opt_emailAddress":
+					opt_modifyOption(node.id,'Email_fromEmail');
+				break;
+				case "id_opt_emailServerAddress":
+					opt_modifyOption(node.id,'Email_Server');
+				break;
+				case "id_opt_emailServerUser":
+					opt_modifyOption(node.id,'Email_User');
+				break;
+				case "id_opt_emailServerPass":
+					opt_modifyOption(node.id,'Email_Pass');
+				break;
+				case "id_opt_SQLServerLoc":
+					opt_modifyOption(node.id,'SQL_LOCATION');
+				break;
+				case "id_opt_SQLUser":
+					opt_modifyOption(node.id,'SQL_USER');
+				break;
+				case "id_opt_SQLPass":
+					opt_modifyOption(node.id,'SQL_PASS');
+				break;
+				case "id_opt_SQLDriver":
+					opt_modifyOption(node.id,'SQL_DRIVER');
+				break;			
+				default: 
+					return;
+			}		
+			
+		}
+	}
+}

@@ -1,7 +1,7 @@
 <?php
 /***********************************************************************
- * 	Script: ModifyOption.php
- * 	Description: Script for modifying IMS options.
+ * 	Script: GetOption.php
+ * 	Description: Script for reading all the IMS Options.
  *      Reference: 7.1.9 of IMS System Design Document
  *
  *	Author: Justin Fraser (jaf470@mail.usask.ca)
@@ -9,7 +9,7 @@
  *
  *	Inputs:     (int) SID: The session ID of the client.             
  *
- *	Usage: ReadOptions.php?SID=<session ID>
+ *	Usage: GetOption.php?SID=<session ID>
  ***********************************************************************/
   
 include "IMSBase.php";
@@ -76,7 +76,18 @@ try
 		$dataArray[count($dataArray)+1]['Option'] = "SQL_DRIVER";
 		$dataArray[count($dataArray)]['Value'] = $options_file["SQL_SERVER"]["SQL_DRIVER"];
 	}	
-
+	
+	if($runLevel < 1) //blank password entries from display
+	{
+		for($i = 0;$i < count($dataArray);$i++)
+		{
+			if(($dataArray[$i]['Option'] == 'SQL_PASS')||($dataArray[$i]['Option'] == 'Email_Pass'))
+			{
+				$dataArray[$i]['Value'] = "******";
+			}
+		}
+	}
+	
 	$statusCode = "0";
 	$statusMessage = "Option table fetched.";
 	$log->add_log($sessionID,'Debug',$statusMessage);

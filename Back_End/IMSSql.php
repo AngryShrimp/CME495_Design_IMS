@@ -4,7 +4,9 @@
  * 	Description: Class used to interface with a sql server using the PDO
  * 	object.
  *
- *	Author: Craig Irvine (cri646@mail.usask.ca)
+ *	Authors: Craig Irvine (cri646@mail.usask.ca)
+ *			 Justin Fraser (jaf470@mail.usask.ca)
+ *
  *	Date: 08 January 2016
  *
  ***********************************************************************/
@@ -88,11 +90,6 @@ class IMSSql {
 		$belowCount = 0;
 		$aboveCount = 0;
 		
-		/*
-		//Clear entries 
-		$stmt = $this->conn->prepare("UPDATE dbo.Inventory SET Lab_Quantity=0 WHERE Lab_Part_Flag=0");
-		$stmt->execute();
-		*/
 		
 		//Get purchase table data and update inventory table
 		foreach ($this->conn->query($cmd1) as $row1){

@@ -134,7 +134,7 @@ class IMSSql {
 
 			//Check for normal violations
 			if ($row['Quantity'] < $row['Ordering_Threshold'] && $row['Threshold_Reported'] == 0){				
-				$email->add_email($row['Supplier_Part_Number'], $row['Item_Link'], $row['Quantity']);
+				$email->add_email($row['Supplier_Part_Number'], $row['Item_Link'], $row['Quantity'], $row['Ordering_Threshold']);
 				$stmt = $this->conn->prepare("UPDATE dbo.Inventory SET Threshold_Reported=1 WHERE Name='$Name'");
 				$stmt->execute();
 				$belowCount++;
@@ -143,7 +143,7 @@ class IMSSql {
 			//Offset quantity by lab equipment requirements and see if it violates the threshold
 			if ($row['Lab_Part_Flag'] == 1 && $row['Quantity'] >= $row['Ordering_Threshold'] && $row['Threshold_Reported'] == 0){
 					if ($difference < $row['Ordering_Threshold']){
-						$email->add_email($row['Supplier_Part_Number'], $row['Item_Link'], $row['Quantity']);
+						$email->add_email($row['Supplier_Part_Number'], $row['Item_Link'], $row['Quantity'], $row['Ordering_Threshold']);
 						$stmt = $this->conn->prepare("UPDATE dbo.Inventory SET Threshold_Reported=1 WHERE Name='$Name'");
 						$stmt->execute();
 						$belowCount++;
@@ -167,7 +167,7 @@ class IMSSql {
 			
 			if ($row2['Threshold_Reported'] == 0){
 				$Name = $row2['Supplier_Part_Number'];
-				$email->add_email($row2['Supplier_Part_Number'], $row2['Item_Link'], $row2['Quantity']);
+				$email->add_email($row2['Supplier_Part_Number'], $row2['Item_Link'], $row2['Quantity'], "Manual addition");
 				$stmt = $this->conn->prepare("UPDATE dbo.Purchase_List SET Threshold_Reported=1 WHERE Supplier_Part_Number='$Name'");
 				$stmt->execute();
 				$belowCount++;
@@ -176,7 +176,7 @@ class IMSSql {
 		$message[0] = "Number of entries added to list: $belowCount";
 		$message[1] = "Number of items restocked above threshold: $aboveCount";
 		
-		if ($belowCount > 0){
+		if ($email->emailNeedsToBeSent()){
 			$recipients = $this->getEmailList();
 			$credentials = $this->getEmailCredentials();
 			$email->sendEmail($recipients,"PHP mail test",$credentials);

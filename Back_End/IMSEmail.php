@@ -63,23 +63,26 @@ class IMSEmail{
 		}
 		
 		
-		private function assembleBody($Supplier_Part_Number,$Item_Link,$Quantity){
+		private function assembleBody($Supplier_Part_Number,$Item_Link,$Quantity,$Threshold){
 			
 			$body = "<tr>\n".
 					"<td>".$Supplier_Part_Number."</td>\n".
 					"<td>".$Item_Link."</td>\n".
 					"<td>".$Quantity."</td>\n".
+					"<td>".$Threshold."</td>\n".
 					"<td>".date("d-m-Y")."   ".date("h:ia")."</td>";
 			
 			$body .= "</tr>\n";
 		
 			return $body;
-		}
-		
+		}		
 
 		
+		public function emailNeedsToBeSent(){
+			return file_exists($this->email_file_loc);
+		}
 		
-		public function add_email($Supplier_Part_Number,$Item_Link,$Quantity,$failSafe = false)
+		public function add_email($Supplier_Part_Number,$Item_Link,$Quantity,$Threshold,$failSafe = false)
 		{
 				
 		
@@ -123,8 +126,11 @@ class IMSEmail{
 				{
 					$Quantity = "Unknown";
 				}
+				if($Threshold == ""){
+					$Threshold = "Unknown";
+				}
 		
-				$email_entry = $this->assembleBody($Supplier_Part_Number,$Item_Link,$Quantity);				
+				$email_entry = $this->assembleBody($Supplier_Part_Number,$Item_Link,$Quantity,$Threshold);				
 				
 				fwrite($email_file,$email_entry);
 		

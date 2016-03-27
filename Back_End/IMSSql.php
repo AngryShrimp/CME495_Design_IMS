@@ -179,7 +179,8 @@ class IMSSql {
 		if ($email->emailNeedsToBeSent()){
 			$recipients = $this->getEmailList();
 			$credentials = $this->getEmailCredentials();
-			$email->sendEmail($recipients,"PHP mail test",$credentials);
+			$title = "IMS Low Stock Notification";
+			$message[2] = $email->sendEmail($recipients,$title,$credentials);
 		}
 		
 		return $message;

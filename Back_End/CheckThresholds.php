@@ -1,5 +1,14 @@
 <?php
-
+/****************************************************
+ * PHP Script: CheckThresholds.php
+ * Description: Checks thresholds for any violations and sends an email
+ * 				if thresholds_enabled is set in options.
+ * 
+ * Inputs: SID - Session ID of client
+ * 
+ * Author: Justin Fraser
+ *
+ */
 include "IMSSql.php";
 include "IMSLog.php";
 include "IMSBase.php";

@@ -99,6 +99,8 @@ function createNewItem()
   xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
   xhttp.send("SID="+getSID()+"&PartNumber="+partNumber); 
   
+  setTimeout(main_checkThreshold,250);
+  
   var returnVal = parseXMLResponse(xhttp);
   
   if(returnVal == false)
@@ -308,6 +310,7 @@ function cvm_addItemBatch(fileText)
 	document.getElementById("id_cvm_addBatchProgressBar").style.width = '100%';		
 	document.getElementById("id_cvm_addBatchProgressBar").innerHTML = 'Done';	
 	
+	setTimeout(main_checkThreshold,250);
 	return;
 
 }

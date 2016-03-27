@@ -148,7 +148,7 @@ class IMSEmail{
 		 *
 		 *	Inputs: $to_array - An array containing the email address to send to.
 		 *			$subject - A string containing the subject of the email.
-		 *			$message - A html formatted string containing the message body.
+		 *			$credentials - credentials of mail server.  See notes section below.
 		 *
 		 *	Returned Value: Returns nothing on seccuess.
 		 *					Throws a phpmailerException() on PHPMailer error.
@@ -215,6 +215,15 @@ class IMSEmail{
 			
 			$mail->AltBody = "If you can't read this email, please use the Shopping List page on the IMS page.";
 		
+			try
+			{
+				$mail->SmtpConnect();
+				
+			}catch (Exception $smtpError)
+			{
+				return "Email server credentials are invalid.  Error: $smtpError";
+			}
+			
 			if(!$mail->send())
 			{
 				return "Mailer Error: " . $mail->ErrorInfo;

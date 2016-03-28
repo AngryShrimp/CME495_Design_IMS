@@ -77,7 +77,7 @@ try
 		$dataArray[count($dataArray)]['Value'] = $options_file["SQL_SERVER"]["SQL_DRIVER"];
 	}	
 	
-	if($runLevel < 1) //blank password entries from display
+	if($runLevel < 2) //blank password entries from display
 	{
 		for($i = 0;$i < count($dataArray);$i++)
 		{

@@ -70,7 +70,7 @@ catch(Exception $e)
 
 if ($statusCode == 0){
     $statusMessage = "CheckThresholds completed successfully.";
-	$log->add_log($sessionID,'Info',$statusMessage);
+	$log->add_log($sessionID,'Debug',$statusMessage);
     
     $statusArray[0] = $statusCode;
 	$statusArray[1] = $statusMessage;

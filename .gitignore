@@ -3,3 +3,4 @@
 Back_End/testscripts/php_error.log
 *.log
 log/IMSLog.csv
+Back_End/email/IMSEmail.html

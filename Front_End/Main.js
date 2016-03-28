@@ -343,6 +343,7 @@ function quickBar_modifyItem()
   document.getElementById('id_qa_Quantity').style.backgroundColor = 'white';
   setTimeout(function(){main_getQuickUpdateData(itemNumber)},250);
   setTimeout(main_checkThreshold,250); //See if threshold was violated with the item update
+  setTimeout(RetrievePurchaseReport, 100);
   main_loadBrowser();
   return;
 }
@@ -1058,6 +1059,11 @@ function createPurchaseReportTable(xml)
   
 }
 
+/**************************************************************
+ * Name: main_checkThreshold()
+ * Description: Checks thresholds for email purposes
+ * Author: Justin Fraser
+ **************************************************************/
 function main_checkThreshold(){
 	var xhttp = new XMLHttpRequest();
 	  xhttp.onreadystatechange = function() 
@@ -1085,6 +1091,11 @@ function main_checkThreshold(){
 }
 
 
+/**************************************************************
+ * Name: tableTimers()
+ * Description: Sets timers for table updates
+ * Author: Justin Fraser
+ **************************************************************/
 function tableTimers(){
 	setInterval(main_loadBrowser, 600000);
 	setInterval(main_loadLog, 600000);

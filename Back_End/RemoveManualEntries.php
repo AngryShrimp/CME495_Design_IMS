@@ -1,12 +1,13 @@
 <?PHP
 /***********************************************************************
- * 	Script: AddPurchaseListItem.php
- * 	Description: Script for adding an item to the purchase list.
+ * 	Script: RemoveManualEntries.php
+ * 	Description: Script for removing item(s) from the manual purchase list table.
  *
  *	Author: Justin Fraser (jaf470@mail.usask.ca)
  *	Date: 18 February 2016
  *
  *	Inputs:     SID: The session ID of the client
+ *				itemlist: List of items to delete from the purchase list table
  *
  *
  *	Usage: CreateNewItem.php?SID=<session ID>$SN=<Alphanumeric>&IL=<Alphanumeric>&QN=<Integer>
@@ -61,7 +62,7 @@ try
 	
 	if(empty($aItem))
 	{
-		//echo("No items to delete");
+		//No items to delete if it got here
 		$N = 0;
 	}
 	else
@@ -76,13 +77,7 @@ try
 			$stmt = $sql->prepare($sqlQuery);
 			$stmt->execute();
 		}
-		/*
-		echo("You Deleted $N items(s): ");
-		for($i=0; $i < $N; $i++)
-		{
-			echo($aItem[$i] . " ");
-		}
-		*/
+
 	}
 	
 	$sqlQuery = "SELECT Supplier_Part_Number, Item_Link, Quantity FROM dbo.Purchase_List;";

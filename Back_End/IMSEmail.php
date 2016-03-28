@@ -1,4 +1,11 @@
 <?php 
+/*****************************************************
+ * Script: 	 IMSEmail
+ * Function: Assembles email and sends it to the credentials
+ * 			 specified in the options database table
+ * 
+ * Authors:  Justin Fraser and Craig Irvine
+ *****************************************************/
 
 require_once "vendor/autoload.php"; //loads PHPMailer for use in sendEmail()
 

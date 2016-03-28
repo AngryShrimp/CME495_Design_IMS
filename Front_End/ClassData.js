@@ -187,6 +187,7 @@ function cdm_addClassDataEntry()
   document.getElementById("id_cdm_partList").innerHTML = "";
   
   setTimeout(main_checkThreshold,250);
+  setTimeout(RetrievePurchaseReport, 100);
   
   main_loadLog(); //refresh the log
   
@@ -248,7 +249,8 @@ function cdm_modifyClassDataEntry()
 			document.getElementById("id_cdm_dateInputOrginal").innerHTML = date_new;
 		}
 		
-		setTimeout(main_checkThreshold,500);
+		setTimeout(main_checkThreshold,250);
+		setTimeout(RetrievePurchaseReport, 100);
 		main_loadLog(); //refresh the log
 
 	}

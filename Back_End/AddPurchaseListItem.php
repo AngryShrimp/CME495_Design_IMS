@@ -7,9 +7,11 @@
  *	Date: 18 February 2016
  *
  *	Inputs:     SID: The session ID of the client
+ *				SN: Supplier Part Number
+ *				IL: Link to item store page
+ *				QN: Item quantity
  *
- *
- *	Usage: CreateNewItem.php?SID=<session ID>$SN=<Alphanumeric>&IL=<Alphanumeric>&QN=<Integer>
+ *	Usage: AddPurchaseListItem.php?SID=<session ID>$SN=<Alphanumeric>&IL=<Alphanumeric>&QN=<Integer>
  ***********************************************************************/
   
 include "IMSBase.php";

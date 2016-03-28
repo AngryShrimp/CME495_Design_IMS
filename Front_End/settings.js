@@ -2,6 +2,7 @@
 Function:  sendBackendRequest()
 Description: Sets up and sends a XMLHttpRequest in POST mode to 
 a specified PHP script.
+Author: Justin Fraser
 *****************************************************************/
 function sendSettingsTextAreaRequest(PHPscript, id, options)
 {
@@ -20,10 +21,20 @@ function sendSettingsTextAreaRequest(PHPscript, id, options)
   return;
 }
 
+/****************************************************************
+ * Function: Backup
+ * Description: Calls script to backup database
+ * Author: Justin Fraser
+ ****************************************************************/
 function Backup(){
 	sendSettingsTextAreaRequest("Back_End/BackupDatabase.php","textareacode");
 }
 
+/****************************************************************
+ * Function: Restore
+ * Description: Calls script to restore database
+ * Author: Justin Fraser
+ ****************************************************************/
 function Restore(){
 	sendSettingsTextAreaRequest("Back_End/RestoreDatabase.php","textareacode");
 	

@@ -1,3 +1,10 @@
+/****************************************************************
+ * Function: RemoveEntry()
+ * Description: Searches for checked entries in the manual entry table
+ * 				and removes them
+ * 
+ * Author: Justin Fraser
+ ****************************************************************/
 function RemoveEntry(){
 	var x = document.getElementsByName("formItem");
 	
@@ -5,6 +12,8 @@ function RemoveEntry(){
 	var b = 0;
 	
 	var options = "SID="+getSID();
+	
+	//Search through manual entry table for checked items
 	for (a = 0; a < x.length; a++){
 		if (x[a].checked == true){
 			options += "&itemList["+b+"]="+x[a].value;
@@ -31,6 +40,7 @@ function RemoveEntry(){
 /****************************************************************
 Function:  shp_addClassDataEntry()
 Description: Sends new class data to the server to be saved.
+Author: Justin Fraser
 *****************************************************************/
 function shp_addClassDataEntry()
 {
@@ -91,7 +101,7 @@ function shp_addClassDataEntry()
 		  return false;	
 	    }
 
-
+	    //build html table
 	    tableBrowser = 	"<table id=\"ManualPurchaseData\">" +
 							"<colgroup>" + 
 							"<col span=\"1\" width=\"5%\">" +
@@ -122,6 +132,7 @@ function shp_addClassDataEntry()
 	    				
 	    tableBrowser += "</table>";
 	    
+	    //Insert manual purchase table
 	    document.getElementById("ManualPurchaseData").innerHTML = tableBrowser;	
 	  } 
 	   
@@ -133,7 +144,7 @@ function shp_addClassDataEntry()
  
 /**************************************************************
  * Name: createPurchaseReportTable
- * Description: Parses xml data given by XMLHttpRequest object
+ * Description: Creates the top table in the purchase report page
  * Author: Craig Irvine
  * Modified by: Justin Fraser (latest modification: Feb 18, 2016)
  **************************************************************/
@@ -191,6 +202,8 @@ function createPurchaseReportTable(xml)
     }
 
     tableBrowser += "</table>"
+    	
+    //Insert purchase list table
     document.getElementById("PurchaseListData").innerHTML = tableBrowser;	
   } 
    

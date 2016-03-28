@@ -1,7 +1,7 @@
 <?php
 /***********************************************************************
- * 	Script: BackupDatabase.php
- * 	Description: Script for backing up IMS database.
+ * 	Script: RestoreDatabase.php
+ * 	Description: Script for restoring the IMS database.
  *
  *	Author: Justin Fraser (jaf470@mail.usask.ca), using
  *  Code written by: Robert Johnson
@@ -15,33 +15,33 @@ header('content-type: text/plain;charset=UTF-8');
 
 include "IMSLog.php";
 include "IMSBase.php";
+include "IMSSql.php";
 
 $statusMessage = '';
 $statusCode = 0;
 $sessionID = '';
 $dataArray = '';
-$query = array("USE master",
-		"ALTER DATABASE IMS SET SINGLE_USER WITH ROLLBACK IMMEDIATE",
-		"RESTORE DATABASE IMS FROM DISK = N'C:\\backup\IMS_Backup.bak'",
-		"ALTER DATABASE IMS SET MULTI_USER"
-		
-);
 
-$server = 'JUSTIN-PC\SQLEXPRESS';
-$login = 'IMSBackup';
-$password = 'backup';
-$DB = 'IMS';
 
 try {
 	
 	$IMSBase = new IMSBase();
 	$log = new IMSLog();
+	$sql = new IMSSql();
 	
 	if ($_SERVER["REQUEST_METHOD"] == "POST")
 		$sessionID = $_POST["SID"];
 	
+	$arr = $sql->gatherSQLCredentials(); 
 
-	$conn = sqlsrv_connect($server,array('UID'=>$login, 'PWD'=>$password,'Database'=>$DB,'CharacterSet'=>'UTF-8'));
+	$query = array("USE master",
+			"ALTER DATABASE IMS SET SINGLE_USER WITH ROLLBACK IMMEDIATE",
+			"RESTORE DATABASE IMS FROM DISK = N".$arr["location"],
+			"ALTER DATABASE IMS SET MULTI_USER"
+	);
+	
+	$conn = sqlsrv_connect($arr["servername"],array('UID'=>$arr["username"], 'PWD'=>$arr["password"],'Database'=>$arr["db"],'CharacterSet'=>'UTF-8'));
+	
 	
 	if ( !$conn )
 	{

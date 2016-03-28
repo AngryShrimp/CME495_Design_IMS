@@ -8,7 +8,8 @@
  * 
  * Author: Justin Fraser
  *
- */
+ ****************************************************/
+
 include "IMSSql.php";
 include "IMSLog.php";
 include "IMSBase.php";
@@ -17,6 +18,7 @@ $statusArray="";
 $dataArray="";
 $sessionID="";
 $statusCode = 0;
+
 try{
 
 	$IMSBase = new IMSBase();

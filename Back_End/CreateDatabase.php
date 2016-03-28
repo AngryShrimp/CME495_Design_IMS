@@ -5,8 +5,14 @@
  *
  *	Author: Justin Fraser (jaf470@mail.usask.ca)
  *  
+ *  Inputs:		server: 	SQL server to connect to
+ *  			login: 		SQL server login
+ *  			password: 	SQL server password
+ *  			DB: 		DB to connect to (most likely will be "Master")
+ *  
  *	Date: 26 March 2016
  ***********************************************************************/
+
 
 header('content-type: text/plain;charset=UTF-8');
 
@@ -89,16 +95,20 @@ $query = array("USE Master",
 		
 );
 
-$server = 'JUSTIN-PC\SQLEXPRESS';
-$login = 'IMSBackup';
-$password = 'backup';
-$DB = 'Master';
+
 
 try {
 	
 	$IMSBase = new IMSBase();
 	$log = new IMSLog();
 	
+	if ($_SERVER["REQUEST_METHOD"] == "POST")
+	{
+		$server = $_POST["server"];
+		$login = $_POST["login"];
+		$password = $_POST["password"];
+		$DB = $_POST["DB"];
+	}
 
 	$conn = sqlsrv_connect($server,array('UID'=>$login, 'PWD'=>$password,'Database'=>$DB,'CharacterSet'=>'UTF-8'));
 	
@@ -117,17 +127,17 @@ foreach ($query as $current){
 			echo "\n";
 		    if( ($errors = sqlsrv_errors() ) != null) {
 	        foreach( $errors as $error ) {
-	            echo ("SQLSTATE: ".$error[ 'SQLSTATE']."\n");
+	            //echo ("SQLSTATE: ".$error[ 'SQLSTATE']."\n");
 	            $dataArray .= "SQLSTATE: ".$error[ 'SQLSTATE']."\n";
-	            echo ("code: ".$error[ 'code']."\n");
+	            //echo ("code: ".$error[ 'code']."\n");
 	            $dataArray .= "code: ".$error[ 'code']."\n";
-	            echo ("message: ".$error[ 'message']."\n");
+	            //echo ("message: ".$error[ 'message']."\n");
 	            $dataArray .= "message: ".$error[ 'message']."\n";
 	        }
 		    }
 			print_r(sqlsrv_errors());
 			$dataArray .= "* ---End of result --- *\r\n";
-			echo "* ---End of result --- *\r\n";
+			//echo "* ---End of result --- *\r\n";
 		} while ( sqlsrv_next_result($stmt) ) ;
 		sqlsrv_free_stmt($stmt);
 	}
@@ -140,7 +150,7 @@ catch(PDOException $e)
 {
 
 	$statusCode = 1;
-	$statusMessage = 'RestoreDatabase SQLError: '.$e->getMessage();
+	$statusMessage = 'CreateDatabase SQLError: '.$e->getMessage();
 	$log->add_log($sessionID,'Error',$statusMessage);
         echo "Error: " . $e->getMessage();
     sqlsrv_configure("WarningsReturnAsErrors", 1);
@@ -151,7 +161,7 @@ catch(Exception $e)
 {
 
 	$statusCode = $e->getCode();
-	$statusMessage = 'RestoreDatabase Error: '. $e->getMessage();
+	$statusMessage = 'CreateDatabase Error: '. $e->getMessage();
 	if(!$log->add_log($sessionID,'Error',$statusMessage,"N/A",true))
 	{
 		$statusMessage = $statusMessage." **Logging Failed**";
@@ -171,6 +181,6 @@ if ($statusCode == 0){
 	$statusArray[1] = $statusMessage;
 
 
-	$IMSBase->GenerateXMLResponse($sessionID,$statusArray,NULL,$dataArray,"BROWSER","BROWSER_ENTRY");
+	$IMSBase->GenerateXMLResponse($sessionID,$statusArray,NULL,$dataArray,"DATABASE","DATABASE_ENTRY");
 }
 ?>

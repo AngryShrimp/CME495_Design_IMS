@@ -100,6 +100,7 @@ function createNewItem()
   xhttp.send("SID="+getSID()+"&PartNumber="+partNumber); 
   
   setTimeout(main_checkThreshold,250);
+  setTimeout(RetrievePurchaseReport, 100);
   
   var returnVal = parseXMLResponse(xhttp);
   
@@ -311,6 +312,7 @@ function cvm_addItemBatch(fileText)
 	document.getElementById("id_cvm_addBatchProgressBar").innerHTML = 'Done';	
 	
 	setTimeout(main_checkThreshold,250);
+	setTimeout(RetrievePurchaseReport, 100);
 	return;
 
 }

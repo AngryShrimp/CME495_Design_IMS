@@ -15,32 +15,32 @@ header('content-type: text/plain;charset=UTF-8');
 
 include "IMSLog.php";
 include "IMSBase.php";
+include "IMSSql.php";
 
 $statusMessage = '';
 $statusCode = 0;
 $sessionID = '';
 $dataArray = '';
-$query = "
-BACKUP DATABASE IMS TO DISK = N'C:\\backup\IMS_Backup.bak' 
-WITH NOFORMAT, INIT, NAME = N'dbname Database Backup Test', 
-SKIP, NOREWIND, NOUNLOAD
-";
 
-$server = 'JUSTIN-PC\SQLEXPRESS';
-$login = 'IMSBackup';
-$password = 'backup';
-$DB = 'IMS';
 
 try {
 	
 	$IMSBase = new IMSBase();
 	$log = new IMSLog();
+	$sql = new IMSSql();
 	
 	if ($_SERVER["REQUEST_METHOD"] == "POST")
 		$sessionID = $_POST["SID"];
 	
+	$arr = $sql->gatherSQLCredentials(); 
 
-	$conn = sqlsrv_connect($server,array('UID'=>$login, 'PWD'=>$password,'Database'=>$DB,'CharacterSet'=>'UTF-8'));
+	$query = "
+			BACKUP DATABASE IMS TO DISK = N".$arr["location"]."
+			WITH NOFORMAT, INIT, NAME = N'dbname Database Backup Test',
+			SKIP, NOREWIND, NOUNLOAD
+			";
+	
+	$conn = sqlsrv_connect($arr["servername"],array('UID'=>$arr["username"], 'PWD'=>$arr["password"],'Database'=>$arr["db"],'CharacterSet'=>'UTF-8'));
 	
 	if ( !$conn )
 	{

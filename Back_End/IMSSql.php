@@ -23,8 +23,22 @@ class IMSSql {
 	private $conn;
 	private $sql_driver = "sqlsrv";
 
+	private $b_servername = "";
+	private $b_username = "";
+	private $b_password = "";
+	private $b_db = "";
 
-
+	public function gatherSQLCredentials(){
+		
+		$array["servername"] = $this->b_servername;
+		$array["username"] = $this->b_username;
+		$array["password"] = $this->b_password;
+		$array["db"] = $this->b_db;
+		$array["location"] = $this->b_backuplocation;
+		
+		return $array;
+		
+	}
 	public function __construct($server="",$user="",$pass="")
 	{
 		$php_options_file_loc = $_SERVER['DOCUMENT_ROOT']."\Back_End\IMS_Settings.ini";
@@ -37,6 +51,12 @@ class IMSSql {
 			$this->l_username = $options_file["SQL_SERVER"]["SQL_USER"];
 			$this->l_password = $options_file["SQL_SERVER"]["SQL_PASS"];
 			$this->sql_driver = $options_file["SQL_SERVER"]["SQL_DRIVER"];
+			
+			$this->b_servername = $options_file["SQL_BACKUP"]["SQL_LOCATION"];
+			$this->b_username = $options_file["SQL_BACKUP"]["SQL_USER"];
+			$this->b_password = $options_file["SQL_BACKUP"]["SQL_PASS"];
+			$this->b_db = $options_file["SQL_BACKUP"]["SQL_DB"];
+			$this->b_backuplocation = $options_file["SQL_BACKUP"]["SQL_BACKUP_LOCATION"];
 		}	
 	
 		if($server !="")

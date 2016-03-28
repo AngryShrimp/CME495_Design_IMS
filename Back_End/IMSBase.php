@@ -13,12 +13,6 @@ require_once "vendor/autoload.php"; //loads PHPMailer for use in sendEmail()
 class IMSBase
 {
 
-	//Settings for sendEmail function, need to be set before calling.
-	public $email_host = "";
-	public $email_username = "";
-	public $email_password = "";
-	public $email_fromemail = "";
-	public $email_fromname = "";
 
 
 
@@ -122,80 +116,5 @@ class IMSBase
 		echo $xml->outputMemory(true);
 		
 	}
-	
-	/******************************************************************
-	 * Function: sendEmail()
-	 * Description: Sends an html formatted email to all addresses contained
-	 * in the $to_array.
-	 *
-	 *	Inputs: $to_array - An array containing the email address to send to.
-	 *			$subject - A string containing the subject of the email.
-	 *			$message - A html formatted string containing the message body.
-	 *
-	 *	Returned Value: Returns nothing on seccuess. 
-	 *					Throws a phpmailerException() on PHPMailer error.
-	 *					Throws a Exception() on all other errors.	 
-	 *
-	 * Notes: Class variables email_host,email_username,email_password,email_fromemail,
-	 *			and email_fromname must be set before calling function. 
-	 *******************************************************************/
-	public function sendEmail($to_array,$subject,$message)
-	{		
-		if($this->email_host == "")
-		{
-			throw new Exception("IMSBase->sendEmail: SMTP Host Name Missing",1);
-		}
-		if($this->email_username == "")
-		{
-			throw new Exception("IMSBase->sendEmail: SMTP User Name Missing",1);
-		}
-		if($this->email_password == "")
-		{
-			throw new Exception("IMSBase->sendEmail: SMTP Password Missing",1);
-		}
-		if($this->email_fromemail == "")
-		{
-			throw new Exception("IMSBase->sendEmail: SMTP From Email Missing",1);
-		}
-		if($this->email_fromname == "")
-		{
-			throw new Exception("IMSBase->sendEmail: SMTP From Name Missing",1);
-		}	
-	
-	
-		$mail = new PHPMailer(true); //Throw exceptions on error
-		
-		$mail->SMTPDebug = 0;
-		$mail->isSMTP();
-		$mail->Host = $this->email_host;		
-		$mail->SMTPAuth=true;
-		$mail->Username = $this->email_username;                 
-		$mail->Password = $this->email_password;
-		$mail->SMTPSecure = "tls";
-		$mail->Port = 587;
-		
-		
-		
-		$mail->From = $this->email_fromemail;
-		$mail->FromName = $this->email_fromname;
-		
-		
-		foreach($to_array as $to)
-		{
-			$mail->addAddress($to);
-		}
-		
-		
-		$mail->isHTML(true);
-		
-		$mail->Subject = $subject;
-		$mail->Body = $message;
-		$mail->AltBody = "If you can't read this email, please use the Shopping List page on the IMS page.";	
-	
-		$mail->send();
-		
-		return;
-	}
-
 }
 ?>

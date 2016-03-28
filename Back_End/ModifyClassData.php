@@ -74,7 +74,25 @@ try
 	if($sortColumn != "")
 		$IMSBase->verifyData($sortDirection,"/^(ASC|DESC)$/","Sort Direction");
 
+	
+		
+	if($field == 'Part')
+	{
+		$stmt = $sql->prepare("SELECT [Part] FROM dbo.Class_Data WHERE [id]='$recordID';");
+		$stmt->execute();
+		
+		$oldPN_array = $stmt->fetchAll(PDO::FETCH_ASSOC);
+		$oldPN = $oldPN_array[0]['Part'];
+
+		//remove lab part flag from old part number
+		$sql->command("UPDATE dbo.Inventory SET [Lab_Part_Flag]='0' WHERE [Name]='$oldPN';");	
+		//add lab part flag from new part number
+		$sql->command("UPDATE dbo.Inventory SET [Lab_Part_Flag]='1' WHERE [Name]='$value';");	
+		
+	}
+	
 	$sql->command("UPDATE dbo.Class_Data SET [$field]='$value' WHERE ID='$recordID';");	
+	
 	
 	//retrieve new table.
 	$sqlQuery = "SELECT * FROM dbo.Class_Data";

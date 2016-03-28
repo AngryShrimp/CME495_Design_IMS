@@ -66,7 +66,11 @@ try
 	$dataArray[0] = $sql->command("UPDATE dbo.Options SET [Value]='$data' WHERE [Option]='$option'");		
 	
 	$statusCode = "0";
-	$statusMessage = "Option $option changed to $data.";
+	
+	if(($option == 'SQL_PASS') || ($option == 'Email_Pass'))
+		$statusMessage = "Option $option changed.";
+	else
+		$statusMessage = "Option $option changed to $data.";
 	$log->add_log($sessionID,'Information',$statusMessage);
     
     

@@ -4,8 +4,8 @@
  * 	Description: Class used to interface with a sql server using the PDO
  * 	object.
  *
- *	Authors: Craig Irvine (cri646@mail.usask.ca)
- *			 Justin Fraser (jaf470@mail.usask.ca)
+ *	Authors: Craig Irvine ()
+ *			 Justin Fraser ()
  *
  *	Date: 08 January 2016
  *
@@ -26,19 +26,10 @@ class IMSSql {
 	private $b_servername = "";
 	private $b_username = "";
 	private $b_password = "";
-	private $b_db = "";
-
-	public function gatherSQLCredentials(){
-		
-		$array["servername"] = $this->b_servername;
-		$array["username"] = $this->b_username;
-		$array["password"] = $this->b_password;
-		$array["db"] = $this->b_db;
-		$array["location"] = $this->b_backuplocation;
-		
-		return $array;
-		
-	}
+	private $b_db = "";	
+	
+	
+	
 	public function __construct($server="",$user="",$pass="")
 	{
 		$php_options_file_loc = $_SERVER['DOCUMENT_ROOT']."\Back_End\IMS_Settings.ini";
@@ -311,7 +302,16 @@ class IMSSql {
 		}
 	}
 	
-	
+	 /*******************************************************************
+	 * Function: exists()
+	 * Description: Checks to see if a Name exists in a specified table.
+	 *
+	 * Input: $partNumber = The part number to check for.
+	 * 		  $table = The name of the table to check.
+	 *
+	 * Returned Value:  Returns true of part number exits else false.
+	 *					Throws an exception PDO Error.
+	 ********************************************************************/
 	public function exists($partNumber,$table)
 	{
 		try{
@@ -363,7 +363,15 @@ class IMSSql {
 		}	
 	}
         
-        
+    /*******************************************************************
+	 * Function: prepare()
+	 * Description: Creates a SQL Prepare statement and returns the object.
+	 *
+	 * Input: $SQLStatement = The SQL Statement to use.
+	 *
+	 * Returned Value:  PDO prepare object.
+	 *					Throws an exception PDO Error.
+	 ********************************************************************/    
 	public function prepare($SQLStatement)
 	{
 		try{
@@ -376,6 +384,20 @@ class IMSSql {
 		}	
 	}
 	
+	
+	/*******************************************************************
+	 * Function: set_sid()
+	 * Description: Adds a SID to the database with the proper permissions.
+	 *
+	 * Input: $sid = SID to add.
+	 *		  $date = The current date.
+	 *		  $ip = The IP of the connected client for logging.
+	 * 		  $key = The value passed to the default.php script, used for
+	 * 				determining run level.
+	 *
+	 * Returned Value:  None.
+	 *					Throws an exception PDO Error.
+	 ********************************************************************/
 	public function set_sid($sid,$date,$ip,$key)
 	{
 	
@@ -393,9 +415,12 @@ class IMSSql {
 			if($key == "update")
 			{
 				$runlevel = "1";
-			}			
+			}	
 
-			$exp_date = date("Y-m-d H:i:s",time()+3600);
+			$exp_time_opt = $this->getOption("Credential_Expiry_Time_Seconds");
+			
+
+			$exp_date = date("Y-m-d H:i:s",time()+intval($exp_time_opt));
 			
 			$this->command("INSERT INTO dbo.SID_List (SID,CLIENT_IP,EXPIRE,LEVEL) VALUES ('$sid','$ip','$exp_date','$runlevel');");
 
@@ -407,14 +432,29 @@ class IMSSql {
 		return;	
 	}
 	
-	
+	/*******************************************************************
+	 * Function: verifySID()
+	 * Description: Verifies that the SID has the required permissions.
+	 *
+	 * Input: $SID = SID to check
+	 *		  $runLevel = The run level to check against. 
+	 *
+	 * Returned Value:  Returns the run level of the passed SID.
+	 *					Throws an exception on invalid run level.
+	 ********************************************************************/
 	public function verifySID($SID,$runLevel = "0")
 	{
-		$stmt = $this->prepare("SELECT * FROM dbo.SID_List;");
-		$stmt->execute();	
-		
-		$dataArray = $stmt->fetchAll(PDO::FETCH_ASSOC); 
-		
+		try
+		{
+			$stmt = $this->prepare("SELECT * FROM dbo.SID_List;");
+			$stmt->execute();	
+			
+			$dataArray = $stmt->fetchAll(PDO::FETCH_ASSOC); 
+		}
+		catch(PDOException $e)
+		{
+			throw $e;
+		}
 		
 		foreach($dataArray as $data)
 		{
@@ -440,6 +480,18 @@ class IMSSql {
 		return "0";
 	}
 	
+	
+	/*******************************************************************
+	 * Function: renewSID()
+	 * Description: Renews the permissions assigned to a SID for amount
+	 *				of time specified in the Credential_Expiry_Time_Seconds
+	 *				option.
+	 *
+	 * Input: None
+	 *
+	 * Returned Value:  None
+	 *					Throws an exception on SQL error.
+	 ********************************************************************/
 	public function renewSID()
 	{
 
@@ -448,9 +500,10 @@ class IMSSql {
 
 			if(!isset($_COOKIE["SID"]))
 			{
-
 				throw new Exception("renewSID: SID missing from cookie",2);
 			}	
+			
+			$exp_time = $this->getOption("Credential_Expiry_Time_Seconds");
 			
 			$SID = $_COOKIE["SID"];
 		
@@ -463,7 +516,7 @@ class IMSSql {
 			{
 				if($entry["SID"] == $SID)
 				{
-					$exp_date = date("Y-m-d H:i:s",time()+3600);			
+					$exp_date = date("Y-m-d H:i:s",time()+intval($exp_time));			
 					$this->command("UPDATE dbo.SID_List SET EXPIRE='$exp_date' WHERE SID='$SID';");
 					return;				
 				}			
@@ -480,6 +533,16 @@ class IMSSql {
 		
 	}
 	
+	
+	/*******************************************************************
+	 * Function: getOption()
+	 * Description: Retrieves value of a specified option.
+	 *
+	 * Input: $option - String containing the requested option.
+	 *
+	 * Returned Value:  The Value of the requested option or false on error.
+	 *					Throws an exception on SQL error.
+	 ********************************************************************/
 	public function getOption($option)
 	{
 		try
@@ -501,6 +564,27 @@ class IMSSql {
 			return false;
 		}
 	
+	}
+	
+	
+	/*******************************************************************
+	 * Function: gatherSQLCredentials()
+	 * Description: Retrieves the server backup credentials from the class
+	 *
+	 * Input: None
+	 *
+	 * Returned Value: $array - An array of server backup credentials.
+	 ********************************************************************/
+	public function gatherSQLCredentials(){
+		
+		$array["servername"] = $this->b_servername;
+		$array["username"] = $this->b_username;
+		$array["password"] = $this->b_password;
+		$array["db"] = $this->b_db;
+		$array["location"] = $this->b_backuplocation;
+		
+		return $array;
+		
 	}
 	
 }

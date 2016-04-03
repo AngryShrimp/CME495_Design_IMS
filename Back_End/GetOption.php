@@ -4,10 +4,13 @@
  * 	Description: Script for reading all the IMS Options.
  *      Reference: 7.1.9 of IMS System Design Document
  *
- *	Author: Justin Fraser (jaf470@mail.usask.ca)
+ *	Author: Justin Fraser
  *	Date: 27 January 2016
  *
- *	Inputs:     (int) SID: The session ID of the client.             
+ *	Modified by: Craig Irvine
+ *	Date: March 2016
+ *
+ *	Inputs:     SID: The session ID of the client.             
  *
  *	Usage: GetOption.php?SID=<session ID>
  ***********************************************************************/

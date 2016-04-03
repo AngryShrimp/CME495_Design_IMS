@@ -45,6 +45,14 @@ try
 	$log = new IMSLog();
 	$sql = new IMSSql();
 	
+	$IMSBase->verifyData($supplierNumber,"/^.+$/","Supplier Number");
+	
+	if ($itemLink=="")
+		$itemLink = "Unknown";
+	
+	if ($quantity = "")
+		$quantity = 0;
+	
 	//Set IMSLog options
 	$opt_debugLog = $sql->getOption('Debug');
 	if($opt_debugLog === false)
@@ -86,13 +94,18 @@ catch(PDOException $e)
 }
 catch(Exception $e)
 {
-	$statusCode = $e->getCode();
+	$statusCode = 1;
 	$statusMessage = 'AddPurchaseListItem SQLError: '. $e->getMessage();
 	if(!$log->add_log($sessionID,'Error',$statusMessage,"N/A",true))
 	{
 		$statusMessage = $statusMessage." **Logging Failed**";
 	}
-    echo "Error: " . $e->getMessage();
+	    $statusArray[0] = $statusCode;
+		$statusArray[1] = $statusMessage;
+		$statusArray[2] = $runLevel;
+        
+        
+		$IMSBase->GenerateXMLResponse($sessionID,$statusArray);
 
 }	
 if ($statusCode == 0){
@@ -105,5 +118,6 @@ if ($statusCode == 0){
         
         
 		$IMSBase->GenerateXMLResponse($sessionID,$statusArray);
-}	
+}
+
 ?>

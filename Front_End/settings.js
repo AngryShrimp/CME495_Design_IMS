@@ -27,7 +27,7 @@ function sendSettingsTextAreaRequest(PHPscript, id, options)
  * Author: Justin Fraser
  ****************************************************************/
 function Backup(){
-	sendSettingsTextAreaRequest("Back_End/BackupDatabase.php","textareacode");
+	sendSettingsTextAreaRequest("Back_End/BackupDatabase.php","textareacode","SID="+getSID());
 }
 
 /****************************************************************
@@ -36,7 +36,7 @@ function Backup(){
  * Author: Justin Fraser
  ****************************************************************/
 function Restore(){
-	sendSettingsTextAreaRequest("Back_End/RestoreDatabase.php","textareacode");
+	sendSettingsTextAreaRequest("Back_End/RestoreDatabase.php","textareacode","SID="+getSID());
 	
 }
 

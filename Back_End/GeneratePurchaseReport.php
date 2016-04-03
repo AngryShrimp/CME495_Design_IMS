@@ -9,7 +9,7 @@
  *	Inputs:     SID: The session ID of the client
  *				type: Type of report.  Can be full or manual entries only.
  *
- *	Usage: CreateNewItem.php?SID=<session ID>&type=<manual or blank>
+ *	Usage: GeneratePurcahseReport.php?SID=<session ID>&type=<manual or blank>
  ***********************************************************************/
   
 include "IMSBase.php";

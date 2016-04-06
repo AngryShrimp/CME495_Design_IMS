@@ -3,7 +3,7 @@
  * 	Script: AddEmailAddress.php
  * 	Description: Add a new email address to the database.
  *
- *	Author: Craig Irvine (cri646@mail.usask.ca)
+ *	Author: Craig Irvine ()
  *	Date: 27 Feb 2016
  *
  *	Inputs: SID: The session ID of the client

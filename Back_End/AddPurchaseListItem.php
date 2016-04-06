@@ -3,7 +3,7 @@
  * 	Script: AddPurchaseListItem.php
  * 	Description: Script for adding an item to the purchase list.
  *
- *	Author: Justin Fraser (jaf470@mail.usask.ca)
+ *	Author: Justin Fraser ()
  *	Date: 18 February 2016
  *
  *	Inputs:     SID: The session ID of the client

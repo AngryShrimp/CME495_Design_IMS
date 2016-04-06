@@ -3,7 +3,7 @@
  * 	Script: RemoveManualEntries.php
  * 	Description: Script for removing item(s) from the manual purchase list table.
  *
- *	Author: Justin Fraser (jaf470@mail.usask.ca)
+ *	Author: Justin Fraser ()
  *	Date: 18 February 2016
  *
  *	Inputs:     SID: The session ID of the client

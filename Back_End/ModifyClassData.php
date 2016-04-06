@@ -4,17 +4,19 @@
  * 	Description: Script for modifying one data field in the inventory table
  *	for an existing item.
  *
- *	Author: Craig Irvine (cri646@mail.usask.ca)
+ *	Author: Craig Irvine ()
  *	Date: 23 Feb 16
  *
  *	Inputs: SID: The session ID of the client
  *			ID: The record ID of the class data
  *  		Field: The data field to modify.
  *  		Value: The modification value.
+ *			SortColumn: Column to sort the data by.
+ *			SortDirection: Sort direction of the column. Must be ASC or DESC
  *
  *	Usage: ModifyClassData.php?SID=<session ID>&ID=<Record ID>&
-			Field=<Field to Modify>&Value=<modification value>&
-			SortColumn=<sort column>&SortDirection=<ASC/DESC>
+ *			Field=<Field to Modify>&Value=<modification value>&
+ *			SortColumn=<sort column>&SortDirection=<ASC/DESC>
  ***********************************************************************/
   
 include "IMSBase.php";

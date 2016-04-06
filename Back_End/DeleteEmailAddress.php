@@ -3,7 +3,7 @@
  * 	Script: DeleteEmailAddress.php
  * 	Description: Script for deleting class data from the database.
  *				 Returns a refreshed table for display.
- *	Author: Craig Irvine (cri646@mail.usask.ca)
+ *	Author: Craig Irvine ()
  *	Date: 27 Feb 2016
  *
  *	Inputs: SID: The session ID of the client

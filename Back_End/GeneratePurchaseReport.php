@@ -3,7 +3,7 @@
  * 	Script: GeneratePurchaseReport.php
  * 	Description: Script for generating a purchase report.
  *
- *	Author: Justin Fraser (jaf470@mail.usask.ca)
+ *	Author: Justin Fraser ()
  *	Date: 27 January 2016
  *
  *	Inputs:     SID: The session ID of the client

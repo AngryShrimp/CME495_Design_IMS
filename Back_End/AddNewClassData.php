@@ -3,7 +3,7 @@
  * 	Script: AddNewClassData.php
  * 	Description: Script for adding a new Class data to the IMS systems database.
  *
- *	Author: Craig Irvine (cri646@mail.usask.ca)
+ *	Author: Craig Irvine ()
  *	Date: 13 January 2016
  *
  *	Inputs: SID: The session ID of the client

@@ -3,7 +3,7 @@
  * 	Script: CreateDatabase.php
  * 	Description: Script for creating the IMS database
  *
- *	Author: Justin Fraser (jaf470@mail.usask.ca)
+ *	Author: Justin Fraser ()
  *  
  *  Inputs:		server: 	SQL server to connect to
  *  			login: 		SQL server login

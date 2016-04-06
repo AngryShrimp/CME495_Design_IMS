@@ -3,13 +3,12 @@
  * 	Script: DeleteClassData.php
  * 	Description: Script for deleting class data from the database.
  *				 Returns a refreshed table for display.
- *	Author: Craig Irvine (cri646@mail.usask.ca)
+ *	Author: Craig Irvine ()
  *	Date: 13 Feb 2016
  *
  *	Inputs: SID: The session ID of the client
  *			ID: ID of the class record data to be deleted.
- *			SortColumn: The data column to sort. (Optional)
- *          SortDirection: The sort direction (Ascending or Descending). (Optional)
+ *			
  *
  *	Usage: DeleteClassData.php?SID=<session ID>&PartNumber=<ItemNumber>
  ***********************************************************************/

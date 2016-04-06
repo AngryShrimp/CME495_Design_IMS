@@ -4,7 +4,7 @@
  * 	Description: Class used to create and modify log files for the IMS
  * 	system.
  *
- *	Author: Craig Irvine (cri646@mail.usask.ca)
+ *	Author: Craig Irvine ()
  *	Date: 08 January 2016
  *
  ***********************************************************************/

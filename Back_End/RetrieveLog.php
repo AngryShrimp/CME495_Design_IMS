@@ -4,7 +4,7 @@
  * 	Description: Script for retrieving all log entries that match
  *      passed filters.
  *
- *	Author: Craig Irvine (cri646@mail.usask.ca)
+ *	Author: Craig Irvine ()
  *	Date: 14 January 2016
  *
  *	Inputs: SID: The session ID of the client

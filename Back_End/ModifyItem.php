@@ -4,7 +4,7 @@
  * 	Description: Script for modifying one data field in the inventory table
  *	for an existing item.
  *
- *	Author: Craig Irvine (cri646@mail.usask.ca)
+ *	Author: Craig Irvine ()
  *	Date: 12 January 2016
  *
  *	Inputs: SID: The session ID of the client

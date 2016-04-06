@@ -4,7 +4,7 @@
  * 	Description: Script retrieving data for a single part number for
  *      the quick access form.
  *
- *	Author: Craig Irvine (cri646@mail.usask.ca)
+ *	Author: Craig Irvine ()
  *	Date: 27 Feb 2016
  *
  *	Inputs: SID: The session ID of the client

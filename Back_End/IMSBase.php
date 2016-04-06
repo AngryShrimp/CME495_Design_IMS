@@ -4,7 +4,7 @@
  * 	Description: Class that contains all the base functions for use in
  *	IMS Back end scripts.
  *
- *	Author: Craig Irvine (cri646@mail.usask.ca)
+ *	Author: Craig Irvine ()
  *	Date: 08 January 2016
  *
  ***********************************************************************/
@@ -14,8 +14,19 @@ class IMSBase
 {
 
 
-
-
+	/*******************************************************************
+	 * Function: verifyData()
+	 * Description: Performs sanity checks on input data and compares
+	 *				it to a passed regex expressions.  On mismatch it 
+	 *				throws an exception.
+	 *
+	 * Input: $data = The input to check.
+	 * 		  $RegEx = The regex to compare the input to.
+	 *		  $optMessage = A tag to add to error messages if required.
+	 *
+	 * Returned Value:  None
+	 *					Throws an exception PDO Error.
+	 ********************************************************************/
 	public function verifyData($data,$RegEx,$optMessage = "")
 	{
 		$invalid_char_array = array( "<",
@@ -38,7 +49,22 @@ class IMSBase
 	}
 
 
-
+	/*******************************************************************
+	 * Function: GenerateXMLResponse()
+	 * Description: Checks to see if a Name exists in a specified table.
+	 *
+	 * Input: $session_ID = Session ID.
+	 * 		  $status_array = A Array of Strings that contain the status of the calling script.
+	 *							status_array[0] = Exit status code of script
+								status_array[1] = Exit status message of script.
+								status_array[2] = Run Level of SID that called script.
+	 * 		  $q_access_array = Data for a single item.
+	 * 		  $associative_array = A double nested array of strings
+	 * 		  $section_name = Section name for the first level of the associative_array
+	 * 		  $subsection_name = Section name for the second level of the associative_array 
+	 *
+	 * Returned Value:  None
+	 ********************************************************************/
 	public function GenerateXMLResponse($session_ID,
 								 $status_array,						
 								 $q_access_array = NULL,								

@@ -4,7 +4,7 @@
  * 	Description: Script for modifying IMS options.
  *      Reference: 7.1.9 of IMS System Design Document
  *
- *	Author: Justin Fraser (jaf470@mail.usask.ca)
+ *	Author: Justin Fraser ()
  *	Date: 27 January 2016
  *
  *	Inputs:     (int) SID: The session ID of the client.

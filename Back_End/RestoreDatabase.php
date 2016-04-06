@@ -3,7 +3,7 @@
  * 	Script: RestoreDatabase.php
  * 	Description: Script for restoring the IMS database.
  *
- *	Author: Justin Fraser (jaf470@mail.usask.ca), using
+ *	Author: Justin Fraser (), using
  *  Code written by: Robert Johnson
  *  Reference:
  *  https://social.msdn.microsoft.com/Forums/sqlserver/en-US/e0908b2f-4afa-4626-830d-9683486186c8/backup-database?forum=sqldriverforphp

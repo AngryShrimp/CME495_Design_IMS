@@ -52,7 +52,7 @@ class IMSEmail{
 					
 			}
 		
-			//Check that log folder exists and check write permissions.
+			//Check that email folder exists and check write permissions.
 			$path = pathinfo($this->email_file_loc);
 			if(!file_exists($path['dirname']))
 			{

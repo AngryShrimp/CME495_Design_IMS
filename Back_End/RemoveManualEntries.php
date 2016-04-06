@@ -10,12 +10,9 @@
  *				itemlist: List of items to delete from the purchase list table
  *
  *
- *	Usage: CreateNewItem.php?SID=<session ID>$SN=<Alphanumeric>&IL=<Alphanumeric>&QN=<Integer>
+ *	Usage: RemoveManualEntries.php?SID=<session ID>&itemList=<Array of item names>
  ***********************************************************************/
-  
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
-error_reporting(E_ALL);
+ 
 
 include "IMSBase.php";
 include "IMSLog.php";
@@ -39,26 +36,28 @@ try
 	$IMSBase = new IMSBase();
 	$log = new IMSLog();
 	
-	//Set IMSLog options
-	$opt_debugLog = $sql->getOption('Debug');
-	if($opt_debugLog === false)
-		$log->add_log($sessionID,'Warning','RemoveManualEntries Warning: Debug Option missing or invalid.');
-	else if($opt_debugLog == 'False')
-		$log->opt_debug = false;	
-	else 
-		$log->opt_debug = true;
-		
-	$opt_logLoc = $sql->getOption('Log_File_Location');	
-	if($opt_logLoc === false)
-		$log->add_log($sessionID,'Warning','RemoveManualEntries Warning: Log_File_Location Option missing or invalid.');
-	else 
-		$log->set_log_location($opt_logLoc);
 	
 	if ($_SERVER["REQUEST_METHOD"] == "POST"){
 		$aItem = $_POST['itemList'];
 		$sessionID = $_POST['SID'];
 	}
 
+	//Set IMSLog options
+	$opt_debugLog = $sql->getOption('Debug');
+	if($opt_debugLog === false)
+		$log->add_log($sessionID,'Warning','RemoveManualEntries Warning: Debug Option missing or invalid.');
+	else if($opt_debugLog == 'False')
+		$log->opt_debug = false;
+	else
+		$log->opt_debug = true;
+	
+	$opt_logLoc = $sql->getOption('Log_File_Location');
+	if($opt_logLoc === false)
+		$log->add_log($sessionID,'Warning','RemoveManualEntries Warning: Log_File_Location Option missing or invalid.');
+	else
+		$log->set_log_location($opt_logLoc);
+	
+	$runLevel = $sql->verifySID($sessionID,"1"); //1 = Requires edit privileges.
 	
 	if(empty($aItem))
 	{

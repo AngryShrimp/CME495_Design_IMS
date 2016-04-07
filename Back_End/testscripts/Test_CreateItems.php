@@ -4,7 +4,7 @@
  * 	Description: Script for testing CreateNewItem.php, ModifyItem.php 
  *	and RetrieveItem.php
  *
- *	Author: Craig Irvine (cri646@mail.usask.ca)
+ *	Author: Craig Irvine ()
  *	Date: 10 January 2016
  *
  ***********************************************************************/

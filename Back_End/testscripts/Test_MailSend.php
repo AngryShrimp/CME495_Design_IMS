@@ -3,7 +3,7 @@
  * 	Script: Test_MailSend.php
  * 	Description: Script for testing the SendEmail function in IMSBase.
  *
- *	Author: Craig Irvine (cri646@mail.usask.ca)
+ *	Author: Craig Irvine ()
  *	Date: 24 Feb 2016
  *
  ***********************************************************************/

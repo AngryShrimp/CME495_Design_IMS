@@ -4,7 +4,7 @@
  * 	Description: Script for testing AddNewClassData.php, ModifyClassData.php 
  *	,RetrieveClassData.php and RetrieveBrowserData.php
  *
- *	Author: Craig Irvine (cri646@mail.usask.ca)
+ *	Author: Craig Irvine ()
  *	Date: 24 Feb 2016
  *
  ***********************************************************************/
